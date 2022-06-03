@@ -15,7 +15,10 @@ window.addEventListener('load', async () => {
   });
 
 function onDisconnect() {
-  alert("To disconnect, open MetaMask and manualy disconnect.")
+  alert("To disconnect, open MetaMask and manualy disconnect.");
+
+  document.getElementById("not-connected").style.display = "block";
+  document.getElementById("connected").style.display = "none";
 }
 
 async function fetchAccountData() {
@@ -33,11 +36,9 @@ async function fetchAccountData() {
         document.getElementById("selected-account").innerHTML = `(${account})`;
         document.getElementById("account-balance").innerHTML = `${formatedBalance} ${chainIdMap[ethereum.networkVersion].symbol}`;
         document.getElementById("network-name").innerHTML = `${chainIdMap[ethereum.networkVersion].name}`;
-        document.getElementById("btn-connect").style.display = "none";
-        document.getElementById("btn-disconnect").style.display = "block";
 
-        document.querySelector("#not-connected").style.display = "none";
-        document.querySelector("#connected").style.display = "block";
+        document.getElementById("not-connected").style.display = "none";
+        document.getElementById("connected").style.display = "block";
 
         localStorage.setItem("CACHED_PROVIDER", "TRUE");
     } catch (error) {
@@ -49,33 +50,14 @@ async function fetchAccountData() {
         fetchAccountData();
       } else {
         localStorage.removeItem("CACHED_PROVIDER");
-        document.getElementById("btn-disconnect").style.display = "none";
-        document.getElementById("btn-connect").style.display = "block";
 
-        document.querySelector("#not-connected").style.display = "block";
-        document.querySelector("#connected").style.display = "none";
+        document.getElementById("not-connected").style.display = "block";
+        document.getElementById("connected").style.display = "none";
       }
   });
   ethereum.on("chainChanged", (chainId) => {
     fetchAccountData();
   });
-
-function onDisconnect() {
-    // alert("Remember to open MetaMask and manualy disconnect.");
-    // console.log("Killing the wallet connection", provider);
-
-    // if(provider.close) {
-    //   provider.close();
-    //   provider = null;
-    // }
-    // selectedAccount = null;
-
-    // localStorage.removeItem("CACHED_PROVIDER");
-
-    document.querySelector("#not-connected").style.display = "block";
-    document.querySelector("#connected").style.display = "none";
-}
-
 
 
 // -----------------------
