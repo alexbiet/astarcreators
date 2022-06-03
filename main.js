@@ -30,6 +30,10 @@ async function fetchAccountData() {
         document.getElementById("network-name").innerHTML = `${chainIdMap[ethereum.networkVersion].name}`;
         document.getElementById("btn-connect").style.display = "none";
         document.getElementById("btn-disconnect").style.display = "block";
+
+        document.querySelector("#not-connected").style.display = "none";
+        document.querySelector("#connected").style.display = "block";
+
         localStorage.setItem("CACHED_PROVIDER", "TRUE");
     } catch (error) {
         console.log("Error connecting to metamask account:\n", error)
@@ -42,6 +46,9 @@ async function fetchAccountData() {
         localStorage.removeItem("CACHED_PROVIDER");
         document.getElementById("btn-disconnect").style.display = "none";
         document.getElementById("btn-connect").style.display = "block";
+
+        document.querySelector("#not-connected").style.display = "block";
+        document.querySelector("#connected").style.display = "none";
       }
   });
   ethereum.on("chainChanged", (chainId) => {
@@ -50,9 +57,80 @@ async function fetchAccountData() {
 };
 
 function onDisconnect() {
-    alert("To disconnect, open MetaMask and manualy disconnect.")
+    // alert("Remember to open MetaMask and manualy disconnect.");
+    // console.log("Killing the wallet connection", provider);
+
+    // if(provider.close) {
+    //   provider.close();
+    //   provider = null;
+    // }
+    // selectedAccount = null;
+
+    // localStorage.removeItem("CACHED_PROVIDER");
+
+    document.querySelector("#not-connected").style.display = "block";
+    document.querySelector("#connected").style.display = "none";
 }
 
 window.addEventListener('load', async () => {
     init();
   });
+
+
+
+// -----------------------
+// TABS NAV             //
+// -----------------------
+
+function Tabs() {
+
+  var bindAll = function() {
+
+    var getActiveDataTab;
+
+    if(sessionStorage.getItem('activeDataTab') === null) {
+      sessionStorage.setItem('activeDataTab', 'view-1');
+      getActiveDataTab = sessionStorage.setItem('activeDataTab', 'view-1');
+    }
+
+    if(sessionStorage.getItem('activeDataTab') !== "") {
+      getActiveDataTab = sessionStorage.getItem('activeDataTab');
+      clear();
+      document.querySelector('[data-tab="'+ getActiveDataTab +'"]').classList.add('active');
+      document.getElementById(getActiveDataTab).classList.add('active');
+    } else {
+      sessionStorage.setItem('activeDataTab', 'view-1');
+      getActiveDataTab = sessionStorage.getItem('activeDataTab');
+      clear();
+      document.querySelectorAll('[data-tab="'+ getActiveDataTab +'"]').classList.add('active');
+      document.getElementById(getActiveDataTab).classList.add('active');
+    }
+
+    var menuElements = document.querySelectorAll('[data-tab]');
+    for(var i = 0; i < menuElements.length ; i++) {
+      menuElements[i].addEventListener('click', change, false);
+    }
+
+  }
+
+  var clear = function() {
+    var menuElements = document.querySelectorAll('[data-tab]');
+    for(var i = 0; i < menuElements.length ; i++) {
+      menuElements[i].classList.remove('active');
+      var id = menuElements[i].getAttribute('data-tab');
+      document.getElementById(id).classList.remove('active');
+    }
+  }
+
+  var change = function(e) {
+    clear();
+    e.target.classList.add('active');
+    var id = e.currentTarget.getAttribute('data-tab');
+    sessionStorage.setItem('activeDataTab', id);
+    document.getElementById(id).classList.add('active');
+  }
+
+  bindAll();
+}
+
+var connectTabs = new Tabs();

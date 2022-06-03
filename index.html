@@ -5,29 +5,177 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <title>VanillaJS Web3 Boiler</title>
+    <title>Astar</title>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 
-    <h1>Boilerplate by sokoli.eth</h1>
+    <header class="p-3 mb-3 border-bottom">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 me-5 mb-lg-0 text-dark text-decoration-none">
+            <strong>Astar Creator Hub</strong>
+            </a>
+    
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <li><a href="#" data-tab="view-1" class="nav-link px-2 link-dark active">Explore</a></li>
+              <li><a href="#" data-tab="view-2" class="nav-link px-2 link-dark">Artists</a></li>
+              <li><a href="#" data-tab="view-3" class="nav-link px-2 link-dark">NFT Collections</a></li>
+              <li><a href="#" data-tab="view-4" class="nav-link px-2 link-dark">Staking</a></li>
+            </ul>
+    
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+              <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+            </form>
+    
+            <div class="dropdown text-end">
+              <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+              </a>
+              <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                <li><a class="dropdown-item" href="#">New project...</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Disconnect</a></li>
+              </ul>
+            </div>
+
+            <button type="button" class="btn btn-primary ms-5">Connect</button>
+          </div>
+        </div>
+      </header>
+
+
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm">
+            <div class="col-sm" id="connected" style="display:none;">
                 <span><strong>Connected Account:</strong></span>
                 <span id="selected-account"><br>none</span>
                 <strong><span id="account-balance"></span></strong>
                 <br>
                 <span class="badge bg-warning text-dark" id="network-name"><strong>not connected</strong></span>
+                <button id="btn-disconnect" type="button" class="btn btn-outline-secondary btn-lg px-4">Disconnect</button>
             </div>
-            <div class="col-sm">
+            <div class="col-sm" id="not-connected">
                 <button id="btn-connect" type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Connect Wallet</button>
-                <button id="btn-disconnect" style="display:none" type="button" class="btn btn-outline-secondary btn-lg px-4">Disconnect</button>
             </div>
         </div>  
     </div>
 
 
- 
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+          <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Astar Creator Hub</h1>
+            <p class="lead text-muted">Welcome to the Astar NFT Staking and marketplace platform. Our mission is to support creators and artists in the NFT space.</p>
+            <p>
+              <a href="#" class="btn btn-primary my-2">Connect Wallet</a>
+              <a href="#" class="btn btn-secondary my-2">Learn More</a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+
+
+
+
+
+
+
+
+
+    <div class="container">
+
+        <!-- Explore -->
+        <div id="view-1" class="b-tab">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+          <div class="col">
+            <div class="card shadow-sm">
+              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+  
+              <div class="card-body">
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                  </div>
+                  <small class="text-muted">9 mins</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card shadow-sm">
+              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+  
+              <div class="card-body">
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                  </div>
+                  <small class="text-muted">9 mins</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card shadow-sm">
+              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+  
+              <div class="card-body">
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                  </div>
+                  <small class="text-muted">9 mins</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        </div>
+
+
+        <!-- View 2 -->
+        <div id="view-2" class="b-tab">
+            View 2
+            <br>
+        </div>
+
+
+        <!-- View 3 -->
+        <div id="view-3" class="b-tab">
+            View 3
+            <br>
+        </div>
+
+
+        <!-- View 4 -->
+        <div id="view-4" class="b-tab">
+            View 4
+            <br>
+        </div>
+
+    </div>
+
+    <footer class="text-muted py-5">
+        <div class="container">
+            <p class="float-end mb-1">
+            <a href="#">Back to top</a>
+            </p>
+            <p class="mb-1">Coffee' Hackin'! Web 3 Swaggin'!!</p>
+            <p class="mb-0">Wanna see something cool? <a href="/">This is a link.</a> Such cool. Much wow.</p>
+        </div>
+    </footer>
+
     
 
     <script src="/chainIdMap.js"></script>

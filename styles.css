@@ -1,0 +1,11 @@
+.b-tab {
+    display: none;
+  }
+  
+.b-tab.active {
+    display: block;
+}
+
+.nav-link.active {
+    color: #0d6efd !important;
+}
