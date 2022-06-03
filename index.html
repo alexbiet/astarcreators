@@ -24,69 +24,46 @@
               <li><a href="#" data-tab="view-4" class="nav-link px-2 link-dark">Staking</a></li>
             </ul>
     
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+            <form class="col-12 col-lg-auto mb-3 ms-5 mb-lg-0 me-lg-3" role="search">
               <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
             </form>
-    
-            <div class="dropdown text-end">
-              <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-              </a>
-              <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                <li><a class="dropdown-item" href="#">New project...</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Disconnect</a></li>
-              </ul>
-            </div>
 
-            <button type="button" class="btn btn-primary ms-5">Connect</button>
+
+            <div class="col-sm text-end" id="connected" style="display:none;">
+                <small><span><strong>Wallet:</strong></span>
+                <span id="selected-account"><br>none</span>
+                <strong><span id="account-balance"></span></strong>
+                <br>
+                <span class="badge bg-warning text-dark" id="network-name"><strong>not connected</strong></span></small>
+                <button id="btn-disconnect" type="button" class="btn btn-outline-secondary btn-sm px-4">Disconnect</button>
+            </div>
           </div>
         </div>
       </header>
 
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm" id="connected" style="display:none;">
-                <span><strong>Connected Account:</strong></span>
-                <span id="selected-account"><br>none</span>
-                <strong><span id="account-balance"></span></strong>
-                <br>
-                <span class="badge bg-warning text-dark" id="network-name"><strong>not connected</strong></span>
-                <button id="btn-disconnect" type="button" class="btn btn-outline-secondary btn-lg px-4">Disconnect</button>
-            </div>
-            <div class="col-sm" id="not-connected">
-                <button id="btn-connect" type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Connect Wallet</button>
-            </div>
-        </div>  
-    </div>
 
-
-    <section class="py-5 text-center container">
+    <!-- Intro Header + Connect Button -->
+    <section class="py-5 text-center container" id="not-connected">
         <div class="row py-lg-5">
           <div class="col-lg-6 col-md-8 mx-auto">
             <h1 class="fw-light">Astar Creator Hub</h1>
             <p class="lead text-muted">Welcome to the Astar NFT Staking and marketplace platform. Our mission is to support creators and artists in the NFT space.</p>
-            <p>
-              <a href="#" class="btn btn-primary my-2">Connect Wallet</a>
-              <a href="#" class="btn btn-secondary my-2">Learn More</a>
-            </p>
+           
+            <button id="btn-connect" type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Connect Wallet</button> 
+            <a href="#" class="btn btn-lg btn-secondary-outline px-4 my-2">Learn More</a>
+
           </div>
         </div>
-      </section>
-
-
-
-
-
+     </section>
 
 
 
 
 
     <div class="container">
+        <br>
+        <br>
 
         <!-- Explore -->
         <div id="view-1" class="b-tab">

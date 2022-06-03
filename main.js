@@ -33,7 +33,7 @@ async function fetchAccountData() {
         formatedBalance = ethers.utils.formatEther(balance.sub(formatedBalance));
         
         //updateHTMLElements network/balances/button
-        document.getElementById("selected-account").innerHTML = `(${account})`;
+        document.getElementById("selected-account").innerHTML = `(${account.substring(0,6) + "..." + account.slice(-4)})`;
         document.getElementById("account-balance").innerHTML = `${formatedBalance} ${chainIdMap[ethereum.networkVersion].symbol}`;
         document.getElementById("network-name").innerHTML = `${chainIdMap[ethereum.networkVersion].name}`;
 
