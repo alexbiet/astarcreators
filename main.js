@@ -1,19 +1,3 @@
-document.getElementById("btn-connect").addEventListener("click", fetchAccountData)
-document.getElementById("btn-disconnect").addEventListener("click", onDisconnect)
-
-function init() {
-    try {
-        if(ethereum.isMetaMask && localStorage.getItem("CACHED_PROVIDER") === "TRUE") {
-            fetchAccountData();
-        };
-    } catch (error) {
-        console.log("Error connecting to metamask account:\n", error)
-        if (window.confirm("Install Metamask to access Web3 Content. \nClick OK to be directed to metamask.io ")) {
-            window.open("http://metamask.io", "_blank");
-            };
-        }
-};
-
 async function fetchAccountData() {
     try {
         const provider = new ethers.providers.Web3Provider(ethereum);
@@ -47,6 +31,7 @@ async function fetchAccountData() {
   ethereum.on("chainChanged", (chainId) => {
     fetchAccountData();
   });
+  main();
 };
 
 function onDisconnect() {
@@ -54,5 +39,21 @@ function onDisconnect() {
 }
 
 window.addEventListener('load', async () => {
-    init();
+    document.getElementById("btn-connect").addEventListener("click", fetchAccountData);
+    document.getElementById("btn-disconnect").addEventListener("click", onDisconnect);
+    try {
+      if(ethereum.isMetaMask && localStorage.getItem("CACHED_PROVIDER") === "TRUE") {
+        console.log("running")
+          fetchAccountData();
+        };
+  } catch (error) {
+      console.log("Error connecting to metamask account:\n", error)
+    if (window.confirm("Install Metamask to access Web3 Content. \nClick OK to be directed to metamask.io ")) {
+        window.open("http://metamask.io", "_blank");
+        };
+    }
   });
+
+async function main() {
+
+}
