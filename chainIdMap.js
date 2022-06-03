@@ -67,4 +67,8 @@ const chainIdMap = {
      name: "Fantom Testnet",
      symbol: "FTM",
 },
+81: {
+     name: "Shibuya",
+     symbol: "SBY"
+},
 }

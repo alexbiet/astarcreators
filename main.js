@@ -1,22 +1,27 @@
-document.getElementById("btn-connect").addEventListener("click", fetchAccountData)
-document.getElementById("btn-disconnect").addEventListener("click", onDisconnect)
 
-function init() {
-    try {
-        if(ethereum.isMetaMask && localStorage.getItem("CACHED_PROVIDER") === "TRUE") {
-            fetchAccountData();
-        };
-    } catch (error) {
-        console.log("Error connecting to metamask account:\n", error)
-        if (window.confirm("Install Metamask to access Web3 Content. \nClick OK to be directed to metamask.io ")) {
-            window.open("http://metamask.io", "_blank");
-            };
-        }
-};
+window.addEventListener('load', async () => {
+  document.getElementById("btn-connect").addEventListener("click", fetchAccountData);
+  document.getElementById("btn-disconnect").addEventListener("click", onDisconnect);
+  try {
+    if(ethereum.isMetaMask && localStorage.getItem("CACHED_PROVIDER") === "TRUE") {
+        fetchAccountData();
+      };
+} catch (error) {
+    console.log("Error connecting to metamask account:\n", error)
+  if (window.confirm("Install Metamask to access Web3 Content. \nClick OK to be directed to metamask.io ")) {
+      window.open("http://metamask.io", "_blank");
+      };
+    }
+  });
+
+function onDisconnect() {
+  alert("To disconnect, open MetaMask and manualy disconnect.")
+}
 
 async function fetchAccountData() {
+  let provider;
     try {
-        const provider = new ethers.providers.Web3Provider(ethereum);
+        provider = new ethers.providers.Web3Provider(ethereum);
         let account = await provider.send("eth_requestAccounts").then( accounts => {
           return accounts[0];});
         let balance = await provider.getBalance(account);
@@ -54,7 +59,6 @@ async function fetchAccountData() {
   ethereum.on("chainChanged", (chainId) => {
     fetchAccountData();
   });
-};
 
 function onDisconnect() {
     // alert("Remember to open MetaMask and manualy disconnect.");
@@ -71,10 +75,6 @@ function onDisconnect() {
     document.querySelector("#not-connected").style.display = "block";
     document.querySelector("#connected").style.display = "none";
 }
-
-window.addEventListener('load', async () => {
-    init();
-  });
 
 
 
@@ -134,3 +134,14 @@ function Tabs() {
 }
 
 var connectTabs = new Tabs();
+  useContracts();
+  async function useContracts(){
+    let dAppsStaking = new ethers.Contract(address.dAppsStaking, abi.dAppsStaking, provider)
+    let currentEra = (await dAppsStaking.read_current_era()).toNumber();
+    console.log(currentEra);
+
+    let NFTMarketplace = new ethers.Contract(address.NFTMarketplace, abi.NFTMarketplace, provider)
+    console.log(await NFTMarketplace.fetchMarketItems());
+  }
+
+};
