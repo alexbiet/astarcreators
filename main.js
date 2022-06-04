@@ -24,10 +24,11 @@ function onDisconnect() {
 async function fetchAccountData() {
   let provider;
   let signer;
+  let account;
     try {
         provider = new ethers.providers.Web3Provider(ethereum);
         signer = provider.getSigner()
-        let account = await provider.send("eth_requestAccounts").then( accounts => {
+        account = await provider.send("eth_requestAccounts").then( accounts => {
           return accounts[0];});
         let balance = await provider.getBalance(account);
         let formatedBalance = ethers.BigNumber.from(balance);
@@ -62,22 +63,17 @@ async function fetchAccountData() {
     fetchAccountData();
   });
 
-  useContracts();
-  async function useContracts(){
-    let dAppsStaking = new ethers.Contract(address.dAppsStaking, abi.dAppsStaking, provider)
-    let currentEra = (await dAppsStaking.read_current_era()).toNumber();
-    console.log(currentEra);
 
-    let market = new ethers.Contract(address.marketplace, abi.marketplace, provider)
-    console.log(await market.fetchAvailableMarketItems());
+  //approveNFT(address.faceMinter, 1);
+  async function approveNFT(_ERC721Contract, _tokenId) {
+    let NFTContract = new ethers.Contract(_ERC721Contract, abi.ERC721, signer);
+    NFTContract.approve(address.marketplace, _tokenId);
   }
-
-  //approveNFT();
-  async function approveNFT(_ERC721Contract, _address) {
-    let NFTContract = new ethers.Contract(address._ERC721Contract, abi.ERC721, provider);
-    NFTContract.approve(_address);
+  //listMarketItem(address.faceMinter, 1, 1);
+  async function listMarketItem(_ERC721Contract, _tokenId, _price) {
+    let market = new ethers.Contract(address.marketplace, abi.marketplace, signer)
+    market.createMarketItem(_ERC721Contract, _tokenId, _price);
   }
-  
 
   //mintFaceNFT();
   async function mintFaceNFT() {
