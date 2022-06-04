@@ -41,7 +41,7 @@
         </div>
       </header>
 
-
+   
 
     <!-- Intro Header + Connect Button -->
     <section class="py-5 text-center container" id="not-connected">
@@ -57,12 +57,16 @@
         </div>
      </section>
 
-
-
-
+     <br>
+     <div style="text-align: center;">
+     <button id="mint-face" type="button" class="btn btn-lg btn-outline-primary">Mint FACE</button>
+     <br><br><br> 
+     <input  id="list-input" type="number" placeholder="tokenId"></input>
+     <button id="list-face" type="button" class="btn btn-lg btn-outline-primary">List FACE</button>
+    </div>
 
     <div class="container">
-        <br>
+       
         <br>
 
         <!-- Explore -->
@@ -139,17 +143,17 @@
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
           <div class="col">
-            <a href="#" data-tab="view-5">
+            <!-- <a href="#" data-tab="view-5"> -->
             <div class="card shadow-sm">
-              <img id="explore-image0"/>
+              <img id="card0-image"/>
               <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
   
               <div class="card-body">
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <p id="card0-text" class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    <button id="card0-view" data-tab="view-5" data-tab="view-5" type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                    <button id="card0-buy" type="button" class="btn btn-sm btn-outline-secondary">Buy</button>
                   </div>
                   <small class="text-muted">9 mins</small>
                 </div>
@@ -160,17 +164,17 @@
 
           <div class="col">
 
-            <a href="#" data-tab="view-5">
+            <!-- <a href="#" data-tab="view-5"> -->
             <div class="card shadow-sm">
-              <img id="explore-image1"/>
+              <img id="card1-image"/>
               <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
   
               <div class="card-body">
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <p id="card1-text" class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    <button id="card1-view" data-tab="view-5" type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                    <button id="card1-buy" type="button" class="btn btn-sm btn-outline-secondary">Buy</button>
                   </div>
                   <small class="text-muted">9 mins</small>
                 </div>
@@ -178,30 +182,109 @@
             </div>
             </a>
           </div>
+   
 
           <div class="col">
-
-            <a href="#" data-tab="view-5">
+<!-- 
+            <a href="#" data-tab="view-5"> -->
             <div class="card shadow-sm">
-              <img id="explore-image2"/>
+              <img id="card2-image"/>
               <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
    -->
               <div class="card-body">
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <p id="card2-text" class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    <button id="card2-view" data-tab="view-5" type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                    <button id="card2-buy" type="button" class="btn btn-sm btn-outline-secondary">Buy</button>
+                  </div>
+                  <small class="text-muted">9 mins</small>
+                </div>
+              </div>
+            
+            </div>
+            </a>
+         
+          </div>
+          <div class="row" style="margin-top:50px;"></div>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+          <div class="col">
+            <!-- <a href="#" data-tab="view-5"> -->
+            <div class="card shadow-sm">
+              <img id="card3-image" src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-5.png">
+              <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
+  
+              <div class="card-body">
+                <p id="card3-text" class="card-text"><strong>FaceMint
+       #0</strong>
+       <br><small>0.001 SBY</small>
+       <br><strong>Creator: </strong><small>0x0d9d09Ea8187a20bAA5d65A42eFF2AdD5a0cF45a<small></small></small></p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button id="card3-view" data-tab="view-5" type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                    <button id="card3-buy" type="button" class="btn btn-sm btn-outline-secondary">Buy</button>
                   </div>
                   <small class="text-muted">9 mins</small>
                 </div>
               </div>
             </div>
-            </a>
+            
           </div>
 
+          <div class="col">
+
+            <!-- <a href="#" data-tab="view-5"> -->
+            <div class="card shadow-sm">
+              <img id="card4-image" src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-3.png">
+              <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
+  
+              <div class="card-body">
+                <p id="card4-text" class="card-text"><strong>FaceMint
+       #2</strong>
+       <br><small>0.002 SBY</small>
+       <br><strong>Creator: </strong><small>0x0d9d09Ea8187a20bAA5d65A42eFF2AdD5a0cF45a<small></small></small></p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button id="card4-view" data-tab="view-5" type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                    <button id="card4-buy" type="button" class="btn btn-sm btn-outline-secondary">Buy</button>
+                  </div>
+                  <small class="text-muted">9 mins</small>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+   
+
+          <div class="col">
+<!-- 
+            <a href="#" data-tab="view-5"> -->
+            <div class="card shadow-sm">
+              <img id="card5-image" src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-2.png">
+              <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+   -->
+              <div class="card-body">
+                <p id="card5-text" class="card-text"><strong>FaceMint
+       #4</strong>
+       <br><small>0.003 SBY</small>
+       <br><strong>Creator: </strong><small>0x0d9d09Ea8187a20bAA5d65A42eFF2AdD5a0cF45a<small></small></small></p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button id="card5-view" data-tab="view-5" type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                    <button id="card5-buy" type="button" class="btn btn-sm btn-outline-secondary">Buy</button>
+                  </div>
+                  <small class="text-muted">9 mins</small>
+                </div>
+              </div>
+            </div>
+            
+            
+          </div>
+        
         </div>
         </div>
+        
 
 
         <!-- Mint NFTs -->

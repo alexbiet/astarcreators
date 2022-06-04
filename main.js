@@ -63,70 +63,84 @@ async function fetchAccountData() {
     fetchAccountData();
   });
 
-
+//mintFaceNFT();
+document.getElementById("mint-face").addEventListener("click", mintFaceNFT)
+async function mintFaceNFT() {
+  let faceMinter = new ethers.Contract(address.faceMinter, abi.faceMinter, signer);
+  faceMinter.safeMint();
+}
  //approveNFT(address.faceMinter, 1);
-  async function approveNFT(_NFTContract, _tokenId) {
-    let NFTContract = new ethers.Contract(_NFTContract, abi.ERC721, signer);
-    NFTContract.approve(address.marketplace, _tokenId);
-  }
+async function approveNFT(_NFTContract, _tokenId) {
+  let NFTContract = new ethers.Contract(_NFTContract, abi.ERC721, signer);
+  NFTContract.approve(address.marketplace, _tokenId);
+}
 
-  //approveAll(address.faceMinter, true);
-  async function approveAll(_NFTContract, _bool) {
-    let NFTContract = new ethers.Contract(_NFTContract, abi.ERC721, signer);
-    NFTContract.setApprovalForAll(address.marketplace, _bool);
-  }
+//approveAll(address.faceMinter, true);
+async function approveAll(_NFTContract, _bool) {
+  let NFTContract = new ethers.Contract(_NFTContract, abi.ERC721, signer);
+  NFTContract.setApprovalForAll(address.marketplace, _bool);
+}
 
-  //listMarketItem(address.faceMinter, 1, 2000000000000000); //.001 Ether
-  async function listMarketItem(_NFTContract, _tokenId, _price) {
-    let market = new ethers.Contract(address.marketplace, abi.marketplace, signer)
-    market.createMarketItem(_NFTContract, _tokenId, _price);
-  }
+//listMarketItem(address.faceMinter, 1, 2000000000000000); //.002 Ether
+async function listMarketItem(_NFTContract, _tokenId, _price) {
+  let market = new ethers.Contract(address.marketplace, abi.marketplace, signer)
+  market.createMarketItem(_NFTContract, _tokenId, _price);
+}
 //cancelMarketItem(address.faceMinter, 2); //.001 Ether
-  async function cancelMarketItem(_NFTContract, _marketItemId) {
-    let market = new ethers.Contract(address.marketplace, abi.marketplace, signer)
-    market.cancelMarketItem(_NFTContract, _marketItemId);
-  }
+async function cancelMarketItem(_NFTContract, _marketItemId) {
+  let market = new ethers.Contract(address.marketplace, abi.marketplace, signer)
+  market.cancelMarketItem(_NFTContract, _marketItemId);
+}
 
-  fetchMarketItems();
-  async function fetchMarketItems() {
-    let market = new ethers.Contract(address.marketplace, abi.marketplace, provider)
-    let marketItems = await market.fetchAvailableMarketItems();
-    console.log(await market.fetchAvailableMarketItems());
+fetchMarketItems();
+async function fetchMarketItems() {
+  let market = new ethers.Contract(address.marketplace, abi.marketplace, provider)
+  let marketItems = await market.fetchAvailableMarketItems();
 
-    let marketObjects = [];
+    let marketNFTs = [];
+
      for (let i = 0; i < marketItems.length; i++) {
-       marketObjects.push({});
-       marketObjects[i].marketId = ethers.utils.formatUnits(marketItems[i][0], 0);
-       marketObjects[i].contractAddress = marketItems[i][1];
-       marketObjects[i].tokenId = ethers.utils.formatUnits(marketItems[i][2], 0);
-       marketObjects[i].creator = marketItems[i][3]; //?
-       marketObjects[i].seller = marketItems[i][4];
-       marketObjects[i].owner = marketItems[i][5];
-       marketObjects[i].price = ethers.utils.formatUnits(marketItems[i][6], 18);
-       marketObjects[i].sold = marketItems[i][7];
-       marketObjects[i].canceled = marketItems[i][8];
-
-       let NFTContract = new ethers.Contract(marketObjects[i].contractAddress, abi.ERC721, provider);
-       let fetchedURI = await NFTContract.tokenURI(marketObjects[i].tokenId);
-
-      marketObjects[i].tokenURI = fetchedURI;
-
-    //  console.log(marketObjects[i].marketId);
-    //  console.log(marketObjects[i].tokenId);
-    //  console.log(marketObjects[i].contractAddress);
-    //  console.log(marketObjects[i].tokenURI);
+       marketNFTs.push({});
+       marketNFTs[i].marketId = ethers.utils.formatUnits(marketItems[i][0], 0);
+       marketNFTs[i].contractAddress = marketItems[i][1];
+       marketNFTs[i].tokenId = ethers.utils.formatUnits(marketItems[i][2], 0);
+       marketNFTs[i].creator = marketItems[i][3]; //?
+       marketNFTs[i].seller = marketItems[i][4];
+       marketNFTs[i].owner = marketItems[i][5];
+       marketNFTs[i].price = ethers.utils.formatUnits(marketItems[i][6], 18);
+       marketNFTs[i].priceBN = marketItems[i][6];
+       marketNFTs[i].sold = marketItems[i][7];
+       marketNFTs[i].canceled = marketItems[i][8];
+       let NFTContract = new ethers.Contract(marketNFTs[i].contractAddress, abi.ERC721, provider);
+       marketNFTs[i].tokenURI = await NFTContract.tokenURI(marketNFTs[i].tokenId);
+       marketNFTs[i].name = await NFTContract.name();
+       
+    //  console.log(marketNFTs[i].marketId);
+    //  console.log(marketNFTs[i].tokenId);
+    //  console.log(marketNFTs[i].contractAddress);
+     // console.log(marketNFTs[i].tokenURI);
      }
-      for (let i = 0; i < 3; i++) {
-       document.getElementById(`explore-image${i}`).src = marketObjects[i].tokenURI;
+     //draw NFT's section
+      for (let i = 0; i < 6; i++) {
+       document.getElementById(`card${i}-image`).src = marketNFTs[i].tokenURI;
+       document.getElementById(`card${i}-text`).innerHTML = 
+       `<strong>${marketNFTs[i].name}
+       #${marketNFTs[i].tokenId}</strong>
+       <br><small>${marketNFTs[i].price} SBY</small>
+       <br><strong>Creator: </strong><small>${marketNFTs[i].creator}<small>`;
+
+       document.getElementById(`card${i}-view`).addEventListener("click", () => console.log("Yay"));
+       document.getElementById(`card${i}-buy`).addEventListener("click", () => 
+       buyMarketItem(marketNFTs[i].contractAddress , marketNFTs[i].marketId, marketNFTs[i].priceBN));
       }
-     
+      
      
   }
-
- //mintFaceNFT();
-  async function mintFaceNFT() {
-    let faceMinter = new ethers.Contract(address.faceMinter, abi.faceMinter, signer);
-    faceMinter.safeMint();
+ 
+  async function buyMarketItem(_NFTContract, _marketId, _price) {
+    console.log(_price)
+    let market = new ethers.Contract(address.marketplace, abi.marketplace, signer);
+    market.createMarketSale(_NFTContract, _marketId, {value: _price});
   }
 
 };
