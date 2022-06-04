@@ -127,20 +127,21 @@ async function fetchMarketItems() {
       // Draw NFTs
       if(i <= listingLimit) {
         nftListing.innerHTML += `
+        <!-- Card Listing -->
         <div class="col">
           <div class="card shadow-sm">
-            <img id="card${i}-image" src="${marketNFTs[i].tokenURI}"/>
+            <img src="${marketNFTs[i].tokenURI}" alt="${marketNFTs[i].name} #${marketNFTs[i].tokenId}"/>
 
             <div class="card-body">
-              <p id="card${i}-text" class="card-text">
+              <p class="card-text">
                 <strong>${marketNFTs[i].name} #${marketNFTs[i].tokenId}</strong>
                 <br><small>${marketNFTs[i].price} SBY</small>
                 <br><strong>Creator: </strong><small>${marketNFTs[i].creator}</small> 
               </p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button id="card${i}-view" type="button" class="btn btn-sm btn-outline-secondary" onclick="${console.log("Yay")}">View</button>
-                  <button id="card${i}-buy" type="button" class="btn btn-sm btn-outline-secondary" onclick="buyMarketItem(${marketNFTs[i].contractAddress}, ${marketNFTs[i].marketId}, ${marketNFTs[i].priceBN})">Buy</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#nft-modal${i}">View</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="buyMarketItem(${marketNFTs[i].contractAddress}, ${marketNFTs[i].marketId}, ${marketNFTs[i].priceBN})">Buy</button>
                 </div>
                 <small class="text-muted">9 mins</small>
               </div>
@@ -148,8 +149,28 @@ async function fetchMarketItems() {
           </div>
         </div>
 
-        <!-- Modal -->
-        <!-- Alex to add modal HTML here :D -->
+        <!-- Modal (default hidden) -->
+        <div class="modal fade" id="nft-modal${i}" tabindex="-1" aria-labelledby="nft-aria-modal${i}" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title h4" id="nft-aria-modal${i}">${marketNFTs[i].name} #${marketNFTs[i].tokenId}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <img src="${marketNFTs[i].tokenURI}" alt="${marketNFTs[i].name} #${marketNFTs[i].tokenId}"/>
+                  <p class="card-text">${marketNFTs[i].price} SBY
+                    <br><strong>Creator: </strong>${marketNFTs[i].creator}
+                  </p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <button type="button" class="btn btn-primary" onclick="buyMarketItem(${marketNFTs[i].contractAddress}, ${marketNFTs[i].marketId}, ${marketNFTs[i].priceBN})">Buy</button>
+                    <small class="text-muted">9 mins</small>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
 
         `;
       }
