@@ -160,7 +160,7 @@ async function fetchMarketItems() {
                     <br><strong>Creator: </strong>${marketNFTs[i].creator}
                   </p>
                   <div class="d-flex justify-content-between align-items-center">
-                    <button type="button" class="btn btn-primary" onclick="buyMarketItem(${marketNFTs[i].contractAddress}, ${marketNFTs[i].marketId}, ${marketNFTs[i].priceBN})">Buy</button>
+                    <button id="nftmodal-buy${i}" type="button" class="btn btn-primary">Buy</button>
                     <small class="text-muted">9 mins</small>
                   </div>
 
@@ -170,11 +170,22 @@ async function fetchMarketItems() {
           </div>
 
         `;
-      }
+        
 
+      }
+ 
+      
+    }
+    for(let i =0; i < marketItems.length; i++){
+      if(i <= listingLimit){
+    document.getElementById(`nftmodal-buy${i}`).addEventListener("click", () =>
+    buyMarketItem(marketNFTs[i].contractAddress, 
+    marketNFTs[i].marketId, marketNFTs[i].priceBN)
+  );}
     }
  
   }
+
  
   async function buyMarketItem(_NFTContract, _marketId, _price) {
     console.log(_price)
