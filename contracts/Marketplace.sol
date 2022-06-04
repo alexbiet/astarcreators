@@ -160,9 +160,6 @@ contract Marketplace is ReentrancyGuard {
 
         uint256 currentIndex = 0;
         for (uint256 i = 0; i < itemsCount; i++) {
-            // Is this refactor better than the original implementation?
-            // https://github.com/dabit3/polygon-ethereum-nextjs-marketplace/blob/main/contracts/Market.sol#L111
-            // If so, is it better to use memory or storage here?
             MarketItem memory item = marketItemIdToMarketItem[i + 1];
             if (item.owner != address(0)) continue;
             marketItems[currentIndex] = item;

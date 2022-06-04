@@ -7,12 +7,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract ColorMoods is ERC721, ERC721URIStorage, Ownable {
+contract FaceMinter is ERC721, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
 
-    constructor() ERC721("ColorMoods", "MOOD") {}
+    constructor() ERC721("FaceMinter", "FACE") {}
 
     function _baseURI() internal pure override returns (string memory) {
         return "https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-";

@@ -64,18 +64,66 @@ async function fetchAccountData() {
   });
 
 
-  //approveNFT(address.faceMinter, 1);
-  async function approveNFT(_ERC721Contract, _tokenId) {
-    let NFTContract = new ethers.Contract(_ERC721Contract, abi.ERC721, signer);
+ //approveNFT(address.faceMinter, 1);
+  async function approveNFT(_NFTContract, _tokenId) {
+    let NFTContract = new ethers.Contract(_NFTContract, abi.ERC721, signer);
     NFTContract.approve(address.marketplace, _tokenId);
   }
-  //listMarketItem(address.faceMinter, 1, 1);
-  async function listMarketItem(_ERC721Contract, _tokenId, _price) {
-    let market = new ethers.Contract(address.marketplace, abi.marketplace, signer)
-    market.createMarketItem(_ERC721Contract, _tokenId, _price);
+
+  //approveAll(address.faceMinter, true);
+  async function approveAll(_NFTContract, _bool) {
+    let NFTContract = new ethers.Contract(_NFTContract, abi.ERC721, signer);
+    NFTContract.setApprovalForAll(address.marketplace, _bool);
   }
 
-  //mintFaceNFT();
+  //listMarketItem(address.faceMinter, 1, 2000000000000000); //.001 Ether
+  async function listMarketItem(_NFTContract, _tokenId, _price) {
+    let market = new ethers.Contract(address.marketplace, abi.marketplace, signer)
+    market.createMarketItem(_NFTContract, _tokenId, _price);
+  }
+//cancelMarketItem(address.faceMinter, 2); //.001 Ether
+  async function cancelMarketItem(_NFTContract, _marketItemId) {
+    let market = new ethers.Contract(address.marketplace, abi.marketplace, signer)
+    market.cancelMarketItem(_NFTContract, _marketItemId);
+  }
+
+  fetchMarketItems();
+  async function fetchMarketItems() {
+    let market = new ethers.Contract(address.marketplace, abi.marketplace, provider)
+    let marketItems = await market.fetchAvailableMarketItems();
+    console.log(await market.fetchAvailableMarketItems());
+
+    let marketObjects = [];
+     for (let i = 0; i < marketItems.length; i++) {
+       marketObjects.push({});
+       marketObjects[i].marketId = ethers.utils.formatUnits(marketItems[i][0], 0);
+       marketObjects[i].contractAddress = marketItems[i][1];
+       marketObjects[i].tokenId = ethers.utils.formatUnits(marketItems[i][2], 0);
+       marketObjects[i].creator = marketItems[i][3]; //?
+       marketObjects[i].seller = marketItems[i][4];
+       marketObjects[i].owner = marketItems[i][5];
+       marketObjects[i].price = ethers.utils.formatUnits(marketItems[i][6], 18);
+       marketObjects[i].sold = marketItems[i][7];
+       marketObjects[i].canceled = marketItems[i][8];
+
+       let NFTContract = new ethers.Contract(marketObjects[i].contractAddress, abi.ERC721, provider);
+       let fetchedURI = await NFTContract.tokenURI(marketObjects[i].tokenId);
+
+      marketObjects[i].tokenURI = fetchedURI;
+
+    //  console.log(marketObjects[i].marketId);
+    //  console.log(marketObjects[i].tokenId);
+    //  console.log(marketObjects[i].contractAddress);
+    //  console.log(marketObjects[i].tokenURI);
+     }
+      for (let i = 0; i < 3; i++) {
+       document.getElementById(`explore-image${i}`).src = marketObjects[i].tokenURI;
+      }
+     
+     
+  }
+
+ //mintFaceNFT();
   async function mintFaceNFT() {
     let faceMinter = new ethers.Contract(address.faceMinter, abi.faceMinter, signer);
     faceMinter.safeMint();
