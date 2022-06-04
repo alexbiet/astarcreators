@@ -21,6 +21,10 @@ function onDisconnect() {
   document.getElementById("connected").style.display = "none";
 }
 
+let inputEl = document.getElementById("list-input");
+document.getElementById("list-face").addEventListener("click", () => {listMarketItem(inputEl.value)});
+
+
 async function fetchAccountData() {
   let provider;
   let signer;
@@ -82,6 +86,8 @@ async function approveAll(_NFTContract, _bool) {
 }
 
 //listMarketItem(address.faceMinter, 1, 2000000000000000); //.002 Ether
+
+
 async function listMarketItem(_NFTContract, _tokenId, _price) {
   let market = new ethers.Contract(address.marketplace, abi.marketplace, signer)
   market.createMarketItem(_NFTContract, _tokenId, _price);
