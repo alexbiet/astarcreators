@@ -94,12 +94,14 @@ async function cancelMarketItem(_NFTContract, _marketItemId) {
 
 fetchMarketItems();
 async function fetchMarketItems() {
+
   let market = new ethers.Contract(address.marketplace, abi.marketplace, provider)
   let marketItems = await market.fetchAvailableMarketItems();
+  let nftListing = document.getElementById("nftListing");
+  let marketNFTs = [];
+  let listingLimit = 5; //starts at 0
 
-    let marketNFTs = [];
-
-     for (let i = 0; i < marketItems.length; i++) {
+    for (let i = 0; i < marketItems.length; i++) {
        marketNFTs.push({});
        marketNFTs[i].marketId = ethers.utils.formatUnits(marketItems[i][0], 0);
        marketNFTs[i].contractAddress = marketItems[i][1];
@@ -114,27 +116,40 @@ async function fetchMarketItems() {
        let NFTContract = new ethers.Contract(marketNFTs[i].contractAddress, abi.ERC721, provider);
        marketNFTs[i].tokenURI = await NFTContract.tokenURI(marketNFTs[i].tokenId);
        marketNFTs[i].name = await NFTContract.name();
-       
-    //  console.log(marketNFTs[i].marketId);
-    //  console.log(marketNFTs[i].tokenId);
-    //  console.log(marketNFTs[i].contractAddress);
-     // console.log(marketNFTs[i].tokenURI);
-     }
-     //draw NFT's section
-      for (let i = 0; i < 6; i++) {
-       document.getElementById(`card${i}-image`).src = marketNFTs[i].tokenURI;
-       document.getElementById(`card${i}-text`).innerHTML = 
-       `<strong>${marketNFTs[i].name}
-       #${marketNFTs[i].tokenId}</strong>
-       <br><small>${marketNFTs[i].price} SBY</small>
-       <br><strong>Creator: </strong><small>${marketNFTs[i].creator}<small>`;
 
-       document.getElementById(`card${i}-view`).addEventListener("click", () => console.log("Yay"));
-       document.getElementById(`card${i}-buy`).addEventListener("click", () => 
-       buyMarketItem(marketNFTs[i].contractAddress , marketNFTs[i].marketId, marketNFTs[i].priceBN));
+
+      // Draw NFTs
+      if(i <= listingLimit) {
+        nftListing.innerHTML += `
+        <div class="col">
+          <div class="card shadow-sm">
+            <img id="card${i}-image" src="${marketNFTs[i].tokenURI}"/>
+
+            <div class="card-body">
+              <p id="card${i}-text" class="card-text">
+                <strong>${marketNFTs[i].name} #${marketNFTs[i].tokenId}</strong>
+                <br><small>${marketNFTs[i].price} SBY</small>
+                <br><strong>Creator: </strong><small>${marketNFTs[i].creator}</small> 
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button id="card${i}-view" type="button" class="btn btn-sm btn-outline-secondary" onclick="${console.log("Yay")}">View</button>
+                  <button id="card${i}-buy" type="button" class="btn btn-sm btn-outline-secondary" onclick="buyMarketItem(${marketNFTs[i].contractAddress}, ${marketNFTs[i].marketId}, ${marketNFTs[i].priceBN})">Buy</button>
+                </div>
+                <small class="text-muted">9 mins</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal -->
+        <!-- Alex to add modal HTML here :D -->
+
+        `;
       }
-      
-     
+
+    }
+ 
   }
  
   async function buyMarketItem(_NFTContract, _marketId, _price) {
