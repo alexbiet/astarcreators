@@ -23,8 +23,10 @@ function onDisconnect() {
 
 async function fetchAccountData() {
   let provider;
+  let signer;
     try {
         provider = new ethers.providers.Web3Provider(ethereum);
+        signer = provider.getSigner()
         let account = await provider.send("eth_requestAccounts").then( accounts => {
           return accounts[0];});
         let balance = await provider.getBalance(account);
@@ -39,6 +41,7 @@ async function fetchAccountData() {
 
         document.getElementById("not-connected").style.display = "none";
         document.getElementById("connected").style.display = "block";
+
 
         localStorage.setItem("CACHED_PROVIDER", "TRUE");
     } catch (error) {
@@ -58,6 +61,32 @@ async function fetchAccountData() {
   ethereum.on("chainChanged", (chainId) => {
     fetchAccountData();
   });
+
+  useContracts();
+  async function useContracts(){
+    let dAppsStaking = new ethers.Contract(address.dAppsStaking, abi.dAppsStaking, provider)
+    let currentEra = (await dAppsStaking.read_current_era()).toNumber();
+    console.log(currentEra);
+
+    let market = new ethers.Contract(address.marketplace, abi.marketplace, provider)
+    console.log(await market.fetchAvailableMarketItems());
+  }
+
+  //approveNFT();
+  async function approveNFT(_ERC721Contract, _address) {
+    let NFTContract = new ethers.Contract(address._ERC721Contract, abi.ERC721, provider);
+    NFTContract.approve(_address);
+  }
+  
+
+  //mintFaceNFT();
+  async function mintFaceNFT() {
+    let faceMinter = new ethers.Contract(address.faceMinter, abi.faceMinter, signer);
+    faceMinter.safeMint();
+  }
+
+};
+
 
 
 // -----------------------
@@ -114,16 +143,4 @@ function Tabs() {
 
   bindAll();
 }
-
 var connectTabs = new Tabs();
-  useContracts();
-  async function useContracts(){
-    let dAppsStaking = new ethers.Contract(address.dAppsStaking, abi.dAppsStaking, provider)
-    let currentEra = (await dAppsStaking.read_current_era()).toNumber();
-    console.log(currentEra);
-
-    let NFTMarketplace = new ethers.Contract(address.NFTMarketplace, abi.NFTMarketplace, provider)
-    console.log(await NFTMarketplace.fetchMarketItems());
-  }
-
-};
