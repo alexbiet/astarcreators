@@ -174,15 +174,12 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         return marketItems;
     }
 
-    /**
-     * @dev This seems to be the best way to compare strings in Solidity
-     */
     function compareStrings(string memory a, string memory b) private pure returns (bool) {
         return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
     }
 
     /**
-     * @dev Since we can't access structs properties dinamically, this function selects the address
+     * @dev Since we can't access structs properties dynamically, this function selects the address
      * we're looking for between "owner" and "seller"
      */
     function getMarketItemAddressByProperty(MarketItem memory item, string memory property)
@@ -212,13 +209,6 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         return fetchMarketItemsByAddressProperty("owner");
     }
 
-    /**
-     * @dev Fetches market items according to the its requested address property that
-     * can be "owner" or "seller". The original implementations were two functions that were
-     * almost the same, changing only a property access. This refactored version requires an
-     * addional auxiliary function, but avoids repeating code.
-     * See original: https://github.com/dabit3/polygon-ethereum-nextjs-marketplace/blob/main/contracts/Market.sol#L121
-     */
     function fetchMarketItemsByAddressProperty(string memory _addressProperty)
         public
         view
@@ -233,8 +223,6 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         uint256 currentIndex = 0;
 
         for (uint256 i = 0; i < totalItemsCount; i++) {
-            // Is it ok to assign this variable for better code legbility?
-            // Is it better to use memory or storage in this case?
             MarketItem storage item = marketItemIdToMarketItem[i + 1];
             address addressPropertyValue = getMarketItemAddressByProperty(item, _addressProperty);
             if (addressPropertyValue != msg.sender) continue;
@@ -244,8 +232,6 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         MarketItem[] memory items = new MarketItem[](itemCount);
 
         for (uint256 i = 0; i < totalItemsCount; i++) {
-            // Is it ok to assign this variable for better code legbility?
-            // Is it better to use memory or storage in this case?
             MarketItem storage item = marketItemIdToMarketItem[i + 1];
             address addressPropertyValue = getMarketItemAddressByProperty(item, _addressProperty);
             if (addressPropertyValue != msg.sender) continue;

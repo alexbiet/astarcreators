@@ -103,14 +103,17 @@ async function buyMarketItem(_NFTContract, _marketId, _price) {
   market.createMarketSale(_NFTContract, _marketId, {value: _price});
 }
 
-fetchMarketItems();
-async function fetchMarketItems() {
+let nftListing = document.getElementById("nftListing");
 
+nftListing.innerHTML = await fetchMarketItems(6);
+async function fetchMarketItems(maxAmount) {
+  
   let market = new ethers.Contract(address.marketplace, abi.marketplace, provider)
   let marketItems = await market.fetchAvailableMarketItems();
-  let nftListing = document.getElementById("nftListing");
+
   let marketNFTs = [];
-  let listingLimit = 5; //starts at 0
+  let listingLimit = maxAmount -1;
+  let htmlHolder = "";
 
     for (let i = 0; i < marketItems.length; i++) {
        marketNFTs.push({});
@@ -128,10 +131,9 @@ async function fetchMarketItems() {
        marketNFTs[i].tokenURI = await NFTContract.tokenURI(marketNFTs[i].tokenId);
        marketNFTs[i].name = await NFTContract.name();
 
-
       // Draw NFTs
       if(i <= listingLimit) {
-        nftListing.innerHTML += `
+        htmlHolder += `
         <!-- Card Listing -->
         <div class="col">
           <div class="card shadow-sm">
@@ -184,19 +186,18 @@ async function fetchMarketItems() {
  
       
     }
-    for(let i =0; i < marketItems.length; i++){
-      if(i <= listingLimit){
-    document.getElementById(`nftcard-buy${i}`).addEventListener("click", () =>
-    buyMarketItem(marketNFTs[i].contractAddress, 
-    marketNFTs[i].marketId, marketNFTs[i].priceBN));
-    document.getElementById(`nftmodal-buy${i}`).addEventListener("click", () =>
-    buyMarketItem(marketNFTs[i].contractAddress, 
-    marketNFTs[i].marketId, marketNFTs[i].priceBN));
-}
-    }
- 
+    return htmlHolder;
+//     for(let i =0; i < marketItems.length; i++){
+//       if(i <= listingLimit){
+//     document.getElementById(`nftcard-buy${i}`).addEventListener("click", () =>
+//     buyMarketItem(marketNFTs[i].contractAddress, 
+//     marketNFTs[i].marketId, marketNFTs[i].priceBN));
+//     document.getElementById(`nftmodal-buy${i}`).addEventListener("click", () =>
+//     buyMarketItem(marketNFTs[i].contractAddress, 
+//     marketNFTs[i].marketId, marketNFTs[i].priceBN));
+// }
+//     }
   }
-
 };
 
 
