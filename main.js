@@ -131,7 +131,7 @@ async function buyMarketItem(_NFTContract, _marketId, _price) {
 //     }
 //     console.log(NFTArray);
 //     }
-  }
+ // }
 
 
 let nftListing = document.getElementById("nftListing");
