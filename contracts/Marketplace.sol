@@ -1,21 +1,19 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.12;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
-contract Marketplace is ReentrancyGuard {
-    using Counters for Counters.Counter;
+contract MarketplaceV2 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
+    using CountersUpgradeable for CountersUpgradeable.Counter;
 
-    Counters.Counter private _marketItemIds;
-    Counters.Counter private _tokensSold;
-    Counters.Counter private _tokensCanceled;
-
-    address payable private owner;
-
-
-   // uint256 private listingFee = 100 wei;
+    CountersUpgradeable.Counter private _marketItemIds;
+    CountersUpgradeable.Counter private _tokensSold;
+    CountersUpgradeable.Counter private _tokensCanceled;
+   
 
     mapping(uint256 => MarketItem) private marketItemIdToMarketItem;
 
@@ -43,12 +41,20 @@ contract Marketplace is ReentrancyGuard {
         bool canceled
     );
 
-    constructor() {
-        owner = payable(msg.sender);
+    uint256 private listingFee;
+
+    function initialize() initializer public {
+        __UUPSUpgradeable_init();
+        __Ownable_init();
+         listingFee = 0 wei;
     }
 
+     function updateListingFee(uint256 _listingFee) public onlyOwner {
+        listingFee = _listingFee;
+    }
+    
     function getListingFee() public view returns (uint256) {
- //       return listingFee;
+        return listingFee;
     }
 
   //transfer NFT from NFTcontract to MarketContract (this)
@@ -56,13 +62,13 @@ contract Marketplace is ReentrancyGuard {
         address NFTContractAddress,
         uint256 tokenId,
         uint256 price
-    ) public payable nonReentrant returns (uint256) {
+    ) public payable returns (uint256) {
         require(price > 0, "Price must be at least 1 wei");
-    //    require(msg.value == listingFee, "Price must be equal to listing price");
+        require(msg.value == listingFee, "Price must be equal to listing price");
         _marketItemIds.increment();
         uint256 marketItemId = _marketItemIds.current();
 
-        address creator = IERC721(NFTContractAddress).ownerOf(tokenId);
+        address creator = ERC721Upgradeable(NFTContractAddress).ownerOf(tokenId);
 
         marketItemIdToMarketItem[marketItemId] = MarketItem(
             marketItemId,
@@ -76,7 +82,7 @@ contract Marketplace is ReentrancyGuard {
             false
         );
 
-        IERC721(NFTContractAddress).transferFrom(msg.sender, address(this), tokenId);
+        ERC721Upgradeable(NFTContractAddress).transferFrom(msg.sender, address(this), tokenId);
 
         emit MarketItemCreated(
             marketItemId,
@@ -96,13 +102,13 @@ contract Marketplace is ReentrancyGuard {
     /**
      * @dev Cancel a market item
      */
-    function cancelMarketItem(address NFTContractAddress, uint256 marketItemId) public payable nonReentrant {
+    function cancelMarketItem(address NFTContractAddress, uint256 marketItemId) public payable {
         uint256 tokenId = marketItemIdToMarketItem[marketItemId].tokenId;
         require(tokenId > 0, "Market item has to exist");
 
         require(marketItemIdToMarketItem[marketItemId].seller == msg.sender, "You are not the seller");
 
-        IERC721(NFTContractAddress).transferFrom(address(this), msg.sender, tokenId);
+        ERC721Upgradeable(NFTContractAddress).transferFrom(address(this), msg.sender, tokenId);
 
         marketItemIdToMarketItem[marketItemId].owner = payable(msg.sender);
         marketItemIdToMarketItem[marketItemId].canceled = true;
@@ -132,7 +138,7 @@ contract Marketplace is ReentrancyGuard {
      * @dev Creates a market sale by transfering msg.sender money to the seller and NFT token from the
      * marketplace to the msg.sender. It also sends the listingFee to the marketplace owner.
      */
-    function createMarketSale(address NFTContractAddress, uint256 marketItemId) public payable nonReentrant {
+    function createMarketSale(address NFTContractAddress, uint256 marketItemId) public payable {
         uint256 price = marketItemIdToMarketItem[marketItemId].price;
         uint256 tokenId = marketItemIdToMarketItem[marketItemId].tokenId;
         require(msg.value == price, "Please submit the asking price in order to continue");
@@ -141,11 +147,11 @@ contract Marketplace is ReentrancyGuard {
         marketItemIdToMarketItem[marketItemId].sold = true;
 
         marketItemIdToMarketItem[marketItemId].seller.transfer(msg.value);
-        IERC721(NFTContractAddress).transferFrom(address(this), msg.sender, tokenId);
+        ERC721Upgradeable(NFTContractAddress).transferFrom(address(this), msg.sender, tokenId);
 
         _tokensSold.increment();
 
-      //  payable(owner).transfer(listingFee);
+        payable(owner()).transfer(listingFee);
     }
 
     /**
@@ -250,4 +256,8 @@ contract Marketplace is ReentrancyGuard {
 
         return items;
     }
+
+    function _authorizeUpgrade(address newImplementation) internal onlyOwner override    {
+        
+     }
 }
