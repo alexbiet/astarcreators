@@ -1,7 +1,7 @@
 address = {
     dAppsStaking: "0x0000000000000000000000000000000000005001",
-    marketplace: "0xD7ee9aD62885a991a6E9a7cAB94E3EC333Cd5412",
     faceMinter: "0x1206b3eB5920720e292903B30b61546c37C7792c",
+    marketplace: "0x4Ad599E95F99613EABfD9da6248fb80CF529e186",
 },
 
 abi = {
@@ -258,469 +258,6 @@ abi = {
         {
             "inputs": [],
             "name": "read_unbonding_period",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        }
-    ],
-    marketplace: [
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "NFTContractAddress",
-                    "type": "address"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "marketItemId",
-                    "type": "uint256"
-                }
-            ],
-            "name": "cancelMarketItem",
-            "outputs": [],
-            "stateMutability": "payable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "NFTContractAddress",
-                    "type": "address"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "tokenId",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "price",
-                    "type": "uint256"
-                }
-            ],
-            "name": "createMarketItem",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "payable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "NFTContractAddress",
-                    "type": "address"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "marketItemId",
-                    "type": "uint256"
-                }
-            ],
-            "name": "createMarketSale",
-            "outputs": [],
-            "stateMutability": "payable",
-            "type": "function"
-        },
-        {
-            "inputs": [],
-            "stateMutability": "nonpayable",
-            "type": "constructor"
-        },
-        {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": true,
-                    "internalType": "uint256",
-                    "name": "marketItemId",
-                    "type": "uint256"
-                },
-                {
-                    "indexed": true,
-                    "internalType": "address",
-                    "name": "NFTContract",
-                    "type": "address"
-                },
-                {
-                    "indexed": true,
-                    "internalType": "uint256",
-                    "name": "tokenId",
-                    "type": "uint256"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "creator",
-                    "type": "address"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "seller",
-                    "type": "address"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "owner",
-                    "type": "address"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "price",
-                    "type": "uint256"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "bool",
-                    "name": "sold",
-                    "type": "bool"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "bool",
-                    "name": "canceled",
-                    "type": "bool"
-                }
-            ],
-            "name": "MarketItemCreated",
-            "type": "event"
-        },
-        {
-            "inputs": [],
-            "name": "fetchAvailableMarketItems",
-            "outputs": [
-                {
-                    "components": [
-                        {
-                            "internalType": "uint256",
-                            "name": "marketItemId",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "NFTContractAddress",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "tokenId",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "address payable",
-                            "name": "creator",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "address payable",
-                            "name": "seller",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "address payable",
-                            "name": "owner",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "price",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "bool",
-                            "name": "sold",
-                            "type": "bool"
-                        },
-                        {
-                            "internalType": "bool",
-                            "name": "canceled",
-                            "type": "bool"
-                        }
-                    ],
-                    "internalType": "struct Marketplace.MarketItem[]",
-                    "name": "",
-                    "type": "tuple[]"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "_addressProperty",
-                    "type": "string"
-                }
-            ],
-            "name": "fetchMarketItemsByAddressProperty",
-            "outputs": [
-                {
-                    "components": [
-                        {
-                            "internalType": "uint256",
-                            "name": "marketItemId",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "NFTContractAddress",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "tokenId",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "address payable",
-                            "name": "creator",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "address payable",
-                            "name": "seller",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "address payable",
-                            "name": "owner",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "price",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "bool",
-                            "name": "sold",
-                            "type": "bool"
-                        },
-                        {
-                            "internalType": "bool",
-                            "name": "canceled",
-                            "type": "bool"
-                        }
-                    ],
-                    "internalType": "struct Marketplace.MarketItem[]",
-                    "name": "",
-                    "type": "tuple[]"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [],
-            "name": "fetchOwnedMarketItems",
-            "outputs": [
-                {
-                    "components": [
-                        {
-                            "internalType": "uint256",
-                            "name": "marketItemId",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "NFTContractAddress",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "tokenId",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "address payable",
-                            "name": "creator",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "address payable",
-                            "name": "seller",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "address payable",
-                            "name": "owner",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "price",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "bool",
-                            "name": "sold",
-                            "type": "bool"
-                        },
-                        {
-                            "internalType": "bool",
-                            "name": "canceled",
-                            "type": "bool"
-                        }
-                    ],
-                    "internalType": "struct Marketplace.MarketItem[]",
-                    "name": "",
-                    "type": "tuple[]"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [],
-            "name": "fetchSellingMarketItems",
-            "outputs": [
-                {
-                    "components": [
-                        {
-                            "internalType": "uint256",
-                            "name": "marketItemId",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "NFTContractAddress",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "tokenId",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "address payable",
-                            "name": "creator",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "address payable",
-                            "name": "seller",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "address payable",
-                            "name": "owner",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "price",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "bool",
-                            "name": "sold",
-                            "type": "bool"
-                        },
-                        {
-                            "internalType": "bool",
-                            "name": "canceled",
-                            "type": "bool"
-                        }
-                    ],
-                    "internalType": "struct Marketplace.MarketItem[]",
-                    "name": "",
-                    "type": "tuple[]"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "tokenId",
-                    "type": "uint256"
-                }
-            ],
-            "name": "getLatestMarketItemByTokenId",
-            "outputs": [
-                {
-                    "components": [
-                        {
-                            "internalType": "uint256",
-                            "name": "marketItemId",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "NFTContractAddress",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "tokenId",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "address payable",
-                            "name": "creator",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "address payable",
-                            "name": "seller",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "address payable",
-                            "name": "owner",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "price",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "bool",
-                            "name": "sold",
-                            "type": "bool"
-                        },
-                        {
-                            "internalType": "bool",
-                            "name": "canceled",
-                            "type": "bool"
-                        }
-                    ],
-                    "internalType": "struct Marketplace.MarketItem",
-                    "name": "",
-                    "type": "tuple"
-                },
-                {
-                    "internalType": "bool",
-                    "name": "",
-                    "type": "bool"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [],
-            "name": "getListingFee",
             "outputs": [
                 {
                     "internalType": "uint256",
@@ -1475,5 +1012,637 @@ abi = {
             "stateMutability": "view",
             "type": "function"
         }
+    ],
+    marketplace: [
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "previousAdmin",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "newAdmin",
+            "type": "address"
+          }
+        ],
+        "name": "AdminChanged",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "beacon",
+            "type": "address"
+          }
+        ],
+        "name": "BeaconUpgraded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint8",
+            "name": "version",
+            "type": "uint8"
+          }
+        ],
+        "name": "Initialized",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "marketItemId",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "NFTContract",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "creator",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "seller",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "price",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "sold",
+            "type": "bool"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "canceled",
+            "type": "bool"
+          }
+        ],
+        "name": "MarketItemCreated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "implementation",
+            "type": "address"
+          }
+        ],
+        "name": "Upgraded",
+        "type": "event"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "NFTContractAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "marketItemId",
+            "type": "uint256"
+          }
+        ],
+        "name": "cancelMarketItem",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "NFTContractAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "price",
+            "type": "uint256"
+          }
+        ],
+        "name": "createMarketItem",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "NFTContractAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "marketItemId",
+            "type": "uint256"
+          }
+        ],
+        "name": "createMarketSale",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "fetchAvailableMarketItems",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "marketItemId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "NFTContractAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address payable",
+                "name": "creator",
+                "type": "address"
+              },
+              {
+                "internalType": "address payable",
+                "name": "seller",
+                "type": "address"
+              },
+              {
+                "internalType": "address payable",
+                "name": "owner",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bool",
+                "name": "sold",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "canceled",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct Marketplace.MarketItem[]",
+            "name": "",
+            "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_addressProperty",
+            "type": "string"
+          }
+        ],
+        "name": "fetchMarketItemsByAddressProperty",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "marketItemId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "NFTContractAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address payable",
+                "name": "creator",
+                "type": "address"
+              },
+              {
+                "internalType": "address payable",
+                "name": "seller",
+                "type": "address"
+              },
+              {
+                "internalType": "address payable",
+                "name": "owner",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bool",
+                "name": "sold",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "canceled",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct Marketplace.MarketItem[]",
+            "name": "",
+            "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "fetchOwnedMarketItems",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "marketItemId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "NFTContractAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address payable",
+                "name": "creator",
+                "type": "address"
+              },
+              {
+                "internalType": "address payable",
+                "name": "seller",
+                "type": "address"
+              },
+              {
+                "internalType": "address payable",
+                "name": "owner",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bool",
+                "name": "sold",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "canceled",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct Marketplace.MarketItem[]",
+            "name": "",
+            "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "fetchSellingMarketItems",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "marketItemId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "NFTContractAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address payable",
+                "name": "creator",
+                "type": "address"
+              },
+              {
+                "internalType": "address payable",
+                "name": "seller",
+                "type": "address"
+              },
+              {
+                "internalType": "address payable",
+                "name": "owner",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bool",
+                "name": "sold",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "canceled",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct Marketplace.MarketItem[]",
+            "name": "",
+            "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          }
+        ],
+        "name": "getLatestMarketItemByTokenId",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "marketItemId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "NFTContractAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address payable",
+                "name": "creator",
+                "type": "address"
+              },
+              {
+                "internalType": "address payable",
+                "name": "seller",
+                "type": "address"
+              },
+              {
+                "internalType": "address payable",
+                "name": "owner",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bool",
+                "name": "sold",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "canceled",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct Marketplace.MarketItem",
+            "name": "",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getListingFee",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "proxiableUUID",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_listingFee",
+            "type": "uint256"
+          }
+        ],
+        "name": "updateListingFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newImplementation",
+            "type": "address"
+          }
+        ],
+        "name": "upgradeTo",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newImplementation",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "data",
+            "type": "bytes"
+          }
+        ],
+        "name": "upgradeToAndCall",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      }
     ],
 }

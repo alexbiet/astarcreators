@@ -7,13 +7,12 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
-contract MarketplaceV2 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
+contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     CountersUpgradeable.Counter private _marketItemIds;
     CountersUpgradeable.Counter private _tokensSold;
     CountersUpgradeable.Counter private _tokensCanceled;
-   
 
     mapping(uint256 => MarketItem) private marketItemIdToMarketItem;
 

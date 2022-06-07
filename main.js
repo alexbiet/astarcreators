@@ -84,7 +84,9 @@ async function approveAll(_NFTContract, _bool) {
 
 //listMarketItem(address.faceMinter, 1, 2000000000000000); //.002 Ether
 let inputEl = document.getElementById("list-input");
-document.getElementById("list-face").addEventListener("click", () => {listMarketItem(address.faceMinter, inputEl.value, 1000000000000000)});
+document.getElementById("list-face").addEventListener("click", () => {
+  approveNFT(address.faceMinter, inputEl.value);
+  listMarketItem(address.faceMinter, inputEl.value, 1000000000000000);});
 async function listMarketItem(_NFTContract, _tokenId, _price) {
   let market = new ethers.Contract(address.marketplace, abi.marketplace, signer)
   market.createMarketItem(_NFTContract, _tokenId, _price);
@@ -93,6 +95,12 @@ async function listMarketItem(_NFTContract, _tokenId, _price) {
 async function cancelMarketItem(_NFTContract, _marketItemId) {
   let market = new ethers.Contract(address.marketplace, abi.marketplace, signer)
   market.cancelMarketItem(_NFTContract, _marketItemId);
+}
+
+async function buyMarketItem(_NFTContract, _marketId, _price) {
+  console.log(_price)
+  let market = new ethers.Contract(address.marketplace, abi.marketplace, signer);
+  market.createMarketSale(_NFTContract, _marketId, {value: _price});
 }
 
 fetchMarketItems();
@@ -138,7 +146,7 @@ async function fetchMarketItems() {
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#nft-modal${i}">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="buyMarketItem(${marketNFTs[i].contractAddress}, ${marketNFTs[i].marketId}, ${marketNFTs[i].priceBN})">Buy</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" id="nftcard-buy${i}">Buy</button>
                 </div>
                 <small class="text-muted">9 mins</small>
               </div>
@@ -178,19 +186,15 @@ async function fetchMarketItems() {
     }
     for(let i =0; i < marketItems.length; i++){
       if(i <= listingLimit){
+    document.getElementById(`nftcard-buy${i}`).addEventListener("click", () =>
+    buyMarketItem(marketNFTs[i].contractAddress, 
+    marketNFTs[i].marketId, marketNFTs[i].priceBN));
     document.getElementById(`nftmodal-buy${i}`).addEventListener("click", () =>
     buyMarketItem(marketNFTs[i].contractAddress, 
-    marketNFTs[i].marketId, marketNFTs[i].priceBN)
-  );}
+    marketNFTs[i].marketId, marketNFTs[i].priceBN));
+}
     }
  
-  }
-
- 
-  async function buyMarketItem(_NFTContract, _marketId, _price) {
-    console.log(_price)
-    let market = new ethers.Contract(address.marketplace, abi.marketplace, signer);
-    market.createMarketSale(_NFTContract, _marketId, {value: _price});
   }
 
 };
