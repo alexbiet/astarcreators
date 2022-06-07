@@ -103,36 +103,38 @@ async function buyMarketItem(_NFTContract, _marketId, _price) {
   market.createMarketSale(_NFTContract, _marketId, {value: _price});
 }
 
-let nftListing = document.getElementById("nftListing");
-
-nftListing.innerHTML = await fetchMarketItems(6);
-async function fetchMarketItems(maxAmount) {
-  
+async function fetchMarketItemsArray() {
   let market = new ethers.Contract(address.marketplace, abi.marketplace, provider)
   let marketItems = await market.fetchAvailableMarketItems();
-
   let marketNFTs = [];
+  for (let i = 0; i < marketItems.length; i++) {
+    marketNFTs.push({});
+    marketNFTs[i].marketId = ethers.utils.formatUnits(marketItems[i][0], 0);
+    marketNFTs[i].contractAddress = marketItems[i][1];
+    marketNFTs[i].tokenId = ethers.utils.formatUnits(marketItems[i][2], 0);
+    marketNFTs[i].creator = marketItems[i][3]; //?
+    marketNFTs[i].seller = marketItems[i][4];
+    marketNFTs[i].owner = marketItems[i][5];
+    marketNFTs[i].price = ethers.utils.formatUnits(marketItems[i][6], 18);
+    marketNFTs[i].priceBN = marketItems[i][6];
+    marketNFTs[i].sold = marketItems[i][7];
+    marketNFTs[i].canceled = marketItems[i][8];
+    let NFTContract = new ethers.Contract(marketNFTs[i].contractAddress, abi.ERC721, provider);
+    marketNFTs[i].tokenURI = await NFTContract.tokenURI(marketNFTs[i].tokenId);
+    marketNFTs[i].name = await NFTContract.name();
+  }
+  return marketNFTs;
+}
+
+let nftListing = document.getElementById("nftListing");
+
+nftListing.innerHTML = await fetchMarketCards(4);
+async function fetchMarketCards(maxAmount) {
+  let marketNFTs = await fetchMarketItemsArray();
   let listingLimit = maxAmount -1;
   let htmlHolder = "";
 
-    for (let i = 0; i < marketItems.length; i++) {
-       marketNFTs.push({});
-       marketNFTs[i].marketId = ethers.utils.formatUnits(marketItems[i][0], 0);
-       marketNFTs[i].contractAddress = marketItems[i][1];
-       marketNFTs[i].tokenId = ethers.utils.formatUnits(marketItems[i][2], 0);
-       marketNFTs[i].creator = marketItems[i][3]; //?
-       marketNFTs[i].seller = marketItems[i][4];
-       marketNFTs[i].owner = marketItems[i][5];
-       marketNFTs[i].price = ethers.utils.formatUnits(marketItems[i][6], 18);
-       marketNFTs[i].priceBN = marketItems[i][6];
-       marketNFTs[i].sold = marketItems[i][7];
-       marketNFTs[i].canceled = marketItems[i][8];
-       let NFTContract = new ethers.Contract(marketNFTs[i].contractAddress, abi.ERC721, provider);
-       marketNFTs[i].tokenURI = await NFTContract.tokenURI(marketNFTs[i].tokenId);
-       marketNFTs[i].name = await NFTContract.name();
-
-      // Draw NFTs
-      if(i <= listingLimit) {
+    for (let i = 0; i < marketNFTs.length && i <=listingLimit; i++) {
         htmlHolder += `
         <!-- Card Listing -->
         <div class="col">
@@ -178,13 +180,7 @@ async function fetchMarketItems(maxAmount) {
               </div>
             </div>
           </div>
-
         `;
-        
-
-      }
- 
-      
     }
     return htmlHolder;
 //     for(let i =0; i < marketItems.length; i++){
