@@ -103,6 +103,32 @@ async function buyMarketItem(_NFTContract, _marketId, _price) {
   market.createMarketSale(_NFTContract, _marketId, {value: _price});
 }
 
+// fetchNFTMap(address.faceMinter);
+// async function fetchNFTMap(_NftContractAddress) {
+//   let NFTContract = new ethers.Contract(_NftContractAddress, abi.ERC721, provider);
+//   let ownersToNFTs = [{
+//     ownerAddress: "",
+//     ownerIds: [], //array
+//   },];
+//     let currentOwner = "";
+//   for(let i = 0; i < 20; i++) {
+//     currentOwner = await NFTContract.ownerOf(i);
+//     if (currentOwner == undefined) {
+//       returned;
+//     }
+//     else {
+//       console.log(currentOwner)
+//     }
+//     }
+//   }
+
+
+
+
+let nftListing = document.getElementById("nftListing");
+let walletNFTs = document.getElementById("wallet-NFTs");
+
+
 async function fetchMarketItemsArray() {
   let market = new ethers.Contract(address.marketplace, abi.marketplace, provider)
   let marketItems = await market.fetchAvailableMarketItems();
@@ -126,8 +152,6 @@ async function fetchMarketItemsArray() {
   return marketNFTs;
 }
 
-let nftListing = document.getElementById("nftListing");
-let walletNFTs = document.getElementById("wallet-NFTs");
 
 walletNFTs.innerHTML = await fetchMarketCards(3);
 nftListing.innerHTML = await fetchMarketCards(6);
