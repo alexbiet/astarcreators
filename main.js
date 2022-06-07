@@ -127,14 +127,17 @@ async function fetchMarketItemsArray() {
 }
 
 let nftListing = document.getElementById("nftListing");
+let walletNFTs = document.getElementById("wallet-NFTs");
 
-nftListing.innerHTML = await fetchMarketCards(4);
+walletNFTs.innerHTML = await fetchMarketCards(3);
+nftListing.innerHTML = await fetchMarketCards(6);
+
 async function fetchMarketCards(maxAmount) {
   let marketNFTs = await fetchMarketItemsArray();
   let listingLimit = maxAmount -1;
   let htmlHolder = "";
 
-    for (let i = 0; i < marketNFTs.length && i <=listingLimit; i++) {
+    for (let i = 0; i < marketNFTs.length && i <= listingLimit; i++) {
         htmlHolder += `
         <!-- Card Listing -->
         <div class="col">
@@ -183,17 +186,61 @@ async function fetchMarketCards(maxAmount) {
         `;
     }
     return htmlHolder;
-//     for(let i =0; i < marketItems.length; i++){
-//       if(i <= listingLimit){
-//     document.getElementById(`nftcard-buy${i}`).addEventListener("click", () =>
-//     buyMarketItem(marketNFTs[i].contractAddress, 
-//     marketNFTs[i].marketId, marketNFTs[i].priceBN));
-//     document.getElementById(`nftmodal-buy${i}`).addEventListener("click", () =>
-//     buyMarketItem(marketNFTs[i].contractAddress, 
-//     marketNFTs[i].marketId, marketNFTs[i].priceBN));
-// }
-//     }
   }
+
+
+
+
+
+
+// // Get the tokens that the account received
+//   const eventsReceivedTokens = await contract.getPastEvents("Transfer", {
+//     filter: {
+//       to: account,
+//     },
+//     fromBlock: 0,
+//   });
+
+//   // Count the number of times the account received the token
+//   let receivedTokensCount = {};
+//   for (let key in eventsReceivedTokens) {
+//     let tokenId = eventsReceivedTokens[key]["returnValues"]["tokenId"];
+//     receivedTokensCount[tokenId] = (receivedTokensCount[tokenId] || 0) + 1;
+//   }
+
+//   let receivedTokenIds = Object.keys(receivedTokensCount);
+
+//   // Get the tokens that the account sent
+//   const eventsSentTokens = await contract.getPastEvents("Transfer", {
+//     filter: {
+//       from: account,
+//       tokenId: receivedTokenIds,
+//     },
+//     fromBlock: 0,
+//   });
+
+//   let sentTokensCount = {};
+//   for (let key in eventsSentTokens) {
+//     let tokenId = eventsSentTokens[key]["returnValues"]["tokenId"];
+//     sentTokensCount[tokenId] = (sentTokensCount[tokenId] || 0) + 1;
+//   }
+
+//   // Substract the tokens received by the sent to get the tokens owned by account
+//   // Store them on ownedTokenIds
+//   let ownedTokenIds = [];
+//   for (let tokenId in receivedTokensCount) {
+//     if (
+//       (sentTokensCount[tokenId] ? sentTokensCount[tokenId] : 0) <
+//       receivedTokensCount[tokenId]
+//     ) {
+//       ownedTokenIds.push(tokenId);
+//     }
+//   }
+
+
+
+
+
 };
 
 
