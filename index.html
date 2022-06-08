@@ -14,19 +14,19 @@
         <div class="container">
           <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a href="/" class="d-flex align-items-center mb-2 me-5 mb-lg-0 text-dark text-decoration-none">
-            <strong>Astar Creator Hub</strong>
+                <img src="images/astar-creators.png" alt="Astar Creators" height="69">
             </a>
     
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="#" data-tab="view-1" class="nav-link px-2 link-dark active">Explore</a></li>
-              <li><a id="btn-mint" href="#" data-tab="view-2" class="nav-link px-2 link-dark">Mint NFTs</a></li>
-              <li><a href="#" data-tab="view-3" class="nav-link px-2 link-dark">Add Collection</a></li>
-              <li><a href="#" data-tab="view-4" class="nav-link px-2 link-dark">My Wallet</a></li>
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 fw-bold">
+              <li><a href="#" data-tab="view-1" class="nav-link px-3 link-dark active">Explore</a></li>
+              <li><a href="#" data-tab="view-2" class="nav-link px-3 link-dark">Stake</a></li>
+              <li><a href="#" data-tab="view-3" class="nav-link px-3 link-dark">My Wallet</a></li>
+              <li><a href="#" data-bs-toggle="modal" data-bs-target="#mint-nft-modal-1" class="btn btn-outline-primary px-3 mx-3">Mint</a></li>
             </ul>
     
-            <form class="col-12 col-lg-auto mb-3 ms-5 mb-lg-0 me-lg-3" role="search">
+            <!-- <form class="col-12 col-lg-auto mb-3 ms-5 mb-lg-0 me-lg-3" role="search">
               <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-            </form>
+            </form> -->
 
 
             <div class="col-sm text-end" id="connected" style="display:none;">
@@ -47,7 +47,7 @@
     <section class="py-5 text-center container" id="not-connected">
         <div class="row py-lg-5">
           <div class="col-lg-6 col-md-8 mx-auto">
-            <h1 class="fw-light">Astar Creator Hub</h1>
+            <h1 class="fw-light">Astar Creators</h1>
             <p class="lead text-muted">Welcome to the Astar NFT Staking and marketplace platform. Our mission is to support creators and artists in the NFT space.</p>
            
             <button id="btn-connect" type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Connect Wallet</button> 
@@ -58,32 +58,53 @@
      </section>
 
      <br>
-     <div style="text-align: center;">
-     <button id="mint-face" type="button" class="btn btn-lg btn-outline-primary">Mint FACE</button>
-     <br><br><br> 
-     <input  id="list-input" type="number" placeholder="tokenId"></input>
-     <button id="list-face" type="button" class="btn btn-lg btn-outline-primary">List FACE</button>
+
+     <!-- Dev Buttons -->
+    <div class="container">
+    <div class="row">
+        <div class="col-8"> </div>
+        <div class="col-4">
+            <div class="alert alert-warning" role="alert">
+                <div class="row mb-2">
+                    <div class="col-auto"><small><code>dev//::</code></small></div>
+                </div>
+                <div class="row">
+                    <div class="col-auto">
+                        <button id="mint-face" type="button" class="btn btn-outline-primary">Mint FACE</button>
+                    </div>
+                    <div class="col">
+                        <div class="input-group">
+                            <input id="list-input" class="form-control" type="number" placeholder="tokenId">
+                            <button id="list-face" type="button" class="btn btn-outline-primary">List FACE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    </div>
+     
+  
 
     <div class="container">
     <br>
 
        
-
         <!-- Explore -->
         <div id="view-1" class="b-tab">
 
         
         <div class="row">
             <h1>NFT Collections</h1>
+            <hr><br><br>
         </div>
 
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="collectionsListing">
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3" id="collectionsListing">
             <div class="col">
             <div class="card shadow-sm">
 
-                <div class="container text-center">
-                    <div class="row my-2 my-md-4">
+                <div class="container text-center border-bottom">
+                    <div class="row m-1 my-md-3">
                       <div class="col">
                         <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-5.png" alt="FaceMint #0" class="img-fluid">
                       </div>
@@ -94,7 +115,7 @@
                         <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-4.png" alt="FaceMint #7" class="img-fluid">
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row m-1 my-md-3">
                         <div class="col">
                             <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-2.png" alt="FaceMint #4" class="img-fluid">
                         </div>
@@ -110,19 +131,65 @@
         
   
                 <div class="card-body">
-                    <p class="card-text">
-                        <strong>Collection Name</strong>
-                    <br><strong>Valuation: </strong><small>1000 SBY</small>
-                    <br><strong>APY: </strong><small>11.4 %</small>
-                    <br><strong>Creator: </strong><small>0x1234...5678</small> 
-                    <br><strong>Description: </strong><small>Cool collection!</small> 
-                    </p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
+                    <div class="row text-center border-bottom pb-3 mb-3">
+                        <div class="col"> 
+                            <p class="card-text"><strong>Collection Name</strong></p>
+                        </div>
+                      </div>
+                
+                      <small>
+                        <div class="row">
+                          <div class="col text-end pe-1">
+                            <p class="card-text"><strong>TVL: </strong></p>      
+                          </div>
+                          <div class="col ps-1">
+                            <p class="card-text">1000 SBY</p>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col text-end pe-1">
+                              <p class="card-text"><strong>APY: </strong></p>       
+                            </div>
+                            <div class="col ps-1">
+                              <p class="card-text">11.4%</p>
+                            </div>
+                          </div>
+
+                        <div class="row">
+                            <div class="col text-end pe-1">
+                              <p class="card-text"><strong>Stakers: </strong></p>     
+                            </div>
+                            <div class="col ps-1">
+                              <p class="card-text">23</p>
+                            </div>
+                          </div>
+
+                        <div class="row border-bottom pb-3 mb-3">
+                            <div class="col text-end pe-1">
+                              <p class="card-text"><strong>Creator: </strong></p>  
+                            </div>
+                            <div class="col ps-1">
+                              <p class="card-text">0x1234...5678</p>
+                            </div>
+                        </div>
+                    </small>
+                    <div class="row border-bottom pb-3 mb-3">
+                        <div class="col">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" placeholder="i.e. 100.00" aria-describedby="button-stake">
+                                <span class="input-group-text">ASTAR</span>
+                                <button class="btn btn-primary" type="button" id="button-stake">Stake</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row text-center">
+                        <div class="col">
                             <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#collection-modal-1">View</button>
                         </div>
-                        <small class="text-muted">9 mins</small>
                     </div>
+
                 </div>
             </div>
             </div>
@@ -178,7 +245,7 @@
                                 <div class="col">
                                     <div class="input-group mb-3">
                                         <input type="text" class="form-control" placeholder="i.e. 100.00 " aria-describedby="button-stake">
-                                        <span class="input-group-text">SBY</span>
+                                        <span class="input-group-text">ASTAR</span>
                                         <button class="btn btn-primary" type="button" id="button-stake">Stake</button>
                                     </div>
                                 </div>
@@ -201,11 +268,12 @@
 
 
 
-            <div class="row" style="margin-top:50px;">
+            <div class="row" style="margin-top:60px;">
                 <h1>NFTs</h1>
+                <hr><br><br>
             </div>
 
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="nftListing">
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3" id="nftListing">
             </div>
 
 
@@ -213,167 +281,260 @@
         
 
 
-        <!-- Mint NFTs -->
+        <!-- Stake -->
         <div id="view-2" class="b-tab">
-            <div class="row row-cols-1 row-cols-md-2 g-3">
-                <div class="col">
-                    <h1>Mint NFT</h1>
-                    <br>
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label">NFT Media (jpg, png, svg, mp4, etc.)</label>
-                        <input class="form-control" type="file" id="formFile">
-                      </div>
-                    <div class="mb-3">
-                        <label for="nft-name" class="form-label">NFT Name</label>
-                        <input type="text" class="form-control" id="nft-name" placeholder="i.e. Ecstatic Chihuahua">
-                    </div>
-                    <div class="mb-3">
-                        <label for="nft-description" class="form-label">Description</label>
-                        <textarea class="form-control" id="nft-description" rows="3"></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="nft-supply" class="form-label">Supply</label>
-                        <input type="text" class="form-control" id="nft-supply" placeholder="i.e. 1">
-                    </div>
-
-                    <div class="">
-                        <label class="form-label">Properties</label>
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">Name 1</span>
-                        <input type="text" aria-label="Name 1" class="form-control">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">Value 1</span>
-                        <input type="text" aria-label="Value 1" class="form-control">
-                    </div>
-
-                    <br>
-                    
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">Name 2</span>
-                        <input type="text" aria-label="Name 2" class="form-control">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">Value 2</span>
-                        <input type="text" aria-label="Value 2" class="form-control">
-                    </div>
-
-                    <br>
-
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">Name 3</span>
-                        <input type="text" aria-label="Name 3" class="form-control">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">Value 3</span>
-                        <input type="text" aria-label="Value 3" class="form-control">
-                    </div>
-
-                    <br>
-
-                    <div class="mb-3">
-                        <button type="submit" class="btn btn-primary mb-3">Mint NFT</button>
-                    </div>
-
-                </div>  
-                <div class="col text-center">
-                    
-                    <p>preview</p>
-
-                </div>
-            </div>  
+            Staking...
             <br>
         </div>  <!-- End view-2 -->
 
 
-        <!-- Add Collection -->
+
+
+        <!-- My Wallet -->
         <div id="view-3" class="b-tab">
-            <h1>Add Collection</h1>
 
-            <div class="mb-3">
-                <label for="collection-name" class="form-label">Collection Name</label>
-                <input type="text" class="form-control" id="collection-name" placeholder="i.e. Mega Chihuahua Pack">
-            </div>
-            <div class="mb-3">
-                <label for="collection-description" class="form-label">Description</label>
-                <textarea class="form-control" id="collection-description" rows="3"></textarea>
-            </div>
+            <div class="accordion" id="accordionPanelsStayOpenExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                    <strong>My NFTs</strong>
+                    </button>
+                  </h2>
+                  <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                    <div class="accordion-body">
 
-            <div class="mb-3">
-                <label class="form-label">NFTs Available in your wallet</label>
-                <div class="input-group">
-
-                    <div class="form-check text-center">
-                        <img src="images/nft-test.jpg" class="rounded mx-2" alt="..." style="max-width:200px;display:block;">
-                        <input class="form-check-input" type="checkbox" value="" id="check-1">
-                        <label class="form-check-label" for="check-1">
-                          Add to collection
-                        </label>
-                    </div>
-
-                    <div class="form-check text-center">
-                        <img src="images/nft-test.jpg" class="rounded mx-2" alt="..." style="max-width:200px;display:block;">
-                        <input class="form-check-input" type="checkbox" value="" id="check-2">
-                        <label class="form-check-label" for="check-2">
-                          Add to collection
-                        </label>
-                    </div>
-
-
-                    <div class="form-check text-center">
-                        <img src="images/nft-test.jpg" class="rounded mx-2" alt="..." style="max-width:200px;display:block;">
-                        <input class="form-check-input" type="checkbox" value="" id="check-3">
-                        <label class="form-check-label" for="check-3">
-                          Add to collection
-                        </label>
-                        <br>
-                        <label class="form-check-label" for="check-3">
-                            List for sale
-                          </label><br>
-                        <div class="input-group mb-3">
-                            
-                            <div class="input-group-text">
-                              <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
+                        <div class="row">
+                            <div class="col d-flex align-items-center text-muted"><i>You have 3 NFTs in your wallet.</i></div>
+                            <div class="col text-end">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#mint-nft-modal-1" class="btn btn-primary my-2">Mint</a>
                             </div>
-                            
-                            <input type="text" class="form-control" aria-label="Text input with checkbox">
-                          </div>
+                        </div>
+                        <hr>
+                        <div id="wallet-NFTs" class="row row-cols-2 row-cols-sm-3 row-cols-md-5 g-3 my-3"></div>
+
                     </div>
-
-                    
+                  </div>
                 </div>
-            </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                      <strong>My Collections</strong>
+                    </button>
+                  </h2>
+                  <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+                    <div class="accordion-body">
 
-            <div class="mb-3">
-                <button type="submit" class="btn btn-primary mb-3">List Collection</button>
-            </div>
+                        <div class="row">
+                            <div class="col d-flex align-items-center text-muted"><i>You have 3 collections listed on Astar Creators.</i></div>
+                            <div class="col text-end">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#new-collection-modal-1" class="btn btn-primary my-2">New Collection</a> 
+                            </div>
+                        </div>
+                        <hr>
+                        <div id="" class="row row-cols-2 row-cols-sm-3 row-cols-md-5 g-3 my-3"> 
+                            <strong>... list collections</strong> 
+                        </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                      <strong>My Stakers</strong>
+                    </button>
+                  </h2>
+                  <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
+                    <div class="accordion-body">
+                      
+                        <div class="row">
+                            <div class="col d-flex align-items-center text-muted"><i>You have 32 stakers on 3 collections.</i></div>
+                            <div class="col text-end">
+                            </div>
+                        </div>
+                        <hr>
+                        <div id="" class="row row-cols-2 row-cols-sm-3 row-cols-md-5 g-3 my-3"> 
+                            <strong>... earnings per collection, etc.</strong> 
+                        </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
 
             <br>
         </div>  <!-- End view-3 -->
 
 
-        <!-- My Wallet -->
-        <div id="view-4" class="b-tab">
-            <h1>My NFT's</h1>
-            <div id="wallet-NFTs" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"></div>
-            <p>My Listings...</p>
-            <p>My stakes...</p>
-            <p>...</p>
-            <br>
-        </div>  <!-- End view-4 -->
+
+        <div class="modal fade" id="new-collection-modal-1" tabindex="-1" aria-labelledby="new-collection-aria-modal-1" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title h4" id="new-collection-aria-modal-1">Create New Collection</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="mb-3">
+                        <label for="collection-name" class="form-label">Collection Name</label>
+                        <input type="text" class="form-control" id="collection-name" placeholder="i.e. Mega Chihuahua Pack">
+                    </div>
+                    <div class="mb-3">
+                        <label for="collection-description" class="form-label">Description</label>
+                        <textarea class="form-control" id="collection-description" rows="3"></textarea>
+                    </div>
+        
+                    <div class="mb-3">
+                        <label class="form-label">NFTs Available in your wallet</label>
+                        <div class="input-group">
+        
+                            <div class="form-check text-center">
+                                <img src="images/nft-test.jpg" class="rounded mx-2" alt="..." style="max-width:200px;display:block;">
+                                <input class="form-check-input" type="checkbox" value="" id="check-1">
+                                <label class="form-check-label" for="check-1">
+                                  Add to collection
+                                </label>
+                            </div>
+        
+                            <div class="form-check text-center">
+                                <img src="images/nft-test.jpg" class="rounded mx-2" alt="..." style="max-width:200px;display:block;">
+                                <input class="form-check-input" type="checkbox" value="" id="check-2">
+                                <label class="form-check-label" for="check-2">
+                                  Add to collection
+                                </label>
+                            </div>
+        
+        
+                            <div class="form-check text-center">
+                                <img src="images/nft-test.jpg" class="rounded mx-2" alt="..." style="max-width:200px;display:block;">
+                                <input class="form-check-input" type="checkbox" value="" id="check-3">
+                                <label class="form-check-label" for="check-3">
+                                  Add to collection
+                                </label>
+                                <br>
+                                <label class="form-check-label" for="check-3">
+                                    List for sale
+                                  </label><br>
+                                <div class="input-group mb-3">
+                                    
+                                    <div class="input-group-text">
+                                      <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
+                                    </div>
+                                    
+                                    <input type="text" class="form-control" aria-label="Text input with checkbox">
+                                  </div>
+                            </div>
+        
+                            
+                        </div>
+                    </div>
+        
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary mb-3">List Collection</button>
+                    </div>
+
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="mint-nft-modal-1" tabindex="-1" aria-labelledby="mint-nft-aria-modal-1" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title h4" id="mint-nft-aria-modal-1">Mint New NFT</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="row">
+                        <div class="col-5">
+                            <br>
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">NFT Media (jpg, png, svg, mp4, etc.)</label>
+                                <input class="form-control" type="file" id="formFile">
+                              </div>
+                            <div class="mb-3">
+                                <label for="nft-name" class="form-label">NFT Name</label>
+                                <input type="text" class="form-control" id="nft-name" placeholder="i.e. Ecstatic Chihuahua">
+                            </div>
+                            <div class="mb-3">
+                                <label for="nft-description" class="form-label">Description</label>
+                                <textarea class="form-control" id="nft-description" rows="3"></textarea>
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="nft-supply" class="form-label">Supply</label>
+                                <input type="text" class="form-control" id="nft-supply" placeholder="i.e. 1">
+                            </div>
+        
+                            <div class="">
+                                <label class="form-label">Properties</label>
+                            </div>
+        
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Name 1</span>
+                                <input type="text" aria-label="Name 1" class="form-control">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Value 1</span>
+                                <input type="text" aria-label="Value 1" class="form-control">
+                            </div>
+        
+                            <br>
+                            
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Name 2</span>
+                                <input type="text" aria-label="Name 2" class="form-control">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Value 2</span>
+                                <input type="text" aria-label="Value 2" class="form-control">
+                            </div>
+        
+                            <br>
+        
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Name 3</span>
+                                <input type="text" aria-label="Name 3" class="form-control">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Value 3</span>
+                                <input type="text" aria-label="Value 3" class="form-control">
+                            </div>
+        
+                            <br>
+        
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary mb-3">Mint NFT</button>
+                            </div>
+        
+                        </div>  
+                        <div class="col text-center">
+                            
+                            <p>preview</p>
+        
+                        </div>
+                    </div> 
+
+                </div>
+              </div>
+            </div>
+        </div>
 
 
     </div>
 
     <footer class="text-muted py-5">
         <div class="container">
+            <hr class="my-4">
             <p class="float-end mb-1">
             <a href="#">Back to top</a>
             </p>
-            <p class="mb-1">Coffee' Hackin'! Web 3 Swaggin'!!</p>
+            <p class="mb-1 pt-2">Coffee' Hackin'! Web 3 Swaggin'!!</p>
             <p class="mb-0">Wanna see something cool? <a href="/">This is a link.</a> Such cool. Much wow.</p>
         </div>
     </footer>

@@ -9,3 +9,12 @@
 .nav-link.active {
     color: #0d6efd !important;
 }
+
+.card {
+    overflow: hidden;
+    border-radius: 14px;
+}
+
+hr {
+    opacity: 0.1;
+}

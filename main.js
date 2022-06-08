@@ -169,18 +169,44 @@ async function fetchMarketCards(maxAmount) {
             <img src="${marketNFTs[i].tokenURI}" alt="${marketNFTs[i].name} #${marketNFTs[i].tokenId}"/>
 
             <div class="card-body">
-              <p class="card-text">
-                <strong>${marketNFTs[i].name} #${marketNFTs[i].tokenId}</strong>
-                <br><small>${marketNFTs[i].price} SBY</small>
-                <br><strong>Creator: </strong><small>${marketNFTs[i].creator}</small> 
-              </p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#nft-modal${i}">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary" id="nftcard-buy${i}">Buy</button>
+
+              <div class="row text-center border-bottom pb-3 mb-3">
+                <div class="col"> 
+                    <p class="card-text">
+                      <strong>${marketNFTs[i].name} #${marketNFTs[i].tokenId}</strong>
+                    </p>
                 </div>
-                <small class="text-muted">9 mins</small>
               </div>
+        
+              <small>
+                <div class="row">
+                  <div class="col text-end pe-1">
+                    <p class="card-text"><strong>Price: </strong></p>      
+                  </div>
+                  <div class="col ps-1">
+                    <p class="card-text">${marketNFTs[i].price} SBY</p>
+                  </div>
+                </div>
+
+                <div class="row border-bottom pb-3 mb-3">
+                    <div class="col text-end pe-1">
+                      <p class="card-text"><strong>Creator: </strong></p>       
+                    </div>
+                    <div class="col ps-1">
+                      <p class="card-text">${marketNFTs[i].creator.substring(0,6) + "..." + account.slice(-4)}</p>
+                    </div>
+                  </div>
+                </small>
+
+                <div class="row text-center">
+                  <div class="col">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#nft-modal${i}">View</button>
+                      <button type="button" class="btn btn-sm btn-primary" id="nftcard-buy${i}">Buy</button>
+                    </div>
+                  </div>
+                </div>
+
             </div>
           </div>
         </div>
