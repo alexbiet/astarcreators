@@ -207,7 +207,7 @@ async function fetchMarketCards(maxAmount) {
                   <div class="col">
                     <div class="btn-group">
                       <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#nft-modal${i}">View</button>
-                      <button type="button" class="btn btn-sm btn-primary" id="nftcard-buy${i}">Buy</button>
+                      <button type="button" class="btn btn-sm btn-primary buyExplore" id="nftcard-buy${i}">Buy</button>
                     </div>
                   </div>
                 </div>
@@ -303,7 +303,7 @@ async function fetchMarketCards(maxAmount) {
 
                       <div class="row text-center">
                         <div class="col pe-1">
-                          <button id="nftmodal-buy${i}" type="button" class="btn btn-primary marketBuy">Buy</button>     
+                          <button id="nftmodal-buy${i}" type="button" class="btn btn-primary buyModal">Buy</button>     
                         </div>
                       </div>
 
@@ -317,10 +317,13 @@ async function fetchMarketCards(maxAmount) {
         `;
       }
       marketNFTsEl.innerHTML = htmlHolder;
-
-      let arrayOfButtons = document.querySelectorAll(".marketBuy");
-      for (let i = 0; i < arrayOfButtons.length; i++) {
-      arrayOfButtons[i].addEventListener("click", () => {
+      let arrayOfBuyExplore = document.querySelectorAll(".buyExplore");
+      let arrayOfBuyModal = document.querySelectorAll(".buyModal");
+      for (let i = 0; i < arrayOfBuyExplore.length; i++) {
+      arrayOfBuyExplore[i].addEventListener("click", () => {
+        buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);
+      });
+      arrayOfBuyModal[i].addEventListener("click", () => {
         buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);
       });
     }
