@@ -179,7 +179,8 @@
                             <div class="input-group input-group-sm">
                                 <input type="text" class="form-control" placeholder="i.e. 100.00" aria-describedby="button-stake">
                                 <span class="input-group-text">ASTAR</span>
-                                <button class="btn btn-primary" type="button" id="button-stake">Stake</button>
+                                <button class="btn btn-primary" type="button" id="button-stake-1">Stake</button>
+                                <button class="btn btn-warning" type="button" id="button-unstake-1">Unstake</button>
                             </div>
                         </div>
                     </div>
@@ -460,7 +461,8 @@
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="i.e. 100.00" aria-describedby="button-stake">
                                             <span class="input-group-text">ASTAR</span>
-                                            <button class="btn btn-primary" type="button" id="button-stake">Stake</button>
+                                            <button class="btn btn-primary" type="button" id="modal-button-stake-1">Stake</button>
+                                            <button class="btn btn-warning" type="button" id="modal-button-unstake-1">Unstake</button>
                                         </div>
                                     </div>
                                 </div>  
@@ -1046,10 +1048,9 @@
                     
                                         <div class="row text-center">
                                             <div class="col">
-                                                <div class="btn-group">
-                                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#collection-modal-2">Open</button>
-                                                    <button type="button" class="btn btn-sm btn-outline-danger" id="">Delist</button>
-                                                  </div>
+                                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#collection-modal-2">View</button>
+                                                &nbsp; &nbsp; 
+                                                <button type="button" class="btn btn-sm btn-outline-danger" id="">Unlist</button>
                                             </div>
                                         </div>
                     
@@ -1198,13 +1199,172 @@
                     <div class="accordion-body">
                       
                         <div class="row">
-                            <div class="col d-flex align-items-center text-muted"><i>You have 32 stakers on 3 collections.</i></div>
+                            <div class="col d-flex align-items-center text-muted"><i>You have 3 NFTs listed for sale on Astar Creators.</i></div>
                             <div class="col text-end">
                             </div>
                         </div>
                         <hr>
                         <div id="" class="row row-cols-2 row-cols-sm-3 row-cols-md-5 g-3 my-3"> 
-                            <strong>... earnings per collection, etc.</strong> 
+                            
+                            
+
+                            <!-- Card Listing -->
+                            <div class="col">
+                                <div class="card shadow-sm">
+                                
+                                <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-6.png" alt="FaceMint #14">
+                    
+                                <div class="card-body">
+                    
+                                    <div class="row text-center border-bottom pb-3 mb-3">
+                                    <div class="col"> 
+                                        <p class="card-text">
+                                            <strong>FaceMint #14</strong>
+                                        </p>
+                                    </div>
+                                    </div>
+
+                                    <small>
+                                    <div class="row">
+                                        <div class="col text-end pe-1">
+                                            <p class="card-text"><strong>Status: </strong></p>      
+                                          </div>
+                                          <div class="col text-start ps-1">
+                                            <p class="card-text">
+                                                <span class="badge text-bg-success">Sold</span>
+                                                <span class="badge text-bg-warning">For Sale</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="row border-bottom pb-3 mb-3">
+                                        <div class="col text-end pe-1">
+                                            <p class="card-text"><strong>Price: </strong></p>      
+                                          </div>
+                                          <div class="col text-start ps-1">
+                                            <p class="card-text">0.001 ASTAR</p>
+                                        </div>
+                                    </div>
+                                    </small>
+                    
+                                    <div class="row text-center">
+                                    <div class="col">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#marketlist-nft-modalWallet-1">View</button>
+                                        &nbsp; &nbsp; 
+                                        <button type="button" class="btn btn-sm btn-outline-danger" id="">Unlist</button>
+                                    </div>
+                                    </div>
+                    
+                                </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Modal (default hidden) -->
+                            <div class="modal fade" id="marketlist-nft-modalWallet-1" tabindex="-1" aria-labelledby="marketlist-nft-aria-modalWallet-1" style="display: none;" aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title h4" id="marketlist-nft-aria-modalWallet-1">FaceMint #14</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                    
+                    
+                                        <div class="row">
+                    
+                                        <div class="col">
+                                            <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-6.png" alt="FaceMint #14">
+                                        </div>
+                    
+                                        <div class="col">
+                    
+                                            <div class="row">
+                                            <div class="col text-end pe-1">
+                                                <p class="card-text"><strong>Description: </strong></p>      
+                                            </div>
+                                            <div class="col ps-1">
+                                                <p class="card-text"><small>TBD</small></p>
+                                            </div>
+                                            </div>
+                    
+                                            <div class="row">
+                                            <div class="col text-end pe-1">
+                                            <br>
+                                                <p class="card-text"><strong>Properties </strong>    
+                                                <br><small>Property 1:</small>  
+                                                <br><small>Property 2:</small>   
+                                                <br><small>Property 3:</small></p>      
+                                            </div>
+                                            <div class="col ps-1">
+                                            <br>
+                                                <p class="card-text">&nbsp;
+                                                <br><small>Value 1</small>
+                                                <br><small>Value 2</small>
+                                                <br><small>Value 3</small></p>
+                                            </div>
+                                            </div>
+                    
+                                            <div class="row">
+                                            <div class="col text-end pe-1">
+                                                <p class="card-text"><strong>Contract: </strong></p>       
+                                            </div>
+                                            <div class="col ps-1">
+                                                <p class="card-text">0x0g9g...22g1</p>
+                                            </div>
+                                            </div>
+                    
+                                            <div class="row">
+                                                <div class="col text-end pe-1">
+                                                    <br>
+                                                    <p class="card-text"><strong>Supply: </strong></p>      
+                                                </div>
+                                                <div class="col ps-1">
+                                                    <br>
+                                                    <p class="card-text">1 of 1</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col text-end pe-1">
+                                                    <p class="card-text"><strong>Status: </strong></p>      
+                                                </div>
+                                                <div class="col text-start ps-1">
+                                                    <p class="card-text">
+                                                        <span class="badge text-bg-success">Sold</span>
+                                                        <span class="badge text-bg-warning">For Sale</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                            
+                                            <div class="row border-bottom pb-3 mb-3">
+                                                <div class="col text-end pe-1">
+                                                    <p class="card-text"><strong>Price: </strong></p>      
+                                                </div>
+                                                <div class="col text-start ps-1">
+                                                    <p class="card-text">0.001 ASTAR</p>
+                                                </div>
+                                            </div>
+                    
+                                            <div class="row text-center border-bottom pb-3 mb-3">
+                    
+                                            <div class="col text-center"> 
+                                                
+                                                <button type="button" class="btn btn-sm btn-outline-danger" id="">Unlist</button>
+
+                                            </div>
+                                            </div>
+                    
+                                            </div>
+                                        </div>
+                    
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+
+
+
+
                         </div>
 
                     </div>
