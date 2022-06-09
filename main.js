@@ -221,20 +221,98 @@ async function fetchMarketCards(maxAmount) {
 
         <!-- Modal (default hidden) -->
         <div class="modal fade" id="nft-modal${i}" tabindex="-1" aria-labelledby="nft-aria-modal${i}" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-xl">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title h4" id="nft-aria-modal${i}">${marketNFTs[i].name} #${marketNFTs[i].tokenId}</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <img src="${marketNFTs[i].tokenURI}" alt="${marketNFTs[i].name} #${marketNFTs[i].tokenId}"/>
-                  <p class="card-text">${marketNFTs[i].price} SBY
-                    <br><strong>Creator: </strong>${marketNFTs[i].creator}
-                  </p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <button id="nftmodal-buy${i}" type="button" class="btn btn-primary">Buy</button>
-                    <small class="text-muted">9 mins</small>
+
+
+                  <div class="row">
+
+                    <div class="col">
+                    <img src="${marketNFTs[i].tokenURI}" alt="${marketNFTs[i].name} #${marketNFTs[i].tokenId}" style="width:100%;"/>
+                    </div>
+
+                    <div class="col">
+
+                      <div class="row">
+                        <div class="col text-end pe-1">
+                          <p class="card-text"><strong>Description: </strong></p>      
+                        </div>
+                        <div class="col ps-1">
+                          <p class="card-text"><small>TBD</small></p>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col text-end pe-1">
+                        <br>
+                          <p class="card-text"><strong>Properties </strong>    
+                          <br><small>Property 1:</small>  
+                          <br><small>Property 2:</small>   
+                          <br><small>Property 3:</small></p>      
+                        </div>
+                        <div class="col ps-1">
+                        <br>
+                          <p class="card-text">&nbsp;
+                          <br><small>Value 1</small>
+                          <br><small>Value 2</small>
+                          <br><small>Value 3</small></p>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col text-end pe-1">
+                          <br>
+                          <p class="card-text"><strong>Creator: </strong></p>       
+                        </div>
+                        <div class="col ps-1">
+                        <br>
+                          <p class="card-text">${marketNFTs[i].creator.substring(0,6) + "..." + account.slice(-4)}</p>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col text-end pe-1">
+                          <p class="card-text"><strong>Contract: </strong></p>       
+                        </div>
+                        <div class="col ps-1">
+                          <p class="card-text">0x0g9g...22g1</p>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col text-end pe-1">
+                          <br>
+                          <p class="card-text"><strong>Supply: </strong></p>      
+                        </div>
+                        <div class="col ps-1">
+                          <br>
+                          <p class="card-text">1 of 1</p>
+                        </div>
+                      </div>
+
+                      <div class="row border-bottom pb-3 mb-3">
+                        <div class="col text-end pe-1">
+                          <p class="card-text"><strong>Price: </strong></p>      
+                        </div>
+                        <div class="col ps-1">
+                          <p class="card-text">${marketNFTs[i].price} SBY</p>
+                        </div>
+                      </div>
+
+                      <div class="row text-center">
+                        <div class="col pe-1">
+                          <button id="nftmodal-buy${i}" type="button" class="btn btn-primary">Buy</button>     
+                        </div>
+                      </div>
+
+                     
+
+                      </div>
                   </div>
 
                 </div>
