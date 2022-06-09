@@ -350,14 +350,24 @@ async function fetchMarketCards(maxAmount) {
                 </div>
               </div>
 
-                <div class="row text-center">
-                  <div class="col">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#nft-modalWallet${i}">View</button>
-      
-                    </div>
+              <div class="row text-center border-bottom pb-3 mb-3">
+                <div class="col"> 
+                  <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" placeholder="Price">
+                    <span class="input-group-text">ASTAR</span>
+                    <button class="btn btn-primary" type="button" id="">List</button>
                   </div>
                 </div>
+              </div>
+
+              <div class="row text-center">
+                <div class="col">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#nft-modalWallet${i}">View</button>
+    
+                  </div>
+                </div>
+              </div>
 
             </div>
           </div>
@@ -417,7 +427,7 @@ async function fetchMarketCards(maxAmount) {
                         </div>
                       </div>
 
-                      <div class="row">
+                      <div class="row border-bottom pb-3 mb-3">
                         <div class="col text-end pe-1">
                           <br>
                           <p class="card-text"><strong>Supply: </strong></p>      
@@ -428,15 +438,18 @@ async function fetchMarketCards(maxAmount) {
                         </div>
                       </div>
 
-                      <div class="row border-bottom pb-3 mb-3">
-                      </div>
+                      <div class="row text-center border-bottom pb-3 mb-3">
 
-                      <div class="row text-center">
-                        <div class="col pe-1">
-                          <input id="nftmodal-listInput${i}" type="input"></button>
-                          <button id="nftmodal-list${i}" type="button" class="btn btn-primary">List</button>     
+                        <div class="col-3"> </div> 
+                        <div class="col-6"> 
+                          <div class="input-group">
+                            <input type="text" id="nftmodal-listInput${i}" class="form-control" placeholder="Price">
+                            <span class="input-group-text">ASTAR</span>
+                            <button class="btn btn-primary" type="button" id="nftmodal-list${i}">List</button>
+                          </div>
                         </div>
                       </div>
+
                       </div>
                   </div>
 
