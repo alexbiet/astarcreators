@@ -321,11 +321,9 @@ async function fetchMarketCards(maxAmount) {
       let arrayOfBuyModal = document.querySelectorAll(".buyModal");
       for (let i = 0; i < arrayOfBuyExplore.length; i++) {
       arrayOfBuyExplore[i].addEventListener("click", () => {
-        buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);
-      });
+        buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
       arrayOfBuyModal[i].addEventListener("click", () => {
-        buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);
-      });
+        buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
     }
     }
     
