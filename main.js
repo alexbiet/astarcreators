@@ -122,6 +122,7 @@ async function fetchNFTsFromContract(_NftContractAddress) {
               name: await NFTContract.name(),
               tokenURI: await NFTContract.tokenURI(i),
               tokenId: i,
+              contractAddress: NFTContract.address,
             }
             NFTArray.push(cardOBJ);
           }
@@ -331,8 +332,7 @@ async function fetchMarketCards(maxAmount) {
       let walletNFTsEl = document.getElementById("wallet-NFTs");
       let listingLimit = maxAmount -1;
       let htmlHolder = "";
-      let NFTsArray;
-        NFTsArray = await fetchNFTsFromContract(address.faceMinter);
+      let NFTsArray = await fetchNFTsFromContract(address.faceMinter);
       for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
         htmlHolder += `
         <!-- Card Listing -->
@@ -353,9 +353,9 @@ async function fetchMarketCards(maxAmount) {
               <div class="row text-center border-bottom pb-3 mb-3">
                 <div class="col"> 
                   <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" placeholder="Price">
+                    <input type="text" class="form-control inputWallet" placeholder="Price">
                     <span class="input-group-text">ASTAR</span>
-                    <button class="btn btn-primary" type="button" id="">List</button>
+                    <button class="btn btn-primary listWallet" type="button" id="">List</button>
                   </div>
                 </div>
               </div>
@@ -443,9 +443,9 @@ async function fetchMarketCards(maxAmount) {
                         <div class="col-3"> </div> 
                         <div class="col-6"> 
                           <div class="input-group">
-                            <input type="text" id="nftmodal-listInput${i}" class="form-control" placeholder="Price">
+                            <input type="text" id="nftmodal-listInput${i}" class="form-control inputModal" placeholder="Price">
                             <span class="input-group-text">ASTAR</span>
-                            <button class="btn btn-primary" type="button" id="nftmodal-list${i}">List</button>
+                            <button class="btn btn-primary listModal" type="button" id="nftmodal-list${i}">List</button>
                           </div>
                         </div>
                       </div>
@@ -460,12 +460,16 @@ async function fetchMarketCards(maxAmount) {
         `;
       }
       walletNFTsEl.innerHTML = htmlHolder;
-      let arrayOfBuyModal = document.querySelectorAll(".buyModal");
-      for (let i = 0; i < arrayOfBuyExplore.length; i++) {
-      arrayOfBuyExplore[i].addEventListener("click", () => {
-        buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
-      arrayOfBuyModal[i].addEventListener("click", () => {
-        buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
+      let arrayOfListWallet = document.querySelectorAll(".listWallet");
+      let arrayOfInputWallet = document.querySelectorAll(".inputWallet");
+      let arrayOfListModal = document.querySelectorAll(".listModal");
+      let arrayOfInputModal = document.querySelectorAll(".inputModal");
+      for (let i = 0; i < arrayOfListWallet.length; i++) {
+      arrayOfListWallet[i].addEventListener("click", () => {
+        console.log(NFTsArray[i].tokenId)
+        listMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].tokenId, ethers.utils.parseEther(arrayOfInputWallet[i].value));});
+      arrayOfListModal[i].addEventListener("click", () => {
+        listMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].tokenId, ethers.utils.parseEther(arrayOfInputModal[i].value));});
     }
   }
 
