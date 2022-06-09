@@ -103,9 +103,6 @@ async function buyMarketItem(_NFTContract, _marketId, _price) {
   market.createMarketSale(_NFTContract, _marketId, {value: _price});
 }
 
-
-console.log( await fetchNFTsFromContract(address.faceMinter) );
-
 async function fetchNFTsFromContract(_NftContractAddress) {
   let NFTContract = new ethers.Contract(_NftContractAddress, abi.ERC721, provider);
   let userbalance = await NFTContract.balanceOf(account);
@@ -124,6 +121,7 @@ async function fetchNFTsFromContract(_NftContractAddress) {
             let cardOBJ = {
               name: await NFTContract.name(),
               tokenURI: await NFTContract.tokenURI(i),
+              tokenId: i,
             }
             NFTArray.push(cardOBJ);
           }
@@ -133,8 +131,6 @@ async function fetchNFTsFromContract(_NftContractAddress) {
   }
 
 
-let nftListing = document.getElementById("nftListing");
-let walletNFTs = document.getElementById("wallet-NFTs");
 
 
 async function fetchMarketItemsArray() {
@@ -160,28 +156,29 @@ async function fetchMarketItemsArray() {
   return marketNFTs;
 }
 
+fetchMarketCards(8);
+fetchWalletCards(8);
 
-walletNFTs.innerHTML = await fetchMarketCards(3);
-nftListing.innerHTML = await fetchMarketCards(8);
 
 async function fetchMarketCards(maxAmount) {
-  let marketNFTs = await fetchMarketItemsArray();
+  let marketNFTsEl = document.getElementById("market-NFTs");
   let listingLimit = maxAmount -1;
   let htmlHolder = "";
-
-    for (let i = 0; i < marketNFTs.length && i <= listingLimit; i++) {
+  let NFTsArray;
+    NFTsArray = await fetchMarketItemsArray();
+    for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
         htmlHolder += `
         <!-- Card Listing -->
         <div class="col">
           <div class="card shadow-sm">
-            <img src="${marketNFTs[i].tokenURI}" alt="${marketNFTs[i].name} #${marketNFTs[i].tokenId}"/>
+            <img src="${NFTsArray[i].tokenURI}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}"/>
 
             <div class="card-body">
 
               <div class="row text-center border-bottom pb-3 mb-3">
                 <div class="col"> 
                     <p class="card-text">
-                      <strong>${marketNFTs[i].name} #${marketNFTs[i].tokenId}</strong>
+                      <strong>${NFTsArray[i].name} #${NFTsArray[i].tokenId}</strong>
                     </p>
                 </div>
               </div>
@@ -192,7 +189,7 @@ async function fetchMarketCards(maxAmount) {
                     <p class="card-text"><strong>Price: </strong></p>      
                   </div>
                   <div class="col ps-1">
-                    <p class="card-text">${marketNFTs[i].price} SBY</p>
+                    <p class="card-text">${NFTsArray[i].price} SBY</p>
                   </div>
                 </div>
 
@@ -201,7 +198,7 @@ async function fetchMarketCards(maxAmount) {
                       <p class="card-text"><strong>Creator: </strong></p>       
                     </div>
                     <div class="col ps-1">
-                      <p class="card-text">${marketNFTs[i].creator.substring(0,6) + "..." + account.slice(-4)}</p>
+                      <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + account.slice(-4)}</p>
                     </div>
                   </div>
                 </small>
@@ -224,7 +221,7 @@ async function fetchMarketCards(maxAmount) {
             <div class="modal-dialog modal-xl">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title h4" id="nft-aria-modal${i}">${marketNFTs[i].name} #${marketNFTs[i].tokenId}</h5>
+                  <h5 class="modal-title h4" id="nft-aria-modal${i}">${NFTsArray[i].name} #${NFTsArray[i].tokenId}</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -233,7 +230,7 @@ async function fetchMarketCards(maxAmount) {
                   <div class="row">
 
                     <div class="col">
-                    <img src="${marketNFTs[i].tokenURI}" alt="${marketNFTs[i].name} #${marketNFTs[i].tokenId}" style="width:100%;"/>
+                    <img src="${NFTsArray[i].tokenURI}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}" style="width:100%;"/>
                     </div>
 
                     <div class="col">
@@ -271,7 +268,7 @@ async function fetchMarketCards(maxAmount) {
                         </div>
                         <div class="col ps-1">
                         <br>
-                          <p class="card-text">${marketNFTs[i].creator.substring(0,6) + "..." + account.slice(-4)}</p>
+                          <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + account.slice(-4)}</p>
                         </div>
                       </div>
 
@@ -300,17 +297,15 @@ async function fetchMarketCards(maxAmount) {
                           <p class="card-text"><strong>Price: </strong></p>      
                         </div>
                         <div class="col ps-1">
-                          <p class="card-text">${marketNFTs[i].price} SBY</p>
+                          <p class="card-text">${NFTsArray[i].price} SBY</p>
                         </div>
                       </div>
 
                       <div class="row text-center">
                         <div class="col pe-1">
-                          <button id="nftmodal-buy${i}" type="button" class="btn btn-primary">Buy</button>     
+                          <button id="nftmodal-buy${i}" type="button" class="btn btn-primary marketBuy">Buy</button>     
                         </div>
                       </div>
-
-                     
 
                       </div>
                   </div>
@@ -320,63 +315,138 @@ async function fetchMarketCards(maxAmount) {
             </div>
           </div>
         `;
+      }
+      marketNFTsEl.innerHTML = htmlHolder;
+
+      let arrayOfButtons = document.querySelectorAll(".marketBuy");
+      for (let i = 0; i < arrayOfButtons.length; i++) {
+      arrayOfButtons[i].addEventListener("click", () => {
+        buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);
+      });
     }
-    return htmlHolder;
+    }
+    
+    async function fetchWalletCards(maxAmount) {
+      let walletNFTsEl = document.getElementById("wallet-NFTs");
+      let listingLimit = maxAmount -1;
+      let htmlHolder = "";
+      let NFTsArray;
+        NFTsArray = await fetchNFTsFromContract(address.faceMinter);
+      for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
+        htmlHolder += `
+        <!-- Card Listing -->
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="${NFTsArray[i].tokenURI}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}"/>
+
+            <div class="card-body">
+
+              <div class="row text-center border-bottom pb-3 mb-3">
+                <div class="col"> 
+                    <p class="card-text">
+                      <strong>${NFTsArray[i].name} #${NFTsArray[i].tokenId}</strong>
+                    </p>
+                </div>
+              </div>
+
+                <div class="row text-center">
+                  <div class="col">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#nft-modalWallet${i}">View</button>
+      
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal (default hidden) -->
+        <div class="modal fade" id="nft-modalWallet${i}" tabindex="-1" aria-labelledby="nft-aria-modalWallet${i}" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title h4" id="nft-aria-modalWallet${i}">${NFTsArray[i].name} #${NFTsArray[i].tokenId}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+
+                  <div class="row">
+
+                    <div class="col">
+                    <img src="${NFTsArray[i].tokenURI}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}" style="width:100%;"/>
+                    </div>
+
+                    <div class="col">
+
+                      <div class="row">
+                        <div class="col text-end pe-1">
+                          <p class="card-text"><strong>Description: </strong></p>      
+                        </div>
+                        <div class="col ps-1">
+                          <p class="card-text"><small>TBD</small></p>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col text-end pe-1">
+                        <br>
+                          <p class="card-text"><strong>Properties </strong>    
+                          <br><small>Property 1:</small>  
+                          <br><small>Property 2:</small>   
+                          <br><small>Property 3:</small></p>      
+                        </div>
+                        <div class="col ps-1">
+                        <br>
+                          <p class="card-text">&nbsp;
+                          <br><small>Value 1</small>
+                          <br><small>Value 2</small>
+                          <br><small>Value 3</small></p>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col text-end pe-1">
+                          <p class="card-text"><strong>Contract: </strong></p>       
+                        </div>
+                        <div class="col ps-1">
+                          <p class="card-text">0x0g9g...22g1</p>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col text-end pe-1">
+                          <br>
+                          <p class="card-text"><strong>Supply: </strong></p>      
+                        </div>
+                        <div class="col ps-1">
+                          <br>
+                          <p class="card-text">1 of 1</p>
+                        </div>
+                      </div>
+
+                      <div class="row border-bottom pb-3 mb-3">
+                      </div>
+
+                      <div class="row text-center">
+                        <div class="col pe-1">
+                          <input id="nftmodal-listInput${i}" type="input"></button>
+                          <button id="nftmodal-list${i}" type="button" class="btn btn-primary">List</button>     
+                        </div>
+                      </div>
+                      </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      walletNFTsEl.innerHTML = htmlHolder;
   }
-
-  
-
-
-
-
-
-// // Get the tokens that the account received
-//   const eventsReceivedTokens = await contract.getPastEvents("Transfer", {
-//     filter: {
-//       to: account,
-//     },
-//     fromBlock: 0,
-//   });
-
-//   // Count the number of times the account received the token
-//   let receivedTokensCount = {};
-//   for (let key in eventsReceivedTokens) {
-//     let tokenId = eventsReceivedTokens[key]["returnValues"]["tokenId"];
-//     receivedTokensCount[tokenId] = (receivedTokensCount[tokenId] || 0) + 1;
-//   }
-
-//   let receivedTokenIds = Object.keys(receivedTokensCount);
-
-//   // Get the tokens that the account sent
-//   const eventsSentTokens = await contract.getPastEvents("Transfer", {
-//     filter: {
-//       from: account,
-//       tokenId: receivedTokenIds,
-//     },
-//     fromBlock: 0,
-//   });
-
-//   let sentTokensCount = {};
-//   for (let key in eventsSentTokens) {
-//     let tokenId = eventsSentTokens[key]["returnValues"]["tokenId"];
-//     sentTokensCount[tokenId] = (sentTokensCount[tokenId] || 0) + 1;
-//   }
-
-//   // Substract the tokens received by the sent to get the tokens owned by account
-//   // Store them on ownedTokenIds
-//   let ownedTokenIds = [];
-//   for (let tokenId in receivedTokensCount) {
-//     if (
-//       (sentTokensCount[tokenId] ? sentTokensCount[tokenId] : 0) <
-//       receivedTokensCount[tokenId]
-//     ) {
-//       ownedTokenIds.push(tokenId);
-//     }
-//   }
-
-
-
-
 
 };
 
