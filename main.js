@@ -103,35 +103,34 @@ async function buyMarketItem(_NFTContract, _marketId, _price) {
   market.createMarketSale(_NFTContract, _marketId, {value: _price});
 }
 
-//WIP
-// fetchNFTMap(address.faceMinter);
 
-// async function fetchNFTMap(_NftContractAddress) {
-//   let NFTContract = new ethers.Contract(_NftContractAddress, abi.ERC721, provider);
-  
-//   let NFTArray = []; 
-//   let NFTObj = {
-//     address: "",
-//     tokenIds: [],
-//   };
+console.log( await fetchNFTsFromContract(address.faceMinter) );
 
-//   for(let i = 0; i < 22; i++) {
-//     let owner = await NFTContract.ownerOf(i);
-//     console.log(ownerOf(i))
-//     if ( owner == undefined) {
-//       return;
-//     }
-//     else {
-//       if ( owner == account){
-//         NFTObj.address = owner;
-//         NFTObj.tokenIds.push(i);
-//         console.log(owner);
-//         NFTArray.push(NFTObj);
-//       }
-//     }
-//     console.log(NFTArray);
-//     }
- // }
+async function fetchNFTsFromContract(_NftContractAddress) {
+  let NFTContract = new ethers.Contract(_NftContractAddress, abi.ERC721, provider);
+  let userbalance = await NFTContract.balanceOf(account);
+  let NFTArray = [];
+  let currentOwner;
+
+  if( userbalance > 0 ) {
+    for( let i = 0; i <= 100; i++ ) {
+      try { currentOwner = await NFTContract.ownerOf(i);
+      } catch (e) {
+        if (i != 0){
+          return NFTArray;
+        }
+      }
+          if( currentOwner.toLowerCase() == account.toLowerCase() ) {
+            let cardOBJ = {
+              name: await NFTContract.name(),
+              tokenURI: await NFTContract.tokenURI(i),
+            }
+            NFTArray.push(cardOBJ);
+          }
+        }
+        return NFTArray;
+    }
+  }
 
 
 let nftListing = document.getElementById("nftListing");
@@ -163,7 +162,7 @@ async function fetchMarketItemsArray() {
 
 
 walletNFTs.innerHTML = await fetchMarketCards(3);
-nftListing.innerHTML = await fetchMarketCards(6);
+nftListing.innerHTML = await fetchMarketCards(8);
 
 async function fetchMarketCards(maxAmount) {
   let marketNFTs = await fetchMarketItemsArray();
@@ -247,6 +246,7 @@ async function fetchMarketCards(maxAmount) {
     return htmlHolder;
   }
 
+  
 
 
 
