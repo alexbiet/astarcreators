@@ -723,3 +723,55 @@ function Tabs() {
   bindAll();
 }
 var connectTabs = new Tabs();
+
+
+
+//------------------- //
+// MINT NFTs
+//------------------- //
+
+const btn = document.querySelector('#mintNftButton');
+const form = document.querySelector('#mintNftForm');
+const messageEl = document.querySelector('#mintNftMessage');
+
+btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    postNFT();
+});
+
+const postNFT = async () => {
+  try {
+      let response = await fetch('api/mint', {
+      method: 'POST',
+      body: new FormData(form),
+      });
+      const result = await response.json();
+      console.log(result);
+      showMessage(result.message, response.status == 200 ? 'success' : 'error');
+  } catch (error) {
+      showMessage(error.message, 'error');
+  }
+};
+
+const showMessage = (message, type = 'success') => {
+  messageEl.innerHTML = `
+      <div class="alert alert-${type}">
+      ${message}
+      </div>
+  `;
+};
+
+
+// NFT Media Preview
+
+var loadFile = function(event) {
+  let nftMediaPreview = document.getElementById('nftMediaPreview');
+  let previewPath = URL.createObjectURL(event.target.files[0]);
+
+  if(event.target.files[0].type.includes('video/')) {
+    nftMediaPreview.innerHTML = `<video controls style="width:100%;"><source src="${previewPath}" type="video/mp4"></video>`;
+  } else {
+    nftMediaPreview.innerHTML = `<img src="${previewPath}" style="width:100%;"/>`;
+  }
+
+}

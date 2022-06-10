@@ -11,19 +11,12 @@ Build during the [Polkadot Hackathon: North America Edition - Summer 2022](https
 <br>
 <br>
 
-## Page Structure
+## Run server
 
-- Explore
-  - NFT Collections
-  - Artists
+1. Run `yarn install`
+2. Run `yarn run`
+3. Open `http://localhost:8081`
 
-- NFT Collection Profile
-- Artist Profile
-
-- Mint NFTs
-- Register NFTs
-
-- Staking
 
 <br>
 <br>
