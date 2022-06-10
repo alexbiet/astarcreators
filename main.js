@@ -155,7 +155,7 @@ async function fetchNFTsFromContract(_NftContractAddress) {
 
 async function fetchMarketItemsArray() {
   let market = new ethers.Contract(address.marketplace, abi.marketplace, provider);
-  let marketItems = await market.fetchOwnedMarketItems()
+  let marketItems = await market.fetchOwnedMarketItems()  //// NEEDS TO FETCH ALL not OWNER items
   let marketNFTs = [];
   for (let i = 0; i < marketItems.length; i++) {
     marketNFTs.push({});
