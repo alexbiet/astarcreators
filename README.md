@@ -1,4 +1,7 @@
-# Astar Creator Hub
+# Astar Creators
+<br>
+
+<img src="static/images/astar-creators.png" alt="Astar Creators">
 
 <br>
 
@@ -24,19 +27,19 @@ Build during the [Polkadot Hackathon: North America Edition - Summer 2022](https
 
 **TO DO**
 
-- Set up testnet / environment
+- Mint NFTs on Crust
 
-- apply for dApp Staking on testNet
+- Deployment of Dapp on Crust
 
-- wallets with NFT's on Astar testNet
+- NFT Collections (smart contract and UI)
 
-- setup marketplace UI / functionality
+- Polkadot.js wallet
 
-- collections form / submit request
+- Apply for dApp Staking on testNet
 
-- display users NFT's
-
-- collections staking
+- NFT staking
     - stake directly on dApp Staking Contract 
     - redistribute staking rewards 90/10 or custom 
     - withdraw stake / claim reward 
+
+- Marketplace UI polishing
