@@ -7,7 +7,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
-contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
+contract MarketplaceTest is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     CountersUpgradeable.Counter private _marketItemIds;
@@ -40,6 +40,17 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         bool canceled
     );
 
+    event countMessage(
+        uint256 itemsCount,
+        uint256 soldCount,
+        uint256 canceledItemsCount,
+        uint256 availableCount
+    );
+    
+    event ownerAddress(
+        address thisContractAddress
+    );
+
     uint256 private listingFee;
 
     function initialize() initializer public {
@@ -56,7 +67,7 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         return listingFee;
     }
 
-  //transfer NFT from NFTcontract to MarketContract (this)
+  //List NFT on marketplace
     function createMarketItem(
         address NFTContractAddress,
         uint256 tokenId,
@@ -64,8 +75,8 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     ) public payable returns (uint256) {
         require(price > 0, "Price must be at least 1 wei");
         require(msg.value == listingFee, "Price must be equal to listing price");
-        _marketItemIds.increment();
         uint256 marketItemId = _marketItemIds.current();
+        _marketItemIds.increment();
 
         address creator = ERC721Upgradeable(NFTContractAddress).ownerOf(tokenId);
 
@@ -75,21 +86,24 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
             tokenId,
             payable(creator),
             payable(msg.sender),
-            payable(address(0)),
+            payable(address(this)),
             price,
             false,
             false
         );
+ 
 
         ERC721Upgradeable(NFTContractAddress).transferFrom(msg.sender, address(this), tokenId);
 
+
+       
         emit MarketItemCreated(
             marketItemId,
             NFTContractAddress,
             tokenId,
             payable(creator),
             payable(msg.sender),
-            payable(address(0)),
+            payable(address(this)),
             price,
             false,
             false
@@ -98,12 +112,10 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         return marketItemId;
     }
 
-    /**
-     * @dev Cancel a market item
-     */
+
     function cancelMarketItem(address NFTContractAddress, uint256 marketItemId) public payable {
         uint256 tokenId = marketItemIdToMarketItem[marketItemId].tokenId;
-        require(tokenId > 0, "Market item has to exist");
+        require(tokenId >= 0, "Market item has to exist");
 
         require(marketItemIdToMarketItem[marketItemId].seller == msg.sender, "You are not the seller");
 
@@ -115,28 +127,20 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         _tokensCanceled.increment();
     }
 
-    /**
-     * @dev Get Latest Market Item by the token id
-     */
+
     function getLatestMarketItemByTokenId(uint256 tokenId) public view returns (MarketItem memory, bool) {
         uint256 itemsCount = _marketItemIds.current();
 
-        for (uint256 i = itemsCount; i > 0; i--) {
+        for (uint256 i = itemsCount - 1; i >= 0; i--) {
             MarketItem memory item = marketItemIdToMarketItem[i];
             if (item.tokenId != tokenId) continue;
             return (item, true);
         }
-
-        // What is the best practice for returning a "null" value in solidity?
-        // Reverting does't seem to be the best approach as it would throw an error on frontend
         MarketItem memory emptyMarketItem;
         return (emptyMarketItem, false);
     }
 
-    /**
-     * @dev Creates a market sale by transfering msg.sender money to the seller and NFT token from the
-     * marketplace to the msg.sender. It also sends the listingFee to the marketplace owner.
-     */
+
     function createMarketSale(address NFTContractAddress, uint256 marketItemId) public payable {
         uint256 price = marketItemIdToMarketItem[marketItemId].price;
         uint256 tokenId = marketItemIdToMarketItem[marketItemId].tokenId;
@@ -153,24 +157,20 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         payable(owner()).transfer(listingFee);
     }
 
-    /**
-     * @dev Fetch non sold and non canceled market items
-     */
     function fetchAvailableMarketItems() public view returns (MarketItem[] memory) {
         uint256 itemsCount = _marketItemIds.current();
         uint256 soldItemsCount = _tokensSold.current();
         uint256 canceledItemsCount = _tokensCanceled.current();
-        uint256 availableItemsCount = itemsCount - soldItemsCount - canceledItemsCount;
+        uint256 availableItemsCount = itemsCount - (soldItemsCount + canceledItemsCount);
         MarketItem[] memory marketItems = new MarketItem[](availableItemsCount);
+        uint256 arrayCounter = 0;
 
-        uint256 currentIndex = 0;
-        for (uint256 i = 0; i < itemsCount; i++) {
-            MarketItem memory item = marketItemIdToMarketItem[i + 1];
-            if (item.owner != address(0)) continue;
-            marketItems[currentIndex] = item;
-            currentIndex += 1;
+        for(uint256 i = 0; i < itemsCount; i++) {
+            MarketItem memory item = marketItemIdToMarketItem[i];
+             if(item.owner != address(this)) continue;
+             marketItems[arrayCounter] = item;
+             arrayCounter++;
         }
-
         return marketItems;
     }
 
@@ -178,10 +178,7 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
     }
 
-    /**
-     * @dev Since we can't access structs properties dynamically, this function selects the address
-     * we're looking for between "owner" and "seller"
-     */
+
     function getMarketItemAddressByProperty(MarketItem memory item, string memory property)
         private
         pure
@@ -195,16 +192,10 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         return compareStrings(property, "seller") ? item.seller : item.owner;
     }
 
-    /**
-     * @dev Fetch market items that are being listed by the msg.sender
-     */
     function fetchSellingMarketItems() public view returns (MarketItem[] memory) {
         return fetchMarketItemsByAddressProperty("seller");
     }
 
-    /**
-     * @dev Fetch market items that are owned by the msg.sender
-     */
     function fetchOwnedMarketItems() public view returns (MarketItem[] memory) {
         return fetchMarketItemsByAddressProperty("owner");
     }
@@ -223,7 +214,7 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         uint256 currentIndex = 0;
 
         for (uint256 i = 0; i < totalItemsCount; i++) {
-            MarketItem storage item = marketItemIdToMarketItem[i + 1];
+            MarketItem storage item = marketItemIdToMarketItem[i];
             address addressPropertyValue = getMarketItemAddressByProperty(item, _addressProperty);
             if (addressPropertyValue != msg.sender) continue;
             itemCount += 1;
@@ -232,7 +223,7 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         MarketItem[] memory items = new MarketItem[](itemCount);
 
         for (uint256 i = 0; i < totalItemsCount; i++) {
-            MarketItem storage item = marketItemIdToMarketItem[i + 1];
+            MarketItem storage item = marketItemIdToMarketItem[i];
             address addressPropertyValue = getMarketItemAddressByProperty(item, _addressProperty);
             if (addressPropertyValue != msg.sender) continue;
             items[currentIndex] = item;
