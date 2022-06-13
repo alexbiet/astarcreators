@@ -27,6 +27,8 @@ Build during the [Polkadot Hackathon: North America Edition - Summer 2022](https
 
 **TO DO**
 
+- Approve / List NFT transactions should appear in one click \
+
 - Mint NFTs on Crust
 
 - Deployment of Dapp on Crust
