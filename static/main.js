@@ -76,7 +76,9 @@ async function approveNFT(_NFTContract, _tokenId) {
   NFTContract.approve(address.marketplace, _tokenId);
 }
 
-//approveAll(address.faceMinter, true);
+
+document.getElementById("approve-all").addEventListener("click", () => {
+  approveAll(address.faceMinter, true)})
 async function approveAll(_NFTContract, _bool) {
   let NFTContract = new ethers.Contract(_NFTContract, abi.ERC721, signer);
   NFTContract.setApprovalForAll(address.marketplace, _bool);
@@ -85,7 +87,7 @@ async function approveAll(_NFTContract, _bool) {
 //listMarketItem(address.faceMinter, 1, 2000000000000000); //.002 Ether
 let inputEl = document.getElementById("list-input");
 document.getElementById("list-face").addEventListener("click", () => {
-  approveNFT(address.faceMinter, inputEl.value);
+  //approveNFT(address.faceMinter, inputEl.value);
   listMarketItem(address.faceMinter, inputEl.value, 1000000000000000);});
 async function listMarketItem(_NFTContract, _tokenId, _price) {
   let market = new ethers.Contract(address.marketplace, abi.marketplace, signer)
@@ -122,6 +124,7 @@ async function fetchSellingItemsArray() {
     marketNFTs[i].tokenURI = await NFTContract.tokenURI(marketNFTs[i].tokenId);
     marketNFTs[i].name = await NFTContract.name();
   }
+  console.log(marketNFTs);
   return marketNFTs;
 };
 
@@ -155,9 +158,7 @@ async function fetchNFTsFromContract(_NftContractAddress) {
 
 async function fetchMarketItemsArray() {
   let market = new ethers.Contract(address.marketplace, abi.marketplace, provider);
-  console.log(market)
   let marketItems = await market.fetchAvailableMarketItems();
-  console.log(marketItems)
   let marketNFTs = [];
   for (let i = 0; i < marketItems.length; i++) {
     marketNFTs.push({});
@@ -487,12 +488,12 @@ async function fetchExploreCards(maxAmount) {
       let arrayOfListModal = document.querySelectorAll(".listModal");
       let arrayOfInputModal = document.querySelectorAll(".inputModal");
       for (let i = 0; i < arrayOfListWallet.length; i++) {
-      arrayOfListWallet[i].addEventListener("click", async () => {
-        await approveNFT(NFTsArray[i].contractAddress, NFTsArray[i].tokenId);
-        await listMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].tokenId, ethers.utils.parseEther(arrayOfInputWallet[i].value));});
-      arrayOfListModal[i].addEventListener("click", async () => {
-        await approveNFT(NFTsArray[i].contractAddress, NFTsArray[i].tokenId);
-        await listMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].tokenId, ethers.utils.parseEther(arrayOfInputModal[i].value));});
+      arrayOfListWallet[i].addEventListener("click", () => {
+        //approveNFT(NFTsArray[i].contractAddress, NFTsArray[i].tokenId);
+        listMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].tokenId, ethers.utils.parseEther(arrayOfInputWallet[i].value));});
+      arrayOfListModal[i].addEventListener("click", () => {
+        //approveNFT(NFTsArray[i].contractAddress, NFTsArray[i].tokenId);
+        listMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].tokenId, ethers.utils.parseEther(arrayOfInputModal[i].value));});
     }
   }
 
