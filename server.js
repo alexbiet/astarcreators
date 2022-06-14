@@ -11,49 +11,6 @@ const _ = require('lodash');
 
 const app = express();
 
-
-
-
-
-
-// Reload on Change Static Site 
-
-const http = require('http');
-const reload = require('reload');
-
-app.set('port', process.env.PORT || 8081)
-app.use(morgan('dev'))
-app.use(bodyParser.json()) // Parses json, multi-part (file), url-encoded
-
-
-var server = http.createServer(app)
-
-// Reload code here
-reload(app).then(function (reloadReturned) {
-  // reloadReturned is documented in the returns API in the README
-
-  // Reload started, start web server
-  server.listen(app.get('port'), function () {
-    console.log('Web server listening on port ' + app.get('port'))
-  })
-}).catch(function (err) {
-  console.error('Reload could not start, could not start server/sample app', err)
-})
-
-const startServer = async () => {
-    const reloadReturned = await reload(app);
-
-    watch.watchTree(__dirname + "/static", function (f, curr, prev) {
-        // Fire server-side reload event
-        reloadReturned.reload();
-    })
-}
-
-startServer;
-
-
-
-
 // enable files upload
 app.use(fileUpload({
     createParentPath: true
@@ -61,9 +18,9 @@ app.use(fileUpload({
 
 //add other middleware
 app.use(cors());
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-// app.use(morgan('dev'));
+app.use(morgan('dev'));
 
 const port = process.env.PORT || 8081;
 
@@ -145,9 +102,9 @@ app.post('/api/mint', async function(req, res) {
 
  });
 
-// app.listen(port, () => 
-//   console.log(`App is listening on port ${port}.`)
-// );
+app.listen(port, () => 
+  console.log(`App is listening on port ${port}.`)
+);
 
 
 

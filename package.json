@@ -16,11 +16,9 @@
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "express-fileupload": "^1.4.0",
-    "http": "^0.0.1-security",
     "ipfs-http-client": "^57.0.1",
     "lodash": "^4.17.21",
-    "morgan": "^1.10.0",
-    "reload": "^3.2.0"
+    "morgan": "^1.10.0"
   },
   "devDependencies": {}
 }
