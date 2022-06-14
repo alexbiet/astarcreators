@@ -124,7 +124,6 @@ async function fetchSellingItemsArray() {
     marketNFTs[i].tokenURI = await NFTContract.tokenURI(marketNFTs[i].tokenId);
     marketNFTs[i].name = await NFTContract.name();
   }
-  console.log(marketNFTs);
   return marketNFTs;
 };
 
@@ -661,12 +660,17 @@ async function fetchExploreCards(maxAmount) {
           marketplaceNFTsEl.innerHTML = htmlHolder;
           let arrayOfDelist = document.querySelectorAll(".btn-Delist");
           let arrayOfDelistModal = document.querySelectorAll(".btn-DelistModal");
-          for (let i = 0; i < arrayOfDelist.length; i++) {
-          arrayOfDelist[i].addEventListener("click", () => {
-            cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)}); 
-          arrayOfDelistModal[i].addEventListener("click", () => {
-            cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)}); 
-        }
+          let buttonCounter = 0;
+          for (let i = 0; i < NFTsArray.length; i++) {
+             if(!NFTsArray[i].canceled) {
+           arrayOfDelist[buttonCounter].addEventListener("click", () => {
+             cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)}); 
+           arrayOfDelistModal[buttonCounter].addEventListener("click", () => {
+             cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)});
+             buttonCounter++;
+         }
+   
+      }
       }
 
 };
