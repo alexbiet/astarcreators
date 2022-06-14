@@ -303,17 +303,6 @@ async function fetchExploreCards(maxAmount) {
                         </div>
                       </div>
 
-                      <div class="row">
-                        <div class="col text-end pe-1">
-                          <br>
-                          <p class="card-text"><strong>Supply: </strong></p>      
-                        </div>
-                        <div class="col ps-1">
-                          <br>
-                          <p class="card-text">1 of 1</p>
-                        </div>
-                      </div>
-
                       <div class="row border-bottom pb-3 mb-3">
                         <div class="col text-end pe-1">
                           <p class="card-text"><strong>Price: </strong></p>      
@@ -446,17 +435,6 @@ async function fetchExploreCards(maxAmount) {
                         </div>
                         <div class="col ps-1">
                           <p class="card-text">0x0g9g...22g1</p>
-                        </div>
-                      </div>
-
-                      <div class="row border-bottom pb-3 mb-3">
-                        <div class="col text-end pe-1">
-                          <br>
-                          <p class="card-text"><strong>Supply: </strong></p>      
-                        </div>
-                        <div class="col ps-1">
-                          <br>
-                          <p class="card-text">1 of 1</p>
                         </div>
                       </div>
 
@@ -606,17 +584,6 @@ async function fetchExploreCards(maxAmount) {
                       <div class="col ps-1">
                           <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + account.slice(-4)}</p>
                       </div>
-                      </div>
-
-                      <div class="row">
-                          <div class="col text-end pe-1">
-                              <br>
-                              <p class="card-text"><strong>Supply: </strong></p>      
-                          </div>
-                          <div class="col ps-1">
-                              <br>
-                              <p class="card-text">1 of 1</p>
-                          </div>
                       </div>
 
                       <div class="row">
