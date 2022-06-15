@@ -26,7 +26,7 @@ async function fetchAccountData() {
   let provider;
   let signer;
   let account;
-  let trustedContracts = [address.faceMinter];
+  let trustedContracts = [address.faceMinter, address.astarMinter];
     try {
         provider = new ethers.providers.Web3Provider(ethereum);
         signer = provider.getSigner()
@@ -86,15 +86,15 @@ async function approveAll(_NFTContract, _bool) {
 }
 
 
-let inputEl2 = document.getElementById("contracts-input");
+let inputEl2 = document.getElementById("contract-input");
 document.getElementById("contract-btn").addEventListener("click", () => {
-  if(inputEl2.value.length == 42){
+
     trustedContracts.push(inputEl2.value);
-  }
   fetchWalletCards(8, trustedContracts);});
 
 let inputEl = document.getElementById("list-input");
 document.getElementById("list-face").addEventListener("click", () => {
+  console.log(inputEl.value)
   //approveNFT(address.faceMinter, inputEl.value);
   listMarketItem(address.faceMinter, inputEl.value, 1000000000000000);});
 async function listMarketItem(_NFTContract, _tokenId, _price) {
@@ -136,35 +136,37 @@ async function fetchSellingItemsArray() {
 };
 
 async function fetchNFTsFromContracts(nftContracts) {
+
   let NFTArray = [];
   for(let i = 0; i < nftContracts.length; i++) {
     let NFTContract = new ethers.Contract(nftContracts[i], abi.ERC721, provider);
     let userbalance = await NFTContract.balanceOf(account);
     let currentOwner;
+    
 
     if( userbalance > 0 ) {
-      for( let i = 0; i <= 100; i++ ) {
-        try { currentOwner = await NFTContract.ownerOf(i);
-        } catch (e) {
-          if (i != 0){
-            return NFTArray;
-          }
-        }
-            if( currentOwner.toLowerCase() == account.toLowerCase() ) {
-              let cardOBJ = {
-                name: await NFTContract.name(),
-                tokenURI: await NFTContract.tokenURI(i),
-                tokenId: i,
-                contractAddress: NFTContract.address,
-              }
-              NFTArray.push(cardOBJ);
+      for( let x = 0; x <= 100; x++ ) {
+        try { 
+          currentOwner = await NFTContract.ownerOf(x);
+          if( currentOwner.toLowerCase() == account.toLowerCase() ) {
+            let cardOBJ = {
+              name: await NFTContract.name(),
+              tokenURI: await NFTContract.tokenURI(x),
+              tokenId: x,
+              contractAddress: NFTContract.address,
             }
+            NFTArray.push(cardOBJ);
           }
+        } catch (e) {
+ 
+          x = 101;
+        }
+      }
       }
   }
- return NFTArray
- 
 
+ return NFTArray;
+ 
   }
 
 async function fetchMarketItemsArray() {
@@ -356,12 +358,21 @@ async function fetchExploreCards(maxAmount) {
       let listingLimit = maxAmount -1;
       let htmlHolder = "";
       let NFTsArray = await fetchNFTsFromContracts(nftContracts);
+      let NFTImage;
       for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
+        let metadata = await fetch(NFTsArray[i].tokenURI)
+        try{
+        metadata = await metadata.json();
+        NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+        } catch {
+          NFTImage = NFTsArray[i].tokenURI;
+        }
+       
         htmlHolder += `
         <!-- Card Listing -->
         <div class="col">
           <div class="card shadow-sm">
-            <img src="${NFTsArray[i].tokenURI}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}"/>
+            <img src="${NFTImage}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}"/>
 
             <div class="card-body">
 
@@ -410,7 +421,7 @@ async function fetchExploreCards(maxAmount) {
                   <div class="row">
 
                     <div class="col">
-                    <img src="${NFTsArray[i].tokenURI}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}" style="width:100%;"/>
+                    <img src="${NFTImage}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}" style="width:100%;"/>
                     </div>
 
                     <div class="col">
