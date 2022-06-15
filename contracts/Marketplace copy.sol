@@ -11,13 +11,13 @@ contract MarketplaceTest is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     CountersUpgradeable.Counter private _marketItemIds;
-    CountersUpgradeable.Counter private _collectionIds;
     CountersUpgradeable.Counter private _tokensSold;
     CountersUpgradeable.Counter private _tokensCanceled;
 
-
     mapping(uint256 => MarketItem) private marketItemIdToMarketItem;
-    mapping(uint256 => Collection) private collectionIdToCollection;
+
+
+    
 
     struct MarketItem {
         uint256 marketItemId;
@@ -29,15 +29,6 @@ contract MarketplaceTest is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         uint256 price;
         bool sold;
         bool canceled;
-    }
-
-    struct Collection {
-        string name;
-        string description;
-        uint256 collectionId;
-        uint256[] marketIds;
-        address creator;
-        bool active;
     }
 
     event MarketItemCreated(
@@ -79,31 +70,7 @@ contract MarketplaceTest is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         return listingFee;
     }
 
-   function createCollection(string memory _name, string memory _description, uint256[] memory _marketIdsArray) public {
-
-       //check if all marketIds are created by sender
-       for(uint256 i = 0; i < _marketIdsArray.length; i++) {
-           require(marketItemIdToMarketItem[_marketIdsArray[i]].creator == msg.sender, "You must be the listing creator.");
-       }
-        uint256 collectionId = _collectionIds.current();
-        collectionIdToCollection[collectionId] = Collection(
-            _name,
-            _description,
-            collectionId, 
-            _marketIdsArray, 
-            msg.sender,
-            true
-            );
-        _collectionIds.increment();
-    }
-
-    function delistCollection(uint256 _collectionId) public {
-        require(_collectionId >= 0 && _collectionId < _collectionIds.current(), "Collection with that ID dosnt exist.");
-        require(collectionIdToCollection[_collectionId].active, "Collection already delisted");
-        require(collectionIdToCollection[_collectionId].creator == msg.sender, "Not the creator of that Collection.");
-        collectionIdToCollection[_collectionId].active = false;
-    }
-
+  //List NFT on marketplace
     function createMarketItem(
         address NFTContractAddress,
         uint256 tokenId,
@@ -268,7 +235,6 @@ contract MarketplaceTest is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 
         return items;
     }
-
 
     function _authorizeUpgrade(address newImplementation) internal onlyOwner override    {
         
