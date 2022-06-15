@@ -127,32 +127,37 @@ async function fetchSellingItemsArray() {
   return marketNFTs;
 };
 
-async function fetchNFTsFromContract(_NftContractAddress) {
-  let NFTContract = new ethers.Contract(_NftContractAddress, abi.ERC721, provider);
-  let userbalance = await NFTContract.balanceOf(account);
+async function fetchNFTsFromContracts(nftContracts) {
   let NFTArray = [];
-  let currentOwner;
+  for(let i = 0; i < nftContracts.length; i++) {
+    let NFTContract = new ethers.Contract(nftContracts[i], abi.ERC721, provider);
+    console.log(NFTContract)
+    let userbalance = await NFTContract.balanceOf(account);
+    let currentOwner;
 
-  if( userbalance > 0 ) {
-    for( let i = 0; i <= 100; i++ ) {
-      try { currentOwner = await NFTContract.ownerOf(i);
-      } catch (e) {
-        if (i != 0){
-          return NFTArray;
-        }
-      }
-          if( currentOwner.toLowerCase() == account.toLowerCase() ) {
-            let cardOBJ = {
-              name: await NFTContract.name(),
-              tokenURI: await NFTContract.tokenURI(i),
-              tokenId: i,
-              contractAddress: NFTContract.address,
-            }
-            NFTArray.push(cardOBJ);
+    if( userbalance > 0 ) {
+      for( let i = 0; i <= 100; i++ ) {
+        try { currentOwner = await NFTContract.ownerOf(i);
+        } catch (e) {
+          if (i != 0){
+            return NFTArray;
           }
         }
-        return NFTArray;
-    }
+            if( currentOwner.toLowerCase() == account.toLowerCase() ) {
+              let cardOBJ = {
+                name: await NFTContract.name(),
+                tokenURI: await NFTContract.tokenURI(i),
+                tokenId: i,
+                contractAddress: NFTContract.address,
+              }
+              NFTArray.push(cardOBJ);
+            }
+          }
+      }
+  }
+ return NFTArray
+ 
+
   }
 
 async function fetchMarketItemsArray() {
@@ -179,7 +184,7 @@ async function fetchMarketItemsArray() {
 }
 
 fetchExploreCards(8);
-fetchWalletCards(8);
+fetchWalletCards(8, [address.faceMinter]);
 fetchMarketplaceCards(8);
 
 
@@ -339,11 +344,11 @@ async function fetchExploreCards(maxAmount) {
     }
 
     
-    async function fetchWalletCards(maxAmount) {
+    async function fetchWalletCards(maxAmount, nftContracts) {
       let walletNFTsEl = document.getElementById("wallet-NFTs");
       let listingLimit = maxAmount -1;
       let htmlHolder = "";
-      let NFTsArray = await fetchNFTsFromContract(address.faceMinter);
+      let NFTsArray = await fetchNFTsFromContracts(nftContracts);
       for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
         htmlHolder += `
         <!-- Card Listing -->
