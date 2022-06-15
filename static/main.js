@@ -26,6 +26,7 @@ async function fetchAccountData() {
   let provider;
   let signer;
   let account;
+  let trustedContracts = [address.faceMinter];
     try {
         provider = new ethers.providers.Web3Provider(ethereum);
         signer = provider.getSigner()
@@ -86,6 +87,12 @@ async function approveAll(_NFTContract, _bool) {
 
 
 let inputEl2 = document.getElementById("contracts-input");
+document.getElementById("contract-btn").addEventListener("click", () => {
+  if(inputEl2.value.length == 42){
+    trustedContracts.push(inputEl2.value);
+  }
+  fetchWalletCards(8, trustedContracts);});
+
 let inputEl = document.getElementById("list-input");
 document.getElementById("list-face").addEventListener("click", () => {
   //approveNFT(address.faceMinter, inputEl.value);
@@ -184,7 +191,7 @@ async function fetchMarketItemsArray() {
 }
 
 fetchExploreCards(8);
-fetchWalletCards(8, [address.faceMinter]);
+fetchWalletCards(8, trustedContracts);
 fetchMarketplaceCards(8);
 
 
