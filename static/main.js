@@ -84,7 +84,8 @@ async function approveAll(_NFTContract, _bool) {
   NFTContract.setApprovalForAll(address.marketplace, _bool);
 }
 
-//listMarketItem(address.faceMinter, 1, 2000000000000000); //.002 Ether
+
+let inputEl2 = document.getElementById("contracts-input");
 let inputEl = document.getElementById("list-input");
 document.getElementById("list-face").addEventListener("click", () => {
   //approveNFT(address.faceMinter, inputEl.value);
@@ -131,7 +132,6 @@ async function fetchNFTsFromContracts(nftContracts) {
   let NFTArray = [];
   for(let i = 0; i < nftContracts.length; i++) {
     let NFTContract = new ethers.Contract(nftContracts[i], abi.ERC721, provider);
-    console.log(NFTContract)
     let userbalance = await NFTContract.balanceOf(account);
     let currentOwner;
 
