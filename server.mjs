@@ -106,7 +106,7 @@ app.post('/api/mint', async function(req, res) {
             //send response
             res.send({
                 status: true,
-                message: 'Metadata is depoyed on IPFS!',
+                message: 'Metadata is deployed on IPFS!',
                 data: {
                     metadata: metadata.url
                 }
