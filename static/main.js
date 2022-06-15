@@ -657,7 +657,8 @@ async function fetchExploreCards(maxAmount) {
       const postNFT = async () => {
         try {
 
-            // document.getElementById('mint-nft-status').classList.remove('d-none');
+            document.getElementById('mint-nft-status').classList.remove('d-none');
+            document.getElementById('mintNftButton').setAttribute('disabled', '');
 
             let response = await fetch('api/mint', {
             method: 'POST',
@@ -665,10 +666,8 @@ async function fetchExploreCards(maxAmount) {
             });
             const result = await response.json();
             const metaUri = result.data.metadata.replace('ipfs://', 'https://ipfs.io/ipfs/');
-
-            console.log(metaUri);
+            
             mintNFT (metaUri);
-
             // result.data.metadata.image
 
             showMessage(result.message, response.status == 200 ? 'success' : 'error');
@@ -678,14 +677,21 @@ async function fetchExploreCards(maxAmount) {
       };
 
       async function mintNFT (_uri) {
+        try {
+          const astarMinter = new ethers.Contract(address.astarMinter, abi.astarMinter, signer);
+          const result = await astarMinter.safeMint(account, _uri);
 
-        const astarMinter = new ethers.Contract(address.astarMinter, abi.astarMinter, signer);
-        const result = await astarMinter.safeMint(account, _uri);
+            document.getElementById('mint-nft-status').classList.add('d-none');
+            document.getElementById('mintNftButton').removeAttribute('disabled', '');
+            showMessage("Your NFT is minted!", 'success');
+        } catch (error) {
+            showMessage("Something went wrong with the minting...", 'error');
+        }
 
       };
 
       const showMessage = (message, type = 'success') => {
-        messageEl.innerHTML = `
+        messageEl.innerHTML += `
             <div class="alert alert-${type}">
             ${message}
             </div>

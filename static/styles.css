@@ -18,3 +18,8 @@
 hr {
     opacity: 0.1;
 }
+
+#mint-nft-status {
+    vertical-align: top;
+    margin-top: 11px;
+}

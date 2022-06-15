@@ -2,7 +2,7 @@ address = {
     dAppsStaking: "0x0000000000000000000000000000000000005001",
     faceMinter: "0x1206b3eB5920720e292903B30b61546c37C7792c",
     marketplace: "0xb79Ca5E6b53B484bfa9397EC519a8aa7f558c6A3",
-    astarMinter: "0x2c4E1310d4bAd6dD00c38351ceA16a4783Ab4208",
+    astarMinter: "0x7353F9EDf832c35216B95cafa0a780825Ecc944a",
 },
 
 abi = {
