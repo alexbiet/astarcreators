@@ -179,7 +179,7 @@ async function fetchMarketItemsArray() {
 }
 
 fetchExploreCards(8);
-fetchWalletCards(8);
+fetchWalletCards(8, address.faceMinter);
 fetchMarketplaceCards(8);
 
 
@@ -339,11 +339,15 @@ async function fetchExploreCards(maxAmount) {
     }
 
     
-    async function fetchWalletCards(maxAmount) {
+    async function fetchWalletCards(maxAmount, nftContracts) {
       let walletNFTsEl = document.getElementById("wallet-NFTs");
       let listingLimit = maxAmount -1;
       let htmlHolder = "";
-      let NFTsArray = await fetchNFTsFromContract(address.faceMinter);
+      let NFTsArray;
+      for(let i = 0; i < nftContracts.length, i++;) {
+        NFTsArray.push(await fetchNFTsFromContract(nftContracts[i]));
+      }
+
       for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
         htmlHolder += `
         <!-- Card Listing -->
