@@ -722,7 +722,11 @@ const postNFT = async () => {
       body: new FormData(form),
       });
       const result = await response.json();
-      console.log(result);
+
+      // Get's the NFT Metadata
+      console.log(result.data.metadata);
+      // result.data.metadata.image
+
       showMessage(result.message, response.status == 200 ? 'success' : 'error');
   } catch (error) {
       showMessage(error.message, 'error');
