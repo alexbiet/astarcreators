@@ -66,7 +66,6 @@ async function fetchAccountData() {
   });
   let chain = chainIdMap[Number(ethereum.chainId)].name;
   let symbol = chainIdMap[Number(ethereum.chainId)].symbol;
-  console.log(symbol);
 
 //mintFaceNFT();
 document.getElementById("mint-face").addEventListener("click", mintFaceNFT)
@@ -208,11 +207,22 @@ async function fetchExploreCards(maxAmount) {
   let htmlHolder = "";
   let NFTsArray = await fetchMarketItemsArray();
     for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
+        let metadata = await fetch(NFTsArray[i].tokenURI);
+        if(NFTsArray[i].tokenURI.includes("json")){
+        try{
+        metadata = await metadata.json();
+        NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+        } catch {
+          NFTImage = NFTsArray[i].tokenURI;
+        }
+      } else {
+        NFTImage = NFTsArray[i].tokenURI;
+      }
         htmlHolder += `
         <!-- Card Listing -->
         <div class="col">
           <div class="card shadow-sm">
-            <img src="${NFTsArray[i].tokenURI}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}"/>
+            <img src="${NFTImage}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}"/>
 
             <div class="card-body">
 
@@ -271,7 +281,7 @@ async function fetchExploreCards(maxAmount) {
                   <div class="row">
 
                     <div class="col">
-                    <img src="${NFTsArray[i].tokenURI}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}" style="width:100%;"/>
+                    <img src="${NFTImage}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}" style="width:100%;"/>
                     </div>
 
                     <div class="col">
@@ -397,6 +407,7 @@ async function fetchExploreCards(maxAmount) {
                   <div class="input-group input-group-sm">
                     <input type="text" class="form-control inputWallet" placeholder="Price">
                     <span class="input-group-text">${symbol}</span>
+                    <button class="btn btn-secondary approveWallet" type="button" id="nftwallet-approve${i}">Approve</button>
                     <button class="btn btn-primary listWallet" type="button" id="">List</button>
                   </div>
                 </div>
@@ -476,6 +487,7 @@ async function fetchExploreCards(maxAmount) {
                           <div class="input-group">
                             <input type="text" id="nftmodal-listInput${i}" class="form-control inputModal" placeholder="Price">
                             <span class="input-group-text">${symbol}</span>
+                            <button class="btn btn-secondary approveModal" type="button" id="nftmodal-approve${i}">Approve</button>
                             <button class="btn btn-primary listModal" type="button" id="nftmodal-list${i}">List</button>
                           </div>
                         </div>
@@ -491,11 +503,14 @@ async function fetchExploreCards(maxAmount) {
         `;
       }
       walletNFTsEl.innerHTML = htmlHolder;
+      let arrayOfApproveWallet = document.querySelectorAll(".approveWallet");
       let arrayOfListWallet = document.querySelectorAll(".listWallet");
       let arrayOfInputWallet = document.querySelectorAll(".inputWallet");
       let arrayOfListModal = document.querySelectorAll(".listModal");
       let arrayOfInputModal = document.querySelectorAll(".inputModal");
       for (let i = 0; i < arrayOfListWallet.length; i++) {
+        arrayOfApproveWallet[i].addEventListener("click", () => {
+          approveNFT(NFTsArray[i].contractAddress, NFTsArray[i].tokenId);});
       arrayOfListWallet[i].addEventListener("click", () => {
         //approveNFT(NFTsArray[i].contractAddress, NFTsArray[i].tokenId);
         listMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].tokenId, ethers.utils.parseEther(arrayOfInputWallet[i].value));});
@@ -512,12 +527,23 @@ async function fetchExploreCards(maxAmount) {
     let htmlHolder = "";
     let NFTsArray = await fetchSellingItemsArray();
     for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
+      let metadata = await fetch(NFTsArray[i].tokenURI);
+      if(NFTsArray[i].tokenURI.includes("json")){
+      try{
+      metadata = await metadata.json();
+      NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+      } catch {
+        NFTImage = NFTsArray[i].tokenURI;
+      }
+    } else {
+      NFTImage = NFTsArray[i].tokenURI;
+    }
       if (!NFTsArray[i].sold && !NFTsArray[i].canceled){
       htmlHolder += `
       <div class="col">
           <div class="card shadow-sm">
           
-          <img src="${NFTsArray[i].tokenURI}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}"/>
+          <img src="${NFTImage}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}"/>
 
           <div class="card-body">
 
@@ -577,7 +603,7 @@ async function fetchExploreCards(maxAmount) {
                   <div class="row">
 
                   <div class="col">
-                      <img src="${NFTsArray[i].tokenURI}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}" style="width:100%;"/>
+                      <img src="${NFTImage}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}" style="width:100%;"/>
                   </div>
 
                   <div class="col">
