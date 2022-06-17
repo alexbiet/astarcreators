@@ -64,7 +64,9 @@ async function fetchAccountData() {
   ethereum.on("chainChanged", (chainId) => {
     fetchAccountData();
   });
-  let chain = chainIdMap[Number(ethereum.chainId)].name
+  let chain = chainIdMap[Number(ethereum.chainId)].name;
+  let symbol = chainIdMap[Number(ethereum.chainId)].symbol;
+  console.log(symbol);
 
 //mintFaceNFT();
 document.getElementById("mint-face").addEventListener("click", mintFaceNFT)
@@ -228,7 +230,7 @@ async function fetchExploreCards(maxAmount) {
                     <p class="card-text"><strong>Price: </strong></p>      
                   </div>
                   <div class="col ps-1">
-                    <p class="card-text">${NFTsArray[i].price} SBY</p>
+                    <p class="card-text">${NFTsArray[i].price} ${symbol}</p>
                   </div>
                 </div>
 
@@ -325,7 +327,7 @@ async function fetchExploreCards(maxAmount) {
                           <p class="card-text"><strong>Price: </strong></p>      
                         </div>
                         <div class="col ps-1">
-                          <p class="card-text">${NFTsArray[i].price} SBY</p>
+                          <p class="card-text">${NFTsArray[i].price} ${symbol}</p>
                         </div>
                       </div>
 
@@ -363,15 +365,17 @@ async function fetchExploreCards(maxAmount) {
       let NFTsArray = await fetchNFTsFromContracts(nftContracts);
       let NFTImage;
       for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
-        console.log(NFTsArray[i].tokenURI)
-        let metadata = await fetch(NFTsArray[i].tokenURI)
+        let metadata = await fetch(NFTsArray[i].tokenURI);
+        if(NFTsArray[i].tokenURI.includes("json")){
         try{
         metadata = await metadata.json();
         NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
         } catch {
           NFTImage = NFTsArray[i].tokenURI;
         }
-       
+      } else {
+        NFTImage = NFTsArray[i].tokenURI;
+      }
         htmlHolder += `
         <!-- Card Listing -->
         <div class="col">
@@ -392,7 +396,7 @@ async function fetchExploreCards(maxAmount) {
                 <div class="col"> 
                   <div class="input-group input-group-sm">
                     <input type="text" class="form-control inputWallet" placeholder="Price">
-                    <span class="input-group-text">SBY</span>
+                    <span class="input-group-text">${symbol}</span>
                     <button class="btn btn-primary listWallet" type="button" id="">List</button>
                   </div>
                 </div>
@@ -471,7 +475,7 @@ async function fetchExploreCards(maxAmount) {
                         <div class="col-6"> 
                           <div class="input-group">
                             <input type="text" id="nftmodal-listInput${i}" class="form-control inputModal" placeholder="Price">
-                            <span class="input-group-text">SBY</span>
+                            <span class="input-group-text">${symbol}</span>
                             <button class="btn btn-primary listModal" type="button" id="nftmodal-list${i}">List</button>
                           </div>
                         </div>
@@ -542,7 +546,7 @@ async function fetchExploreCards(maxAmount) {
                       <p class="card-text"><strong>Price: </strong></p>      
                     </div>
                     <div class="col text-start ps-1">
-                      <p class="card-text">${NFTsArray[i].price} SBY</p>
+                      <p class="card-text">${NFTsArray[i].price} ${symbol}</p>
                   </div>
               </div>
               </small>
@@ -629,7 +633,7 @@ async function fetchExploreCards(maxAmount) {
                               <p class="card-text"><strong>Price: </strong></p>      
                           </div>
                           <div class="col text-start ps-1">
-                              <p class="card-text">${NFTsArray[i].price} SBY</p>
+                              <p class="card-text">${NFTsArray[i].price} ${symbol}</p>
                           </div>
                       </div>
 
