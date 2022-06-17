@@ -660,7 +660,7 @@ async function fetchExploreCards(maxAmount) {
           let arrayOfDelistModal = document.querySelectorAll(".btn-DelistModal");
           let buttonCounter = 0;
           for (let i = 0; i < NFTsArray.length; i++) {
-             if(!NFTsArray[i].canceled) {
+             if(!NFTsArray[i].canceled && !NFTsArray[i].sold) {
            arrayOfDelist[buttonCounter].addEventListener("click", () => {
              cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)}); 
            arrayOfDelistModal[buttonCounter].addEventListener("click", () => {
