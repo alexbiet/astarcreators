@@ -506,17 +506,18 @@ async function fetchExploreCards(maxAmount) {
       let arrayOfApproveWallet = document.querySelectorAll(".approveWallet");
       let arrayOfListWallet = document.querySelectorAll(".listWallet");
       let arrayOfInputWallet = document.querySelectorAll(".inputWallet");
+      let arrayOfApproveModal = document.querySelectorAll(".approveModal");
       let arrayOfListModal = document.querySelectorAll(".listModal");
       let arrayOfInputModal = document.querySelectorAll(".inputModal");
       for (let i = 0; i < arrayOfListWallet.length; i++) {
         arrayOfApproveWallet[i].addEventListener("click", () => {
           approveNFT(NFTsArray[i].contractAddress, NFTsArray[i].tokenId);});
-      arrayOfListWallet[i].addEventListener("click", () => {
-        //approveNFT(NFTsArray[i].contractAddress, NFTsArray[i].tokenId);
-        listMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].tokenId, ethers.utils.parseEther(arrayOfInputWallet[i].value));});
-      arrayOfListModal[i].addEventListener("click", () => {
-        //approveNFT(NFTsArray[i].contractAddress, NFTsArray[i].tokenId);
-        listMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].tokenId, ethers.utils.parseEther(arrayOfInputModal[i].value));});
+        arrayOfListWallet[i].addEventListener("click", () => {
+          listMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].tokenId, ethers.utils.parseEther(arrayOfInputWallet[i].value));});
+        arrayOfApproveModal[i].addEventListener("click", () => {
+          approveNFT(NFTsArray[i].contractAddress, NFTsArray[i].tokenId);});
+        arrayOfListModal[i].addEventListener("click", () => {
+          listMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].tokenId, ethers.utils.parseEther(arrayOfInputModal[i].value));});
     }
   }
 
@@ -771,8 +772,6 @@ async function fetchExploreCards(maxAmount) {
       }
 
 };
-
-
 
 // -----------------------
 // TABS NAV             //
