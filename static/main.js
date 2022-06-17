@@ -26,7 +26,7 @@ async function fetchAccountData() {
   let provider;
   let signer;
   let account;
-  let trustedContracts = [address.faceMinter, address.astarMinter];
+ 
     try {
         provider = new ethers.providers.Web3Provider(ethereum);
         signer = provider.getSigner()
@@ -64,25 +64,26 @@ async function fetchAccountData() {
   ethereum.on("chainChanged", (chainId) => {
     fetchAccountData();
   });
+  let chain = chainIdMap[Number(ethereum.chainId)].name
 
 //mintFaceNFT();
 document.getElementById("mint-face").addEventListener("click", mintFaceNFT)
 async function mintFaceNFT() {
-  let faceMinter = new ethers.Contract(address.faceMinter, abi.faceMinter, signer);
-  faceMinter.safeMint();
+  let faceMinter = new ethers.Contract(addresses[chain].faceMinter, abis.faceMinter, signer);
+  faceMinter.safeMint(account);
 }
- //approveNFT(address.faceMinter, 1);
+ //approveNFT(addresses[chain].faceMinter, 1);
 async function approveNFT(_NFTContract, _tokenId) {
-  let NFTContract = new ethers.Contract(_NFTContract, abi.ERC721, signer);
-  NFTContract.approve(address.marketplace, _tokenId);
+  let NFTContract = new ethers.Contract(_NFTContract, abis.ERC721, signer);
+  NFTContract.approve(addresses[chain].marketplace, _tokenId);
 }
 
 
 document.getElementById("approve-all").addEventListener("click", () => {
-  approveAll(address.faceMinter, true)})
+  approveAll(addresses[chain].faceMinter, true)})
 async function approveAll(_NFTContract, _bool) {
-  let NFTContract = new ethers.Contract(_NFTContract, abi.ERC721, signer);
-  NFTContract.setApprovalForAll(address.marketplace, _bool);
+  let NFTContract = new ethers.Contract(_NFTContract, abis.ERC721, signer);
+  NFTContract.setApprovalForAll(addresses[chain].marketplace, _bool);
 }
 
 
@@ -95,25 +96,25 @@ document.getElementById("contract-btn").addEventListener("click", () => {
 let inputEl = document.getElementById("list-input");
 document.getElementById("list-face").addEventListener("click", () => {
   console.log(inputEl.value)
-  //approveNFT(address.faceMinter, inputEl.value);
-  listMarketItem(address.faceMinter, inputEl.value, 1000000000000000);});
+  //approveNFT(addresses[chain].faceMinter, inputEl.value);
+  listMarketItem(addresses[chain].faceMinter, inputEl.value, 1000000000000000);});
 async function listMarketItem(_NFTContract, _tokenId, _price) {
-  let market = new ethers.Contract(address.marketplace, abi.marketplace, signer)
+  let market = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, signer)
   market.createMarketItem(_NFTContract, _tokenId, _price);
 }
 
 async function cancelMarketItem(_NFTContract, _marketItemId) {
-  let market = new ethers.Contract(address.marketplace, abi.marketplace, signer)
+  let market = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, signer)
   market.cancelMarketItem(_NFTContract, _marketItemId);
 }
 
 async function buyMarketItem(_NFTContract, _marketId, _price) {
-  let market = new ethers.Contract(address.marketplace, abi.marketplace, signer);
+  let market = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, signer);
   market.createMarketSale(_NFTContract, _marketId, {value: _price});
 }
 
 async function fetchSellingItemsArray() {
-  let market = new ethers.Contract(address.marketplace, abi.marketplace, signer);
+  let market = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, signer);
   let marketItems = await market.fetchSellingMarketItems();
   marketNFTs = [];
   for (let i = 0; i < marketItems.length; i++) {
@@ -128,7 +129,7 @@ async function fetchSellingItemsArray() {
     marketNFTs[i].priceBN = marketItems[i][6];
     marketNFTs[i].sold = marketItems[i][7];
     marketNFTs[i].canceled = marketItems[i][8];
-    let NFTContract = new ethers.Contract(marketNFTs[i].contractAddress, abi.ERC721, provider);
+    let NFTContract = new ethers.Contract(marketNFTs[i].contractAddress, abis.ERC721, provider);
     marketNFTs[i].tokenURI = await NFTContract.tokenURI(marketNFTs[i].tokenId);
     marketNFTs[i].name = await NFTContract.name();
   }
@@ -139,7 +140,7 @@ async function fetchNFTsFromContracts(nftContracts) {
 
   let NFTArray = [];
   for(let i = 0; i < nftContracts.length; i++) {
-    let NFTContract = new ethers.Contract(nftContracts[i], abi.ERC721, provider);
+    let NFTContract = new ethers.Contract(nftContracts[i], abis.ERC721, provider);
     let userbalance = await NFTContract.balanceOf(account);
     let currentOwner;
     
@@ -170,7 +171,7 @@ async function fetchNFTsFromContracts(nftContracts) {
   }
 
 async function fetchMarketItemsArray() {
-  let market = new ethers.Contract(address.marketplace, abi.marketplace, provider);
+  let market = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, provider);
   let marketItems = await market.fetchAvailableMarketItems();
   let marketNFTs = [];
   for (let i = 0; i < marketItems.length; i++) {
@@ -185,15 +186,17 @@ async function fetchMarketItemsArray() {
     marketNFTs[i].priceBN = marketItems[i][6];
     marketNFTs[i].sold = marketItems[i][7];
     marketNFTs[i].canceled = marketItems[i][8];
-    let NFTContract = new ethers.Contract(marketNFTs[i].contractAddress, abi.ERC721, provider);
+    let NFTContract = new ethers.Contract(marketNFTs[i].contractAddress, abis.ERC721, provider);
     marketNFTs[i].tokenURI = await NFTContract.tokenURI(marketNFTs[i].tokenId);
     marketNFTs[i].name = await NFTContract.name();
   }
   return marketNFTs;
 }
 
+let nftContracts = trustedContracts[chain];
+
 fetchExploreCards(8);
-fetchWalletCards(8, trustedContracts);
+fetchWalletCards(8, nftContracts);
 fetchMarketplaceCards(8);
 
 
@@ -253,7 +256,7 @@ async function fetchExploreCards(maxAmount) {
         </div>
 
         <!-- Modal (default hidden) -->
-        <div class="modal fade" id="nft-modal${i}" tabindex="-1" aria-labelledby="nft-aria-modal${i}" style="display: none;" aria-hidden="true">
+        <div class="modal fade" id="nft-modal${i}" tabisndex="-1" aria-labelledby="nft-aria-modal${i}" style="display: none;" aria-hidden="true">
             <div class="modal-dialog modal-xl">
               <div class="modal-content">
                 <div class="modal-header">
@@ -360,6 +363,7 @@ async function fetchExploreCards(maxAmount) {
       let NFTsArray = await fetchNFTsFromContracts(nftContracts);
       let NFTImage;
       for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
+        console.log(NFTsArray[i].tokenURI)
         let metadata = await fetch(NFTsArray[i].tokenURI)
         try{
         metadata = await metadata.json();
@@ -408,7 +412,7 @@ async function fetchExploreCards(maxAmount) {
         </div>
 
         <!-- Modal (default hidden) -->
-        <div class="modal fade" id="nft-modalWallet${i}" tabindex="-1" aria-labelledby="nft-aria-modalWallet${i}" style="display: none;" aria-hidden="true">
+        <div class="modal fade" id="nft-modalWallet${i}" tabisndex="-1" aria-labelledby="nft-aria-modalWallet${i}" style="display: none;" aria-hidden="true">
             <div class="modal-dialog modal-xl">
               <div class="modal-content">
                 <div class="modal-header">
@@ -556,7 +560,7 @@ async function fetchExploreCards(maxAmount) {
       </div>
 
       <!-- Modal (default hidden) -->
-      <div class="modal fade" id="marketlist-nft-modalWallet-${i}" tabindex="-1" aria-labelledby="marketlist-nft-aria-modalWallet-${i}" style="display: none;" aria-hidden="true">
+      <div class="modal fade" id="marketlist-nft-modalWallet-${i}" tabisndex="-1" aria-labelledby="marketlist-nft-aria-modalWallet-${i}" style="display: none;" aria-hidden="true">
           <div class="modal-dialog modal-xl">
               <div class="modal-content">
               <div class="modal-header">
@@ -701,7 +705,7 @@ async function fetchExploreCards(maxAmount) {
 
       async function mintNFT (_uri) {
         try {
-          const astarMinter = new ethers.Contract(address.astarMinter, abi.astarMinter, signer);
+          const astarMinter = new ethers.Contract(addresses[chain].astarMinter, abis.astarMinter, signer);
           const result = await astarMinter.safeMint(account, _uri);
 
             document.getElementById('mint-nft-status').classList.add('d-none');
