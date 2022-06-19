@@ -64,11 +64,14 @@ async function fetchAccountData() {
   ethereum.on("chainChanged", (chainId) => {
     fetchAccountData();
   });
+
   let chain = chainIdMap[Number(ethereum.chainId)].name;
   let symbol = chainIdMap[Number(ethereum.chainId)].symbol;
+  const MARKET_WRITE = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, signer);
+  const MARKET_READ = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, provider);
 
 //mintFaceNFT();
-document.getElementById("mint-face").addEventListener("click", mintFaceNFT)
+document.getElementById("mint-face").addEventListener("click", mintFaceNFT);
 async function mintFaceNFT() {
   let faceMinter = new ethers.Contract(addresses[chain].faceMinter, abis.faceMinter, signer);
   faceMinter.safeMint(account);
@@ -90,33 +93,35 @@ async function approveAll(_NFTContract, _bool) {
 
 let inputEl2 = document.getElementById("contract-input");
 document.getElementById("contract-btn").addEventListener("click", () => {
-
-    trustedContracts.push(inputEl2.value);
+  trustedContracts.push(inputEl2.value);
   fetchWalletCards(8, trustedContracts);});
 
 let inputEl = document.getElementById("list-input");
 document.getElementById("list-face").addEventListener("click", () => {
-  console.log(inputEl.value)
+  console.log(inputEl.value);
   //approveNFT(addresses[chain].faceMinter, inputEl.value);
   listMarketItem(addresses[chain].faceMinter, inputEl.value, 1000000000000000);});
 async function listMarketItem(_NFTContract, _tokenId, _price) {
-  let market = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, signer)
-  market.createMarketItem(_NFTContract, _tokenId, _price);
+  MARKET_WRITE.createMarketItem(_NFTContract, _tokenId, _price);
 }
 
 async function cancelMarketItem(_NFTContract, _marketItemId) {
-  let market = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, signer)
-  market.cancelMarketItem(_NFTContract, _marketItemId);
+  MARKET_WRITE.cancelMarketItem(_NFTContract, _marketItemId);
 }
 
 async function buyMarketItem(_NFTContract, _marketId, _price) {
-  let market = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, signer);
-  market.createMarketSale(_NFTContract, _marketId, {value: _price});
+  MARKET_WRITE.createMarketSale(_NFTContract, _marketId, {value: _price});
 }
 
+async function createCollection(_name, _description, arrayOfMarketIds) {
+  MARKET_WRITE.createCollection(_name, _description, arrayOfMarketIds);
+}
+async function getCollections() {
+//   MARKET_READ.
+ }
+
 async function fetchSellingItemsArray() {
-  let market = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, signer);
-  let marketItems = await market.fetchSellingMarketItems();
+  let marketItems = await MARKET_WRITE.fetchSellingMarketItems();
   marketNFTs = [];
   for (let i = 0; i < marketItems.length; i++) {
     marketNFTs.push({});
@@ -172,8 +177,7 @@ async function fetchNFTsFromContracts(nftContracts) {
   }
 
 async function fetchMarketItemsArray() {
-  let market = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, provider);
-  let marketItems = await market.fetchAvailableMarketItems();
+  let marketItems = await MARKET_READ.fetchAvailableMarketItems();
   let marketNFTs = [];
   for (let i = 0; i < marketItems.length; i++) {
     marketNFTs.push({});
@@ -198,7 +202,8 @@ let nftContracts = trustedContracts[chain];
 
 fetchExploreCards(8);
 fetchWalletCards(8, nftContracts);
-fetchMarketplaceCards(8);
+fetchMarketplaceCards(10, "marketplace");
+// fetchMarketplaceCardsCollectionModal(8);
 
 
 async function fetchExploreCards(maxAmount) {
@@ -368,7 +373,7 @@ async function fetchExploreCards(maxAmount) {
     }
 
     
-    async function fetchWalletCards(maxAmount, nftContracts) {
+async function fetchWalletCards(maxAmount, nftContracts) {
       let walletNFTsEl = document.getElementById("wallet-NFTs");
       let listingLimit = maxAmount -1;
       let htmlHolder = "";
@@ -386,6 +391,7 @@ async function fetchExploreCards(maxAmount) {
       } else {
         NFTImage = NFTsArray[i].tokenURI;
       }
+      
         htmlHolder += `
         <!-- Card Listing -->
         <div class="col">
@@ -522,7 +528,8 @@ async function fetchExploreCards(maxAmount) {
   }
 
 
-  async function fetchMarketplaceCards(maxAmount) {
+
+async function fetchMarketplaceCards(maxAmount) {
     let marketplaceNFTsEl = document.getElementById("marketplace");
     let listingLimit = maxAmount -1;
     let htmlHolder = "";
@@ -697,7 +704,185 @@ async function fetchExploreCards(maxAmount) {
    
       }
       }
-      
+
+// async function fetchMarketplaceCardsCollectionModal(maxAmount) {
+//   let marketplaceNFTsEl = document.getElementById("new-collection-modal");
+//   let listingLimit = maxAmount -1;
+//   let htmlHolder = "";
+//   let NFTsArray = await fetchSellingItemsArray();
+//   for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
+//     let metadata = await fetch(NFTsArray[i].tokenURI);
+//     if(NFTsArray[i].tokenURI.includes("json")){
+//     try{
+//     metadata = await metadata.json();
+//     NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+//     } catch {
+//       NFTImage = NFTsArray[i].tokenURI;
+//     }
+//   } else {
+//     NFTImage = NFTsArray[i].tokenURI;
+//   }
+//     if (!NFTsArray[i].sold && !NFTsArray[i].canceled){
+//     htmlHolder += `
+//     <div class="col">
+//         <div class="card shadow-sm">
+        
+//         <img src="${NFTImage}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}"/>
+
+//         <div class="card-body">
+
+//             <div class="row text-center border-bottom pb-3 mb-3">
+//             <div class="col"> 
+//                 <p class="card-text">
+//                     <strong>${NFTsArray[i].name} #${NFTsArray[i].tokenId}</strong>
+//                 </p>
+//             </div>
+//             </div>
+
+//             <small>
+//             <div class="row">
+//                 <div class="col text-end pe-1">
+//                     <p class="card-text"><strong>Status: </strong></p>      
+//                   </div>
+//                   <div class="col text-start ps-1">
+//                     <p class="card-text">
+//                         <span class="badge text-bg-warning">For Sale</span>
+//                     </p>
+//                 </div>
+//             </div>
+
+//             <div class="row border-bottom pb-3 mb-3">
+//                 <div class="col text-end pe-1">
+//                     <p class="card-text"><strong>Price: </strong></p>      
+//                   </div>
+//                   <div class="col text-start ps-1">
+//                     <p class="card-text">${NFTsArray[i].price} ${symbol}</p>
+//                 </div>
+//             </div>
+//             </small>
+
+//             <div class="row text-center">
+//             <div class="col">
+//                 <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#marketlist-nft-modalWallet-${i}">View</button>
+//                 &nbsp; &nbsp; 
+//                 <button type="button" class="btn btn-sm btn-outline-danger btn-Delist-CM" id="Delist${i}">Delist</button>
+//             </div>
+//             </div>
+
+//         </div>
+//         </div>
+//     </div>
+
+//     <!-- Modal (default hidden) -->
+//     <div class="modal fade" id="marketlist-nft-modalWallet-${i}" tabisndex="-1" aria-labelledby="marketlist-nft-aria-modalWallet-${i}" style="display: none;" aria-hidden="true">
+//         <div class="modal-dialog modal-xl">
+//             <div class="modal-content">
+//             <div class="modal-header">
+//                 <h5 class="modal-title h4" id="marketlist-nft-aria-modalWallet-${i}">FaceMint #14</h5>
+//                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+//             </div>
+//             <div class="modal-body">
+
+
+//                 <div class="row">
+
+//                 <div class="col">
+//                     <img src="${NFTImage}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}" style="width:100%;"/>
+//                 </div>
+
+//                 <div class="col">
+
+//                     <div class="row">
+//                     <div class="col text-end pe-1">
+//                         <p class="card-text"><strong>Description: </strong></p>      
+//                     </div>
+//                     <div class="col ps-1">
+//                         <p class="card-text"><small>TBD</small></p>
+//                     </div>
+//                     </div>
+
+//                     <div class="row">
+//                     <div class="col text-end pe-1">
+//                     <br>
+//                         <p class="card-text"><strong>Properties </strong>    
+//                         <br><small>Property 1:</small>  
+//                         <br><small>Property 2:</small>   
+//                         <br><small>Property 3:</small></p>      
+//                     </div>
+//                     <div class="col ps-1">
+//                     <br>
+//                         <p class="card-text">&nbsp;
+//                         <br><small>Value 1</small>
+//                         <br><small>Value 2</small>
+//                         <br><small>Value 3</small></p>
+//                     </div>
+//                     </div>
+
+//                     <div class="row">
+//                     <div class="col text-end pe-1">
+//                         <p class="card-text"><strong>Contract: </strong></p>       
+//                     </div>
+//                     <div class="col ps-1">
+//                         <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + account.slice(-4)}</p>
+//                     </div>
+//                     </div>
+
+//                     <div class="row">
+//                         <div class="col text-end pe-1">
+//                             <p class="card-text"><strong>Status: </strong></p>      
+//                         </div>
+//                         <div class="col text-start ps-1">
+//                             <p class="card-text">
+//                                 <span class="badge text-bg-warning">For Sale</span>
+//                             </p>
+//                         </div>
+//                     </div>
+    
+//                     <div class="row border-bottom pb-3 mb-3">
+//                         <div class="col text-end pe-1">
+//                             <p class="card-text"><strong>Price: </strong></p>      
+//                         </div>
+//                         <div class="col text-start ps-1">
+//                             <p class="card-text">${NFTsArray[i].price} ${symbol}</p>
+//                         </div>
+//                     </div>
+
+//                     <div class="row text-center border-bottom pb-3 mb-3">
+
+//                     <div class="col text-center"> 
+                        
+//                         <button type="button" class="btn btn-sm btn-outline-danger btn-DelistModal-CM" id="Delist${i}">Delist</button>
+
+//                     </div>
+//                     </div>
+
+//                     </div>
+//                 </div>
+
+//             </div>
+//             </div>
+//         </div>
+//         </div>`
+//         }
+//       }
+//         marketplaceNFTsEl.innerHTML = htmlHolder;
+//         let arrayOfDelist = document.querySelectorAll(".btn-Delist-CM");
+//         let arrayOfDelistModal = document.querySelectorAll(".btn-DelistModal-CM");
+//         let buttonCounter = 0;
+        
+//         for (let i = 0; i < NFTsArray.length; i++) {
+//             if(!NFTsArray[i].canceled && !NFTsArray[i].sold) {
+//           console.log(arrayOfDelist[buttonCounter])
+//           arrayOfDelist[buttonCounter].addEventListener("click", () => {
+//             cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)}); 
+//           arrayOfDelistModal[buttonCounter].addEventListener("click", () => {
+//             cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)});
+          
+//         }
+  
+//     }
+//     }
+
 
       //------------------- //
       // MINT NFTs
@@ -714,7 +899,6 @@ async function fetchExploreCards(maxAmount) {
 
       const postNFT = async () => {
         try {
-
             document.getElementById('mint-nft-status').classList.remove('d-none');
             document.getElementById('mintNftButton').setAttribute('disabled', '');
 
@@ -724,7 +908,7 @@ async function fetchExploreCards(maxAmount) {
             });
             const result = await response.json();
             const metaUri = result.data.metadata.replace('ipfs://', 'https://ipfs.io/ipfs/');
-            
+            console.log(metaUri)
             mintNFT (metaUri);
             // result.data.metadata.image
 
