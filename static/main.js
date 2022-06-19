@@ -202,7 +202,7 @@ let nftContracts = trustedContracts[chain];
 
 fetchExploreCards(8);
 fetchWalletCards(8, nftContracts);
-fetchMarketplaceCards(10, "marketplace");
+fetchMarketplaceCards(12, "marketplace");
 // fetchMarketplaceCardsCollectionModal(8);
 
 
