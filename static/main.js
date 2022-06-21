@@ -1075,8 +1075,6 @@ var loadFile = function(event) {
 
 document.getElementById("network-name").addEventListener("click", function () {
 
-  
-
   setTimeout(() => {
     document.getElementById('shibooyakasha').className = 'animate__animated animate__zoomInUp';
   }, "1000")
