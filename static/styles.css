@@ -23,3 +23,49 @@ hr {
     vertical-align: top;
     margin-top: 11px;
 }
+
+.animation {
+    animation-name: cssAnimation;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+    animation-timing-function: ease;
+    animation-fill-mode: forwards;
+  }
+  
+  @-webkit-keyframes cssAnimation {
+    from {
+      -webkit-transform: rotate(0deg) scale(1) skew(0deg) translate(100px);
+    }
+    to {
+      -webkit-transform: rotate(0deg) scale(2) skew(0deg) translate(100px);
+    }
+  }
+
+#network-name {
+    cursor: pointer;
+}
+
+#shibooyakasha {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -20%;
+    z-index: 9999;
+    width: 40%;
+}
+
+.animate__animated {
+    display: block !important;
+}
+
+#shibooyakasha img {
+    width: 100%;
+}
+
+#shibooyakasha audio {
+    display: none;
+}
+
+.hide {
+    display:none;
+}

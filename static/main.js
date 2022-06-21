@@ -1068,3 +1068,30 @@ var loadFile = function(event) {
   }
 
 }
+
+
+
+// Easter Egg: Shibooyakasha
+
+document.getElementById("network-name").addEventListener("click", function () {
+
+  
+
+  setTimeout(() => {
+    document.getElementById('shibooyakasha').className = 'animate__animated animate__zoomInUp';
+  }, "1000")
+
+  setTimeout(() => {
+    document.getElementById('shibooyakasha-img').className = 'animate__animated animate__repeat-2 animate__bounce animate__tada';
+  }, "2000")
+
+  setTimeout(() => {
+    document.getElementById('shibooyakasha').className = 'animate__animated animate__faster animate__zoomOutUp';
+  }, "4500")
+
+  setTimeout(() => {
+    document.getElementById('shibooyakasha').className = 'hide';
+  }, "5000")
+  
+  document.getElementById("shibooyakasha-mp3").play();
+});

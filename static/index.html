@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <title>Astar</title>
+    <title>Astar Creators</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="/styles.css">
 
     <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
@@ -18,7 +19,6 @@
 
 </head>
 <body>
-
     <header class="p-3 mb-3 border-bottom">
         <div class="container">
           <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -43,7 +43,7 @@
                 <span id="selected-account"><br>none</span>
                 <strong><span id="account-balance"></span></strong>
                 <br>
-                <span class="badge bg-warning text-dark" id="network-name"><strong>not connected</strong></span></small>
+                <span onclick="shibooyakasha();" class="badge bg-warning text-dark" id="network-name"><strong>not connected</strong></span></small>
                 <button id="btn-disconnect" type="button" class="btn btn-outline-secondary btn-sm px-4">Disconnect</button>
             </div>
           </div>
@@ -70,6 +70,16 @@
 
      <!-- Dev Buttons -->
     <div class="container">
+
+      <!-- Easter Egg -->
+      <div id="shibooyakasha" class="hide">
+        <img src="./images/shibooyakasha.png" id="shibooyakasha-img" alt="Shibooyakasha!">
+        <audio controls id="shibooyakasha-mp3">
+          <source src="./images/shibooyakasha.mp3" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+
     <div class="row">
         <div class="col-8"> </div>
         <div class="col-4">
