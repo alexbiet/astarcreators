@@ -1367,7 +1367,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_01.MarketItem[]",
+            "internalType": "struct MarketplaceV1_02.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1433,7 +1433,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_01.MarketItem[]",
+            "internalType": "struct MarketplaceV1_02.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1493,7 +1493,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_01.MarketItem[]",
+            "internalType": "struct MarketplaceV1_02.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1553,7 +1553,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_01.MarketItem[]",
+            "internalType": "struct MarketplaceV1_02.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1598,12 +1598,12 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_01.Collection[]",
+            "internalType": "struct MarketplaceV1_02.Collection[]",
             "name": "",
             "type": "tuple[]"
           }
         ],
-        "stateMutability": "nonpayable",
+        "stateMutability": "view",
         "type": "function"
       },
       {
@@ -1664,7 +1664,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_01.MarketItem",
+            "internalType": "struct MarketplaceV1_02.MarketItem",
             "name": "",
             "type": "tuple"
           },

@@ -114,30 +114,6 @@ async function buyMarketItem(_NFTContract, _marketId, _price) {
 }
 
 
-
-const listCollection = document.querySelector('#listCollection');
-listCollection.addEventListener('click', (e) => {
-    e.preventDefault();
-    createCollection();
-});
-
-async function createCollection() {
-
-  let name = document.querySelector('#new-collection-modal-1 #newCollectionName');
-  let description = document.querySelector('#new-collection-modal-1 #newCollectionDescription');
-  let totalMarketEls = document.querySelectorAll(".form-check-input")
-  let selectedNFTs = [];
-
-  for(let i = 0; i < totalMarketEls.length; i++) {
-    if(totalMarketEls[i].checked) {
-      selectedNFTs.push(totalMarketEls[i].id.slice(11)) //removes MARKET_ID: 
-    }
-  }
-  console.log(selectedNFTs)
-  MARKET_WRITE.createCollection(name, description, selectedNFTs);
-
- }
-
 async function fetchSellingItemsArray() {
   let marketItems = await MARKET_WRITE.fetchSellingMarketItems();
   let marketNFTs = [];
@@ -222,7 +198,7 @@ fetchExploreCards(8);
 fetchWalletCards(8, nftContracts);
 fetchMarketplaceCards(12, "marketplace");
 fetchMarketplaceCardsCollectionModal(8);
-
+fetchCollections();
 
 async function fetchExploreCards(maxAmount) {
   let marketNFTsEl = document.getElementById("market-NFTs");
@@ -1022,6 +998,136 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
   
     }
     }
+
+
+async function fetchCollections() {
+  let collections = await MARKET_READ.getActiveCollections();
+  console.log(collections[1])
+      // <div class="card shadow-sm">
+                    
+      //                               <div class="container text-center border-bottom">
+      //                                   <div class="row m-1 my-md-3">
+      //                                     <div class="col">
+      //                                       <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-5.png" alt="FaceMint #0" class="img-fluid">
+      //                                     </div>
+      //                                     <div class="col">
+      //                                       <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-3.png" alt="FaceMint #2" class="img-fluid">
+      //                                     </div>
+      //                                     <div class="col">
+      //                                       <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-4.png" alt="FaceMint #7" class="img-fluid">
+      //                                     </div>
+      //                                   </div>
+      //                                   <div class="row m-1 my-md-3">
+      //                                       <div class="col">
+      //                                           <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-2.png" alt="FaceMint #4" class="img-fluid">
+      //                                       </div>
+      //                                       <div class="col">
+      //                                           <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-1.png" alt="FaceMint #5" class="img-fluid">
+      //                                       </div>
+      //                                       <div class="col d-flex align-items-center"> 
+      //                                           <small class="text-muted">... and 6 more.</small>
+      //                                       </div>
+      //                                   </div>
+      //                               </div>
+                                    
+                            
+                      
+      //                               <div class="card-body">
+      //                                   <div class="row text-center border-bottom pb-3 mb-3">
+      //                                       <div class="col"> 
+      //                                           <p class="card-text"><strong>Collection Name</strong></p>
+      //                                       </div>
+      //                                     </div>
+                                    
+      //                                     <small>
+      //                                       <div class="row">
+      //                                         <div class="col text-end pe-1">
+      //                                           <p class="card-text"><strong>TVL: </strong></p>      
+      //                                         </div>
+      //                                         <div class="col ps-1">
+      //                                           <p class="card-text">1000 ASTAR</p>
+      //                                         </div>
+      //                                       </div>
+                    
+      //                                       <div class="row">
+      //                                           <div class="col text-end pe-1">
+      //                                             <p class="card-text"><strong>APY: </strong></p>       
+      //                                           </div>
+      //                                           <div class="col ps-1">
+      //                                             <p class="card-text">11.4%</p>
+      //                                           </div>
+      //                                         </div>
+                    
+      //                                       <div class="row">
+      //                                           <div class="col text-end pe-1">
+      //                                           <p class="card-text"><strong>Stakers: </strong></p>     
+      //                                           </div>
+      //                                           <div class="col ps-1">
+      //                                           <p class="card-text">23</p>
+      //                                           </div>
+      //                                       </div>
+                    
+      //                                       <div class="row">
+      //                                           <div class="col text-end pe-1">
+      //                                           <p class="card-text"><strong>Earnings: </strong></p>     
+      //                                           </div>
+      //                                           <div class="col ps-1">
+      //                                           <p class="card-text">11.23 ASTAR</p>
+      //                                           </div>
+      //                                       </div>
+                
+      //                                       <div class="row">
+      //                                           <div class="col text-end pe-1">
+      //                                           <p class="card-text"><strong>Total NFTs: </strong></p>     
+      //                                           </div>
+      //                                           <div class="col ps-1">
+      //                                           <p class="card-text">6</p>
+      //                                           </div>
+      //                                       </div>
+                    
+      //                                       <div class="row border-bottom pb-3 mb-3">
+      //                                           <div class="col text-end pe-1">
+      //                                             <p class="card-text"><strong>Creator: </strong></p>  
+      //                                           </div>
+      //                                           <div class="col ps-1">
+      //                                             <p class="card-text">0x1234...5678</p>
+      //                                           </div>
+      //                                       </div>
+      //                                   </small>
+                    
+      //                                   <div class="row text-center">
+      //                                       <div class="col">
+      //                                           <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#collection-modal-2">View</button>
+      //                                           &nbsp; &nbsp; 
+      //                                           <button type="button" class="btn btn-sm btn-outline-danger" id="">Delist</button>
+      //                                       </div>
+      //                                   </div>
+                    
+      //                               </div>
+      //                           </div>
+}
+
+const listCollection = document.querySelector('#listCollection');
+listCollection.addEventListener('click', (e) => {
+    e.preventDefault();
+    createCollection();
+});
+
+async function createCollection() {
+
+  let name = document.querySelector('#new-collection-modal-1 #newCollectionName').value;
+  let description = document.querySelector('#new-collection-modal-1 #newCollectionDescription').value;
+  let totalMarketEls = document.querySelectorAll(".form-check-input")
+  let selectedNFTs = [];
+
+  for(let i = 0; i < totalMarketEls.length; i++) {
+    if(totalMarketEls[i].checked) {
+      selectedNFTs.push(totalMarketEls[i].id.slice(11)) //removes MARKET_ID: 
+    }
+  }
+  MARKET_WRITE.createCollection(name, description, selectedNFTs);
+
+ }
 
 
       //------------------- //
