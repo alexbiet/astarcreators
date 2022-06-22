@@ -1005,6 +1005,7 @@ async function fetchCollections() {
   let containerEl = document.getElementById("my-collections")
   let tempHTML;
   for( let i = 0; i < collections.length; i++){
+    if(collectins[i].creator == account){
     tempHTML += `
     <div class="card shadow-sm">
                     
@@ -1226,6 +1227,7 @@ async function fetchCollections() {
 </div>
 </div>`
   }
+}
    containerEl.innerHTML = tempHTML;   
 }
 
