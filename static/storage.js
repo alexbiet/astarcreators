@@ -6,8 +6,8 @@ const addresses = {
     astarMinter: "0x7Fe4E59b858B907e4640730731108f9234461929",
   },
   Mumbai: {
-    marketplace: "0xf0f04402E23fD3b549DBD9B7D9a503691E9E3Cd6",
-    faceMinter: "0x177040306f9e15a82d21B09C2840BbED4f3D15bE",
+    marketplace: "0xE15aEf6d89B32384ff0897b10623dD0b7a391f3d", //new proxy 06/22
+    faceMinter: "0xCbD54056ba671ddF74756F18668a96C76E0C44d9",
     astarMinter: "0xb44C8f4880601B2cF51c38c7c083650bbc4FF5C4",
   },
 }
@@ -1171,6 +1171,50 @@ const abis = {
         "type": "event"
       },
       {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "itemsCount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "soldCount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "canceledItemsCount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "availableCount",
+            "type": "uint256"
+          }
+        ],
+        "name": "countMessage",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "thisContractAddress",
+            "type": "address"
+          }
+        ],
+        "name": "ownerAddress",
+        "type": "event"
+      },
+      {
         "inputs": [
           {
             "internalType": "address",
@@ -1186,6 +1230,29 @@ const abis = {
         "name": "cancelMarketItem",
         "outputs": [],
         "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_description",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "_marketIdsArray",
+            "type": "uint256[]"
+          }
+        ],
+        "name": "createCollection",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
       },
       {
@@ -1233,6 +1300,19 @@ const abis = {
         "name": "createMarketSale",
         "outputs": [],
         "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_collectionId",
+            "type": "uint256"
+          }
+        ],
+        "name": "delistCollection",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
       },
       {
@@ -1287,7 +1367,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct Marketplace.MarketItem[]",
+            "internalType": "struct MarketplaceV1_01.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1353,7 +1433,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct Marketplace.MarketItem[]",
+            "internalType": "struct MarketplaceV1_01.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1413,7 +1493,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct Marketplace.MarketItem[]",
+            "internalType": "struct MarketplaceV1_01.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1473,12 +1553,57 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct Marketplace.MarketItem[]",
+            "internalType": "struct MarketplaceV1_01.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
         ],
         "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getActiveCollections",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "description",
+                "type": "string"
+              },
+              {
+                "internalType": "uint256",
+                "name": "collectionId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256[]",
+                "name": "marketIds",
+                "type": "uint256[]"
+              },
+              {
+                "internalType": "address",
+                "name": "creator",
+                "type": "address"
+              },
+              {
+                "internalType": "bool",
+                "name": "active",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct MarketplaceV1_01.Collection[]",
+            "name": "",
+            "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "nonpayable",
         "type": "function"
       },
       {
@@ -1539,7 +1664,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct Marketplace.MarketItem",
+            "internalType": "struct MarketplaceV1_01.MarketItem",
             "name": "",
             "type": "tuple"
           },

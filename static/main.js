@@ -113,40 +113,34 @@ async function buyMarketItem(_NFTContract, _marketId, _price) {
   MARKET_WRITE.createMarketSale(_NFTContract, _marketId, {value: _price});
 }
 
-async function createCollection(_name, _description, arrayOfMarketIds) {
-  MARKET_WRITE.createCollection(_name, _description, arrayOfMarketIds);
-}
+
 
 const listCollection = document.querySelector('#listCollection');
 listCollection.addEventListener('click', (e) => {
     e.preventDefault();
-    getCollections();
+    createCollection();
 });
 
-async function getCollections() {
-  //   MARKET_READ.
-  let name;
-  let description;
-  let totalNFTs;
-  let selectedNFTs;
+async function createCollection() {
 
-  name = document.querySelector('#new-collection-modal-1 #newCollectionName');
-  description = document.querySelector('#new-collection-modal-1 #newCollectionDescription');
+  let name = document.querySelector('#new-collection-modal-1 #newCollectionName');
+  let description = document.querySelector('#new-collection-modal-1 #newCollectionDescription');
+  let totalMarketEls = document.querySelectorAll(".form-check-input")
+  let selectedNFTs = [];
 
-  totalNFTs = document.querySelector('#new-collection-modal-1 #new-collection-modal .card input').value; // true/false - checked/unchecked
-
-  //....
-
-  console.log(name);
-  console.log(description);
-  console.log(totalNFTs);
-  console.log(selectedNFTs);
+  for(let i = 0; i < totalMarketEls.length; i++) {
+    if(totalMarketEls[i].checked) {
+      selectedNFTs.push(totalMarketEls[i].id.slice(11)) //removes MARKET_ID: 
+    }
+  }
+  console.log(selectedNFTs)
+  MARKET_WRITE.createCollection(name, description, selectedNFTs);
 
  }
 
 async function fetchSellingItemsArray() {
   let marketItems = await MARKET_WRITE.fetchSellingMarketItems();
-  marketNFTs = [];
+  let marketNFTs = [];
   for (let i = 0; i < marketItems.length; i++) {
     marketNFTs.push({});
     marketNFTs[i].marketId = ethers.utils.formatUnits(marketItems[i][0], 0);
@@ -242,6 +236,7 @@ async function fetchExploreCards(maxAmount) {
   let NFTsArray = await fetchMarketItemsArray();
     for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
         let metadata = await fetch(NFTsArray[i].tokenURI);
+     
         if(NFTsArray[i].tokenURI.includes("json")){
         try{
           metadata = await metadata.json();
@@ -797,7 +792,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
         }
           marketplaceNFTsEl.innerHTML = htmlHolder;
           let arrayOfDelist = document.querySelectorAll(`#${location} .btn-Delist`);
-          console.log(arrayOfDelist)
+  
           let arrayOfDelistModal = document.querySelectorAll(`#${location} .btn-DelistModal`);
           let buttonCounter = 0;
           for (let i = 0; i < NFTsArray.length; i++) {
@@ -832,7 +827,6 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
     } else {
       saleStatus = `<span class="badge text-bg-warning">For Sale</span>`;
     }
-
     if(NFTsArray[i].tokenURI.includes("json")){
     try{
     metadata = await metadata.json();
@@ -892,7 +886,7 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
             <div class="row border-bottom pb-3 mb-3 justify-content-center">
               <div class="col-auto text-center pe-1">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="addToCollection${i}">
+                  <input class="form-check-input" type="checkbox" value="" id="MARKET_ID: ${NFTsArray[i].marketId}">
                   <label class="form-check-label" for="addToCollection${i}">
                     <b>Add to Collection</b>
                   </label>
@@ -1019,7 +1013,6 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
         
         for (let i = 0; i < NFTsArray.length; i++) {
             if(!NFTsArray[i].canceled && !NFTsArray[i].sold) {
-          console.log(arrayOfDelist[buttonCounter])
           arrayOfDelist[buttonCounter].addEventListener("click", () => {
             cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)}); 
           arrayOfDelistModal[buttonCounter].addEventListener("click", () => {

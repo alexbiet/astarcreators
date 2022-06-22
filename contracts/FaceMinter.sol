@@ -18,13 +18,12 @@ contract FaceMinter is ERC721, ERC721URIStorage, Ownable {
         return "https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-";
     }
 
-    function safeMint(address to) public onlyOwner {
+    function safeMint(address to) public {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
         uint randomNum = (random() % 6) + 1;
-        string memory randomUri = string.concat(_baseURI(), Strings.toString(randomNum));
-        randomUri = string.concat(randomUri, ".png");
+        string memory randomUri = string.concat(Strings.toString(randomNum), ".png");
         _setTokenURI(tokenId, randomUri);
     }
 
