@@ -116,8 +116,32 @@ async function buyMarketItem(_NFTContract, _marketId, _price) {
 async function createCollection(_name, _description, arrayOfMarketIds) {
   MARKET_WRITE.createCollection(_name, _description, arrayOfMarketIds);
 }
+
+const listCollection = document.querySelector('#listCollection');
+listCollection.addEventListener('click', (e) => {
+    e.preventDefault();
+    getCollections();
+});
+
 async function getCollections() {
-//   MARKET_READ.
+  //   MARKET_READ.
+  let name;
+  let description;
+  let totalNFTs;
+  let selectedNFTs;
+
+  name = document.querySelector('#new-collection-modal-1 #newCollectionName');
+  description = document.querySelector('#new-collection-modal-1 #newCollectionDescription');
+
+  totalNFTs = document.querySelector('#new-collection-modal-1 #new-collection-modal .card input').value; // true/false - checked/unchecked
+
+  //....
+
+  console.log(name);
+  console.log(description);
+  console.log(totalNFTs);
+  console.log(selectedNFTs);
+
  }
 
 async function fetchSellingItemsArray() {
@@ -584,29 +608,39 @@ async function fetchMarketplaceCards(maxAmount, location) {
     let NFTDescription = "";
     let NFTAttributesTraits = "";
     let NFTAttributesValues = "";
+    let saleStatus = "";
+
+    
 
     let NFTsArray = await fetchSellingItemsArray();
     for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
       let metadata = await fetch(NFTsArray[i].tokenURI);
-      if(NFTsArray[i].tokenURI.includes("json")){
-      try{
-      metadata = await metadata.json();
-      NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
 
-      NFTName = metadata.name;
-      NFTDescription = metadata.description;
-
-      for(let i=0; i < metadata.attributes.length; i++) {
-        NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
-        NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
-
+      if (NFTsArray[i].sold) {
+        saleStatus = `<span class="badge text-bg-success">Sold</span>`;
+      } else {
+        saleStatus = `<span class="badge text-bg-warning">For Sale</span>`;
       }
-      } catch {
+
+      if(NFTsArray[i].tokenURI.includes("json")){
+        try{
+        metadata = await metadata.json();
+        NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+
+        NFTName = metadata.name;
+        NFTDescription = metadata.description;
+
+        for(let i=0; i < metadata.attributes.length; i++) {
+          NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
+          NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
+
+        }
+        } catch {
+          NFTImage = NFTsArray[i].tokenURI;
+        }
+      } else {
         NFTImage = NFTsArray[i].tokenURI;
       }
-    } else {
-      NFTImage = NFTsArray[i].tokenURI;
-    }
       if (!NFTsArray[i].sold && !NFTsArray[i].canceled){
       htmlHolder += `
       <div class="col">
@@ -631,7 +665,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
                     </div>
                     <div class="col text-start ps-1">
                       <p class="card-text">
-                          <span class="badge text-bg-warning">For Sale</span>
+                          ${saleStatus}
                       </p>
                   </div>
               </div>
@@ -648,7 +682,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
 
               <div class="row text-center">
               <div class="col">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#marketlist-nft-modalWallet-${i}">View</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#${location}-nft-modalWallet-${i}">View</button>
                   &nbsp; &nbsp; 
                   <button type="button" class="btn btn-sm btn-outline-danger btn-Delist" id="Delist${i}">Delist</button>
               </div>
@@ -659,11 +693,11 @@ async function fetchMarketplaceCards(maxAmount, location) {
       </div>
 
       <!-- Modal (default hidden) -->
-      <div class="modal fade" id="marketlist-nft-modalWallet-${i}" tabisndex="-1" aria-labelledby="marketlist-nft-aria-modalWallet-${i}" style="display: none;" aria-hidden="true">
+      <div class="modal fade" id="${location}-nft-modalWallet-${i}" tabisndex="-1" aria-labelledby="${location}-nft-aria-modalWallet-${i}" style="display: none;" aria-hidden="true">
           <div class="modal-dialog modal-xl">
               <div class="modal-content">
               <div class="modal-header">
-                  <h5 class="modal-title h4" id="marketlist-nft-aria-modalWallet-${i}">FaceMint #14</h5>
+                  <h5 class="modal-title h4" id="${location}-nft-aria-modalWallet-${i}">${NFTsArray[i].name} #${NFTsArray[i].tokenId}</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -729,7 +763,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
                           <div class="col text-start ps-1">
                               <br>
                               <p class="card-text">
-                                  <span class="badge text-bg-warning">For Sale</span>
+                                ${saleStatus}
                               </p>
                           </div>
                       </div>
@@ -782,13 +816,35 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
   let marketplaceNFTsEl = document.getElementById("new-collection-modal");
   let listingLimit = maxAmount -1;
   let htmlHolder = "";
+  let NFTName = "";
+  let NFTDescription = "";
+  let NFTAttributesTraits = "";
+  let NFTAttributesValues = "";
+  let saleStatus = "";
+
+
   let NFTsArray = await fetchSellingItemsArray();
   for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
     let metadata = await fetch(NFTsArray[i].tokenURI);
+
+    if (NFTsArray[i].sold) {
+      saleStatus = `<span class="badge text-bg-success">Sold</span>`;
+    } else {
+      saleStatus = `<span class="badge text-bg-warning">For Sale</span>`;
+    }
+
     if(NFTsArray[i].tokenURI.includes("json")){
     try{
     metadata = await metadata.json();
     NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+
+    NFTName = metadata.name;
+    NFTDescription = metadata.description;
+
+    for(let i=0; i < metadata.attributes.length; i++) {
+      NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
+      NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
+    }
     } catch {
       NFTImage = NFTsArray[i].tokenURI;
     }
@@ -819,7 +875,7 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
                   </div>
                   <div class="col text-start ps-1">
                     <p class="card-text">
-                        <span class="badge text-bg-warning">For Sale</span>
+                        ${saleStatus}
                     </p>
                 </div>
             </div>
@@ -833,15 +889,12 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
                 </div>
             </div>
 
-            <div class="row border-bottom pb-3 mb-3">
-              <div class="col text-end pe-1">
-                <p class="card-text"><strong>Collection: </strong></p>      
-              </div>
-              <div class="col text-start ps-1">
+            <div class="row border-bottom pb-3 mb-3 justify-content-center">
+              <div class="col-auto text-center pe-1">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                  <label class="form-check-label" for="flexCheckDefault">
-                    Add
+                  <input class="form-check-input" type="checkbox" value="" id="addToCollection${i}">
+                  <label class="form-check-label" for="addToCollection${i}">
+                    <b>Add to Collection</b>
                   </label>
                 </div>
               </div>
@@ -865,7 +918,7 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title h4" id="marketlist-nft-aria-modalWallet-${i}">FaceMint #14</h5>
+                <h5 class="modal-title h4" id="marketlist-nft-aria-modalWallet-${i}">${NFTsArray[i].name} #${NFTsArray[i].tokenId}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -881,10 +934,19 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
 
                     <div class="row">
                     <div class="col text-end pe-1">
+                        <p class="card-text"><strong>Name: </strong></p>      
+                    </div>
+                    <div class="col ps-1">
+                        <p class="card-text"><small>${NFTName}</small></p>
+                    </div>
+                    </div>
+
+                    <div class="row">
+                    <div class="col text-end pe-1">
                         <p class="card-text"><strong>Description: </strong></p>      
                     </div>
                     <div class="col ps-1">
-                        <p class="card-text"><small>TBD</small></p>
+                        <p class="card-text"><small>${NFTDescription}</small></p>
                     </div>
                     </div>
 
@@ -892,16 +954,14 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
                     <div class="col text-end pe-1">
                     <br>
                         <p class="card-text"><strong>Properties </strong>    
-                        <br><small>Property 1:</small>  
-                        <br><small>Property 2:</small>   
-                        <br><small>Property 3:</small></p>      
+                        ${NFTAttributesTraits}
+                        </p>      
                     </div>
                     <div class="col ps-1">
                     <br>
-                        <p class="card-text">&nbsp;
-                        <br><small>Value 1</small>
-                        <br><small>Value 2</small>
-                        <br><small>Value 3</small></p>
+                        <p class="card-text">&nbsp;  
+                        ${NFTAttributesValues}
+                        </p>
                     </div>
                     </div>
 
@@ -920,7 +980,7 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
                         </div>
                         <div class="col text-start ps-1">
                             <p class="card-text">
-                                <span class="badge text-bg-warning">For Sale</span>
+                              ${saleStatus}
                             </p>
                         </div>
                     </div>

@@ -203,7 +203,7 @@
                                 <input type="text" class="form-control" placeholder="i.e. 100.00" aria-describedby="button-stake">
                                 <span class="input-group-text">ASTAR</span>
                                 <button class="btn btn-primary" type="button" id="button-stake-1">Stake</button>
-                                <button class="btn btn-warning" type="button" id="button-unstake-1">Unstake</button>
+                                <button class="btn btn-outline-danger" type="button" id="button-unstake-1">Unstake</button>
                             </div>
                         </div>
                     </div>
@@ -388,7 +388,7 @@
                                             <input type="text" class="form-control" placeholder="i.e. 100.00" aria-describedby="button-stake">
                                             <span class="input-group-text">ASTAR</span>
                                             <button class="btn btn-primary" type="button" id="modal-button-stake-1">Stake</button>
-                                            <button class="btn btn-warning" type="button" id="modal-button-unstake-1">Unstake</button>
+                                            <button class="btn btn-outline-danger" type="button" id="modal-button-unstake-1">Unstake</button>
                                         </div>
                                     </div>
                                 </div>  
@@ -525,7 +525,7 @@
                                     <input type="text" class="form-control" placeholder="i.e. 100.00" aria-describedby="button-stake">
                                     <span class="input-group-text">ASTAR</span>
                                     <button class="btn btn-primary" type="button" id="button-stake">Stake</button>
-                                    <button class="btn btn-warning" type="button" id="button-stake">Unstake</button>
+                                    <button class="btn btn-outline-danger" type="button" id="button-stake">Unstake</button>
                                 </div>
                             </div>
                         </div>
@@ -949,19 +949,16 @@
 
 
 
-            <div class="row border-bottom pb-3 mb-3">
-              <div class="col text-end pe-1">
-                <p class="card-text"><strong>Collection: </strong></p>      
-              </div>
-              <div class="col text-start ps-1">
+            <div class="row border-bottom pb-3 mb-3 justify-content-center">
+              <div class="col-auto text-center pe-1">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                   <label class="form-check-label" for="flexCheckDefault">
-                    Add
+                    <b>Add to Collection</b>
                   </label>
                 </div>
               </div>
-          </div>
+            </div>
                                                     
                                                                   
                                                                     </small>
@@ -986,7 +983,7 @@
 
                                                     <div class="mb-3">
                                                         <label class="form-label">Collection Name</label>
-                                                        <input type="text" class="form-control" placeholder="Wow Collection">
+                                                        <input type="text" class="form-control" placeholder="">
                                                       </div>
                                                       <div class="mb-3">
                                                         <label class="form-label">Collection Description</label>
@@ -1082,16 +1079,16 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Collection Name</label>
-                                <input type="text" class="form-control" placeholder="Wow Collection">
+                                <input type="text" class="form-control" id="newCollectionName" placeholder="">
                               </div>
                               <div class="mb-3">
                                 <label class="form-label">Collection Description</label>
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea class="form-control" id="newCollectionDescription" rows="3"></textarea>
                             </div>
 
 
                             <div class="mb-3">
-                                <button type="submit" class="btn btn-primary mb-3">List Collection</button>
+                                <button type="submit" id="listCollection" class="btn btn-primary mb-3">List Collection</button>
                             </div>
 
                         </div>
@@ -1125,7 +1122,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="nft-name" class="form-label">NFT Name*</label>
-                                <input type="text" class="form-control" id="nft-name" placeholder="i.e. Ecstatic Chihuahua" name="nftName" required>
+                                <input type="text" class="form-control" id="nft-name" placeholder="" name="nftName" required>
                             </div>
                             <div class="mb-3">
                                 <label for="nft-description" class="form-label">Description*</label>
