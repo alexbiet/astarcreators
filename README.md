@@ -23,6 +23,15 @@ Build during the [Polkadot Hackathon: North America Edition - Summer 2022](https
 
 <br>
 <br>
+<br>
+
+## Deploy server
+
+1. Run `git push heroku main`
+
+
+<br>
+<br>
 
 
 **TO DO**
