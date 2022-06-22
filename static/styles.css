@@ -77,4 +77,9 @@ hr {
     height: 0;
     padding-bottom: 100%;
     overflow: hidden;
+    background-color: #efefef;
+}
+
+.image-radius {
+    border-radius: 6px;
 }

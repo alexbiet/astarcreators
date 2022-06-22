@@ -299,7 +299,9 @@ async function fetchExploreCards(maxAmount) {
                   <div class="row">
 
                     <div class="col">
-                    <img src="${NFTImage}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}" style="width:100%;"/>
+
+                    <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
+                    
                     </div>
 
                     <div class="col">
@@ -426,7 +428,7 @@ async function fetchWalletCards(maxAmount, nftContracts) {
       } else {
         NFTImage = NFTsArray[i].tokenURI;
       }
-      
+
         htmlHolder += `
         <!-- Card Listing -->
         <div class="col">
@@ -482,7 +484,7 @@ async function fetchWalletCards(maxAmount, nftContracts) {
                   <div class="row">
 
                     <div class="col">
-                    <img src="${NFTImage}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}" style="width:100%;"/>
+                    <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
                     </div>
 
                     <div class="col">
@@ -670,7 +672,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
                   <div class="row">
 
                   <div class="col">
-                      <img src="${NFTImage}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}" style="width:100%;"/>
+                  <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
                   </div>
 
                   <div class="col">
@@ -872,7 +874,7 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
                 <div class="row">
 
                 <div class="col">
-                    <img src="${NFTImage}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}" style="width:100%;"/>
+                  <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
                 </div>
 
                 <div class="col">
@@ -1025,21 +1027,6 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
         `;
       };
 
-
-      // NFT Media Preview
-
-      var loadFile = function(event) {
-        let nftMediaPreview = document.getElementById('nftMediaPreview');
-        let previewPath = URL.createObjectURL(event.target.files[0]);
-
-        if(event.target.files[0].type.includes('video/')) {
-          nftMediaPreview.innerHTML = `<video controls style="width:100%;"><source src="${previewPath}" type="video/mp4"></video>`;
-        } else {
-          nftMediaPreview.innerHTML = `<img src="${previewPath}" style="width:100%;"/>`;
-        }
-
-      }
-
 };
 
 // -----------------------
@@ -1149,7 +1136,7 @@ var loadFile = function(event) {
   if(event.target.files[0].type.includes('video/')) {
     nftMediaPreview.innerHTML = `<video controls style="width:100%;"><source src="${previewPath}" type="video/mp4"></video>`;
   } else {
-    nftMediaPreview.innerHTML = `<img src="${previewPath}" style="width:100%;"/>`;
+    nftMediaPreview.innerHTML = `<div class="card-image image-radius" style="background-image: url('${previewPath}');"> </div>`;
   }
 
 }
