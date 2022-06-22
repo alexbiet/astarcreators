@@ -7,7 +7,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
-contract MarketplaceTest is Initializable, UUPSUpgradeable, OwnableUpgradeable {
+contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     CountersUpgradeable.Counter private _marketItemIds;
@@ -65,6 +65,8 @@ contract MarketplaceTest is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 
     uint256 private listingFee;
 
+    CountersUpgradeable.Counter private _activeCollections;
+
     function initialize() initializer public {
         __UUPSUpgradeable_init();
         __Ownable_init();
@@ -95,6 +97,7 @@ contract MarketplaceTest is Initializable, UUPSUpgradeable, OwnableUpgradeable {
             true
             );
         _collectionIds.increment();
+        _activeCollections.increment();
     }
 
     function delistCollection(uint256 _collectionId) public {
@@ -102,6 +105,18 @@ contract MarketplaceTest is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         require(collectionIdToCollection[_collectionId].active, "Collection already delisted");
         require(collectionIdToCollection[_collectionId].creator == msg.sender, "Not the creator of that Collection.");
         collectionIdToCollection[_collectionId].active = false;
+        _activeCollections.decrement();
+    }
+
+    function getActiveCollections() public returns (Collection[] memory) {
+        Collection[] memory activeCollections = new Collection[](_activeCollections.current());
+        for(uint256 i = 0; i < _collectionIds.current(); i++) {
+            if(collectionIdToCollection[i].active) { 
+                activeCollections[i] = collectionIdToCollection[i];
+            }
+        }
+                return activeCollections;
+
     }
 
     function createMarketItem(
