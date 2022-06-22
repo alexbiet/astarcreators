@@ -1,7 +1,7 @@
 # Astar Creators
 <br>
 
-<img src="static/images/astar-creators.png" alt="Astar Creators">
+<img src="static/images/astar-creators.png" width="300" alt="Astar Creators">
 
 <br>
 

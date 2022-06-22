@@ -210,13 +210,25 @@ async function fetchExploreCards(maxAmount) {
   let marketNFTsEl = document.getElementById("market-NFTs");
   let listingLimit = maxAmount -1;
   let htmlHolder = "";
+  let NFTName = "";
+  let NFTDescription = "";
+  let NFTAttributesTraits = "";
+  let NFTAttributesValues = "";
+
   let NFTsArray = await fetchMarketItemsArray();
     for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
         let metadata = await fetch(NFTsArray[i].tokenURI);
         if(NFTsArray[i].tokenURI.includes("json")){
         try{
-        metadata = await metadata.json();
-        NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+          metadata = await metadata.json();
+          NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+          NFTName = metadata.name;
+          NFTDescription = metadata.description;
+
+          for(let i=0; i < metadata.attributes.length; i++) {
+            NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
+            NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
+          }
         } catch {
           NFTImage = NFTsArray[i].tokenURI;
         }
@@ -227,7 +239,8 @@ async function fetchExploreCards(maxAmount) {
         <!-- Card Listing -->
         <div class="col">
           <div class="card shadow-sm">
-            <img src="${NFTImage}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}"/>
+
+            <div class="card-image" style="background-image: url('${NFTImage}');"> </div>
 
             <div class="card-body">
 
@@ -254,7 +267,7 @@ async function fetchExploreCards(maxAmount) {
                       <p class="card-text"><strong>Creator: </strong></p>       
                     </div>
                     <div class="col ps-1">
-                      <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + account.slice(-4)}</p>
+                      <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + NFTsArray[i].creator.slice(-4)}</p>
                     </div>
                   </div>
                 </small>
@@ -293,10 +306,19 @@ async function fetchExploreCards(maxAmount) {
 
                       <div class="row">
                         <div class="col text-end pe-1">
+                          <p class="card-text"><strong>Name: </strong></p>      
+                        </div>
+                        <div class="col ps-1">
+                          <p class="card-text"><small>${NFTName}</small></p>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col text-end pe-1">
                           <p class="card-text"><strong>Description: </strong></p>      
                         </div>
                         <div class="col ps-1">
-                          <p class="card-text"><small>TBD</small></p>
+                          <p class="card-text"><small>${NFTDescription}</small></p>
                         </div>
                       </div>
 
@@ -304,16 +326,14 @@ async function fetchExploreCards(maxAmount) {
                         <div class="col text-end pe-1">
                         <br>
                           <p class="card-text"><strong>Properties </strong>    
-                          <br><small>Property 1:</small>  
-                          <br><small>Property 2:</small>   
-                          <br><small>Property 3:</small></p>      
+                          ${NFTAttributesTraits}
+                          </p>      
                         </div>
                         <div class="col ps-1">
                         <br>
-                          <p class="card-text">&nbsp;
-                          <br><small>Value testttt</small>
-                          <br><small>Value 2</small>
-                          <br><small>Value 3</small></p>
+                          <p class="card-text">&nbsp;   
+                          ${NFTAttributesValues}
+                          </p>
                         </div>
                       </div>
 
@@ -324,24 +344,26 @@ async function fetchExploreCards(maxAmount) {
                         </div>
                         <div class="col ps-1">
                         <br>
-                          <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + account.slice(-4)}</p>
+                          <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + NFTsArray[i].creator.slice(-4)}</p>
                         </div>
                       </div>
 
                       <div class="row">
                         <div class="col text-end pe-1">
-                          <p class="card-text"><strong>Contract: </strong></p>       
+                          <p class="card-text"><strong>NFT Contract: </strong></p>       
                         </div>
                         <div class="col ps-1">
-                          <p class="card-text">0x0g9g...22g1</p>
+                          <p class="card-text">${NFTsArray[i].contractAddress.substring(0,6) + "..." + NFTsArray[i].contractAddress.slice(-4)}</p>
                         </div>
                       </div>
 
                       <div class="row border-bottom pb-3 mb-3">
                         <div class="col text-end pe-1">
+                          <br>
                           <p class="card-text"><strong>Price: </strong></p>      
                         </div>
                         <div class="col ps-1">
+                          <br>
                           <p class="card-text">${NFTsArray[i].price} ${symbol}</p>
                         </div>
                       </div>
@@ -377,14 +399,27 @@ async function fetchWalletCards(maxAmount, nftContracts) {
       let walletNFTsEl = document.getElementById("wallet-NFTs");
       let listingLimit = maxAmount -1;
       let htmlHolder = "";
+      let NFTName = "";
+      let NFTDescription = "";
+      let NFTAttributesTraits = "";
+      let NFTAttributesValues = "";
+
       let NFTsArray = await fetchNFTsFromContracts(nftContracts);
       let NFTImage;
       for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
         let metadata = await fetch(NFTsArray[i].tokenURI);
         if(NFTsArray[i].tokenURI.includes("json")){
         try{
-        metadata = await metadata.json();
-        NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+          metadata = await metadata.json();
+          NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+
+          NFTName = metadata.name;
+          NFTDescription = metadata.description;
+
+          for(let i=0; i < metadata.attributes.length; i++) {
+            NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
+            NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
+          }
         } catch {
           NFTImage = NFTsArray[i].tokenURI;
         }
@@ -396,7 +431,8 @@ async function fetchWalletCards(maxAmount, nftContracts) {
         <!-- Card Listing -->
         <div class="col">
           <div class="card shadow-sm">
-            <img src="${NFTImage}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}"/>
+          
+            <div class="card-image" style="background-image: url('${NFTImage}');"> </div>
 
             <div class="card-body">
 
@@ -413,7 +449,7 @@ async function fetchWalletCards(maxAmount, nftContracts) {
                   <div class="input-group input-group-sm">
                     <input type="text" class="form-control inputWallet" placeholder="Price">
                     <span class="input-group-text">${symbol}</span>
-                    <button class="btn btn-secondary approveWallet" type="button" id="nftwallet-approve${i}">Approve</button>
+                    <button class="btn btn-warning approveWallet" type="button" id="nftwallet-approve${i}">Approve</button>
                     <button class="btn btn-primary listWallet" type="button" id="">List</button>
                   </div>
                 </div>
@@ -453,50 +489,59 @@ async function fetchWalletCards(maxAmount, nftContracts) {
 
                       <div class="row">
                         <div class="col text-end pe-1">
+                          <p class="card-text"><strong>Name: </strong></p>      
+                        </div>
+                        <div class="col ps-1">
+                          <p class="card-text"><small>${NFTName}</small></p>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col text-end pe-1">
                           <p class="card-text"><strong>Description: </strong></p>      
                         </div>
                         <div class="col ps-1">
-                          <p class="card-text"><small>TBD</small></p>
+                          <p class="card-text"><small>${NFTDescription}</small></p>
                         </div>
                       </div>
 
                       <div class="row">
                         <div class="col text-end pe-1">
                         <br>
-                          <p class="card-text"><strong>Properties </strong>    
-                          <br><small>Property 1:</small>  
-                          <br><small>Property 2:</small>   
-                          <br><small>Property 3:</small></p>      
+                          <p class="card-text"><strong>Properties </strong>
+                          ${NFTAttributesTraits}
+                          </p>      
                         </div>
                         <div class="col ps-1">
                         <br>
                           <p class="card-text">&nbsp;
-                          <br><small>Value 1</small>
-                          <br><small>Value 2</small>
-                          <br><small>Value 3</small></p>
+                          ${NFTAttributesValues}
+                          </p>
                         </div>
                       </div>
 
-                      <div class="row">
+                      <div class="row border-bottom pb-3 mb-3">
                         <div class="col text-end pe-1">
-                          <p class="card-text"><strong>Contract: </strong></p>       
+                          <br>
+                          <p class="card-text"><strong>NFT Contract: </strong></p>       
                         </div>
                         <div class="col ps-1">
-                          <p class="card-text">0x0g9g...22g1</p>
+                        <br>
+                          <p class="card-text">${NFTsArray[i].contractAddress.substring(0,6) + "..." + NFTsArray[i].contractAddress.slice(-4)}</p>
                         </div>
                       </div>
 
-                      <div class="row text-center border-bottom pb-3 mb-3">
+                      <div class="row text-center">
 
-                        <div class="col-3"> </div> 
-                        <div class="col-6"> 
+                        <div class="col-12 col-md-8 offset-md-2"> 
                           <div class="input-group">
                             <input type="text" id="nftmodal-listInput${i}" class="form-control inputModal" placeholder="Price">
                             <span class="input-group-text">${symbol}</span>
-                            <button class="btn btn-secondary approveModal" type="button" id="nftmodal-approve${i}">Approve</button>
+                            <button class="btn btn-warning approveModal" type="button" id="nftmodal-approve${i}">Approve</button>
                             <button class="btn btn-primary listModal" type="button" id="nftmodal-list${i}">List</button>
                           </div>
                         </div>
+
                       </div>
 
                       </div>
@@ -533,6 +578,11 @@ async function fetchMarketplaceCards(maxAmount, location) {
     let marketplaceNFTsEl = document.getElementById(location);
     let listingLimit = maxAmount -1;
     let htmlHolder = "";
+    let NFTName = "";
+    let NFTDescription = "";
+    let NFTAttributesTraits = "";
+    let NFTAttributesValues = "";
+
     let NFTsArray = await fetchSellingItemsArray();
     for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
       let metadata = await fetch(NFTsArray[i].tokenURI);
@@ -540,6 +590,15 @@ async function fetchMarketplaceCards(maxAmount, location) {
       try{
       metadata = await metadata.json();
       NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+
+      NFTName = metadata.name;
+      NFTDescription = metadata.description;
+
+      for(let i=0; i < metadata.attributes.length; i++) {
+        NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
+        NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
+
+      }
       } catch {
         NFTImage = NFTsArray[i].tokenURI;
       }
@@ -551,7 +610,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
       <div class="col">
           <div class="card shadow-sm">
           
-          <img src="${NFTImage}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}"/>
+          <div class="card-image" style="background-image: url('${NFTImage}');"> </div>
 
           <div class="card-body">
 
@@ -616,46 +675,57 @@ async function fetchMarketplaceCards(maxAmount, location) {
 
                   <div class="col">
 
+                    <div class="row">
+                    <div class="col text-end pe-1">
+                        <p class="card-text"><strong>Name: </strong></p>      
+                    </div>
+                    <div class="col ps-1">
+                        <p class="card-text"><small>${NFTName}</small></p>
+                    </div>
+                    </div>
+
                       <div class="row">
                       <div class="col text-end pe-1">
                           <p class="card-text"><strong>Description: </strong></p>      
                       </div>
                       <div class="col ps-1">
-                          <p class="card-text"><small>TBD</small></p>
+                          <p class="card-text"><small>${NFTDescription}</small></p>
                       </div>
                       </div>
 
                       <div class="row">
                       <div class="col text-end pe-1">
                       <br>
-                          <p class="card-text"><strong>Properties </strong>    
-                          <br><small>Property 1:</small>  
-                          <br><small>Property 2:</small>   
-                          <br><small>Property 3:</small></p>      
+                          <p class="card-text"><strong>Properties</strong>
+                          ${NFTAttributesTraits}
+                          </p>      
                       </div>
                       <div class="col ps-1">
                       <br>
                           <p class="card-text">&nbsp;
-                          <br><small>Value 1</small>
-                          <br><small>Value 2</small>
-                          <br><small>Value 3</small></p>
+                          ${NFTAttributesValues}
+                          </p>
                       </div>
                       </div>
 
                       <div class="row">
                       <div class="col text-end pe-1">
-                          <p class="card-text"><strong>Contract: </strong></p>       
+                      <br>
+                          <p class="card-text"><strong>Creator: </strong></p>       
                       </div>
                       <div class="col ps-1">
-                          <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + account.slice(-4)}</p>
+                      <br>
+                          <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + NFTsArray[i].creator.slice(-4)}</p>
                       </div>
                       </div>
 
                       <div class="row">
                           <div class="col text-end pe-1">
+                              <br>
                               <p class="card-text"><strong>Status: </strong></p>      
                           </div>
                           <div class="col text-start ps-1">
+                              <br>
                               <p class="card-text">
                                   <span class="badge text-bg-warning">For Sale</span>
                               </p>
@@ -671,7 +741,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
                           </div>
                       </div>
 
-                      <div class="row text-center border-bottom pb-3 mb-3">
+                      <div class="row text-center">
 
                       <div class="col text-center"> 
                           
@@ -727,8 +797,8 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
     htmlHolder += `
     <div class="col">
         <div class="card shadow-sm">
-        
-        <img src="${NFTImage}" alt="${NFTsArray[i].name} #${NFTsArray[i].tokenId}"/>
+          
+        <div class="card-image" style="background-image: url('${NFTImage}');"> </div>
 
         <div class="card-body">
 
@@ -759,6 +829,20 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
                   <div class="col text-start ps-1">
                     <p class="card-text">${NFTsArray[i].price} ${symbol}</p>
                 </div>
+            </div>
+
+            <div class="row border-bottom pb-3 mb-3">
+              <div class="col text-end pe-1">
+                <p class="card-text"><strong>Collection: </strong></p>      
+              </div>
+              <div class="col text-start ps-1">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Add
+                  </label>
+                </div>
+              </div>
             </div>
             </small>
 
@@ -824,7 +908,7 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
                         <p class="card-text"><strong>Contract: </strong></p>       
                     </div>
                     <div class="col ps-1">
-                        <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + account.slice(-4)}</p>
+                        <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + NFTsArray[i].creator.slice(-4)}</p>
                     </div>
                     </div>
 
