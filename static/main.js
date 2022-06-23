@@ -1003,25 +1003,26 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
 async function fetchCollections() {
   let collections = await MARKET_READ.getActiveCollections();
   let containerEl = document.getElementById("my-collections")
-  let tempHTML;
+  let tempHTML = "";
+
   for( let i = 0; i < collections.length; i++){
-    if(collectins[i].creator == account){
+    if(collections[i].creator.toLowerCase() == account.toLowerCase()){
     tempHTML += `
-    <div class="card shadow-sm">
-                    
-    <div class="container text-center border-bottom">
-        <div class="row m-1 my-md-3">
-          <div class="col">
-            <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-5.png" alt="FaceMint #0" class="img-fluid">
-          </div>
-          <div class="col">
-            <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-3.png" alt="FaceMint #2" class="img-fluid">
-          </div>
-          <div class="col">
-            <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-4.png" alt="FaceMint #7" class="img-fluid">
-          </div>
-        </div>
-        <div class="row m-1 my-md-3">
+
+    <div class="col">
+      <div class="card shadow-sm">
+                      
+        <div class="container text-center border-bottom">
+          <div class="row row-cols-2 row-cols-md-3 g-3 m-1 my-md-3">
+            <div class="col">
+              <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-5.png" alt="FaceMint #0" class="img-fluid">
+            </div>
+            <div class="col">
+              <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-3.png" alt="FaceMint #2" class="img-fluid">
+            </div>
+            <div class="col">
+              <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-4.png" alt="FaceMint #7" class="img-fluid">
+            </div>
             <div class="col">
                 <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-2.png" alt="FaceMint #4" class="img-fluid">
             </div>
@@ -1031,84 +1032,84 @@ async function fetchCollections() {
             <div class="col d-flex align-items-center"> 
                 <small class="text-muted">... and 6 more.</small>
             </div>
-        </div>
-    </div>
-    
-
-
-    <div class="card-body">
-        <div class="row text-center border-bottom pb-3 mb-3">
-            <div class="col"> 
-                <p class="card-text"><strong>${collections[i].name}</strong></p>
-            </div>
           </div>
-    
-          <small>
-            <div class="row">
-              <div class="col text-end pe-1">
-                <p class="card-text"><strong>TVL: </strong></p>      
-              </div>
-              <div class="col ps-1">
-                <p class="card-text">1000 ASTAR</p>
+        </div>
+      
+        <div class="card-body">
+          <div class="row text-center border-bottom pb-3 mb-3">
+              <div class="col"> 
+                  <p class="card-text"><strong>${collections[i].name}</strong></p>
               </div>
             </div>
-
-            <div class="row">
+      
+            <small>
+              <div class="row">
                 <div class="col text-end pe-1">
-                  <p class="card-text"><strong>APY: </strong></p>       
+                  <p class="card-text"><strong>TVL: </strong></p>      
                 </div>
                 <div class="col ps-1">
-                  <p class="card-text">11.4%</p>
+                  <p class="card-text">1000 ASTAR</p>
                 </div>
               </div>
 
-            <div class="row">
-                <div class="col text-end pe-1">
-                <p class="card-text"><strong>Stakers: </strong></p>     
+              <div class="row">
+                  <div class="col text-end pe-1">
+                    <p class="card-text"><strong>APY: </strong></p>       
+                  </div>
+                  <div class="col ps-1">
+                    <p class="card-text">11.4%</p>
+                  </div>
                 </div>
-                <div class="col ps-1">
-                <p class="card-text">23</p>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col text-end pe-1">
-                <p class="card-text"><strong>Earnings: </strong></p>     
-                </div>
-                <div class="col ps-1">
-                <p class="card-text">11.23 ASTAR</p>
-                </div>
-            </div>
+              <div class="row">
+                  <div class="col text-end pe-1">
+                  <p class="card-text"><strong>Stakers: </strong></p>     
+                  </div>
+                  <div class="col ps-1">
+                  <p class="card-text">23</p>
+                  </div>
+              </div>
 
-            <div class="row">
-                <div class="col text-end pe-1">
-                <p class="card-text"><strong>Total NFTs: </strong></p>     
-                </div>
-                <div class="col ps-1">
-                <p class="card-text">6</p>
-                </div>
-            </div>
+              <div class="row">
+                  <div class="col text-end pe-1">
+                  <p class="card-text"><strong>Earnings: </strong></p>     
+                  </div>
+                  <div class="col ps-1">
+                  <p class="card-text">11.23 ASTAR</p>
+                  </div>
+              </div>
 
-            <div class="row border-bottom pb-3 mb-3">
-                <div class="col text-end pe-1">
-                  <p class="card-text"><strong>Creator: </strong></p>  
-                </div>
-                <div class="col ps-1">
-                  <p class="card-text">0x1234...5678</p>
-                </div>
-            </div>
-        </small>
+              <div class="row">
+                  <div class="col text-end pe-1">
+                  <p class="card-text"><strong>Total NFTs: </strong></p>     
+                  </div>
+                  <div class="col ps-1">
+                  <p class="card-text">6</p>
+                  </div>
+              </div>
 
-        <div class="row text-center">
-            <div class="col">
+              <div class="row border-bottom pb-3 mb-3">
+                  <div class="col text-end pe-1">
+                    <p class="card-text"><strong>Creator: </strong></p>  
+                  </div>
+                  <div class="col ps-1">
+                    <p class="card-text">${collections[i].creator.substring(0,6) + "..." + collections[i].creator.slice(-4)}</p>
+                  </div>
+              </div>
+            </small>
+
+            <div class="row text-center">
+              <div class="col">
                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#collection-modal-2">View</button>
                 &nbsp; &nbsp; 
-                <button type="button" class="btn btn-sm btn-outline-danger" id="">Delist</button>
+                <button type="button" class="btn btn-sm btn-outline-danger" id="collectionCardDelist${i}">Delist</button>
+              </div>
             </div>
-        </div>
 
+          </div>
+        </div>
+      </div>
     </div>
-</div>
 
 <div class="modal fade" id="collection-modal-2" tabindex="-1" aria-labelledby="collection-aria-modal-2" style="display: none;" aria-hidden="true">
 <div class="modal-dialog modal-xl">
@@ -1205,33 +1206,48 @@ async function fetchCollections() {
             <div class="col-4">
 
                 <div class="mb-3">
-                    <label class="form-label">${collections[i].name}</label>
-                    <input type="text" class="form-control" placeholder="">
+                    <label class="form-label">Collection Name</label>
+                    <input type="text" class="form-control" placeholder="" value="${collections[i].name}">
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Collection Description</label>
-                    <textarea class="form-control" rows="3"></textarea>
+                    <textarea class="form-control" rows="3">${collections[i].description}</textarea>
                 </div>
 
 
                 <div class="mb-3">
-                    <button type="submit" class="btn btn-primary mb-3">Save</button>
+                    <button type="submit" class="btn btn-primary mb-3">Save</button> &nbsp; &nbsp;
+                    <button type="button" class="btn btn-outline-danger mb-3" id="collectionModalDelist${i}">Delist</button>
                 </div>
 
             </div>
         </div>
         
 
+      </div>
     </div>
   </div>
-</div>
-</div>`
+  </div>`
+    }
   }
-}
-   containerEl.innerHTML = tempHTML;   
+  containerEl.innerHTML = tempHTML;
+
+  // let arrayOfDelist = document.querySelectorAll(`#${location} .btn-Delist`);
+  // let arrayOfDelistModal = document.querySelectorAll(`#${location} .btn-DelistModal`);
+  // let buttonCounter = 0;
+  // for (let i = 0; i < NFTsArray.length; i++) {
+  //     if(!NFTsArray[i].canceled && !NFTsArray[i].sold) {
+  //   arrayOfDelist[buttonCounter].addEventListener("click", () => {
+  //     cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)}); 
+  //   arrayOfDelistModal[buttonCounter].addEventListener("click", () => {
+  //     cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)});
+  //     buttonCounter++;
+  // }
 }
 
 const listCollection = document.querySelector('#listCollection');
+const listCollectionMessage = document.querySelector('#listCollectionMessage');
+
 listCollection.addEventListener('click', (e) => {
     e.preventDefault();
     createCollection();
@@ -1249,68 +1265,90 @@ async function createCollection() {
       selectedNFTs.push(totalMarketEls[i].id.slice(11)) //removes MARKET_ID: 
     }
   }
-  MARKET_WRITE.createCollection(name, description, selectedNFTs);
+
+  try { 
+    document.getElementById('listCollectionStatus').classList.remove('d-none');
+    document.getElementById('listCollection').setAttribute('disabled', '');
+
+    MARKET_WRITE.createCollection(name, description, selectedNFTs);
+
+    document.getElementById('listCollectionStatus').classList.add('d-none');
+    document.getElementById('listCollection').removeAttribute('disabled', '');
+    showMessageCollection("Your new collection is listed!", 'success');
+  } catch (error) {
+    showMessageCollection("Something went wrong...", 'error');
+  }
 
  }
 
+const showMessageCollection = (message, type = 'success') => {
+  listCollectionMessage.innerHTML += `
+    <div class="alert alert-${type}">
+    ${message}
+    </div>
+  `;
+};
 
-      //------------------- //
-      // MINT NFTs
-      //------------------- //
 
-      const btn = document.querySelector('#mintNftButton');
-      const form = document.querySelector('#mintNftForm');
-      const messageEl = document.querySelector('#mintNftMessage');
 
-      btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          postNFT();
+//------------------- //
+// MINT NFTs
+//------------------- //
+
+const btn = document.querySelector('#mintNftButton');
+const form = document.querySelector('#mintNftForm');
+const messageEl = document.querySelector('#mintNftMessage');
+
+btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    postNFT();
+});
+
+const postNFT = async () => {
+  try {
+      document.getElementById('mint-nft-status').classList.remove('d-none');
+      document.getElementById('mintNftButton').setAttribute('disabled', '');
+
+      let response = await fetch('api/mint', {
+      method: 'POST',
+      body: new FormData(form),
       });
+      const result = await response.json();
+      const metaUri = result.data.metadata.replace('ipfs://', 'https://ipfs.io/ipfs/');
+      console.log(metaUri)
+      mintNFT (metaUri);
+      // result.data.metadata.image
 
-      const postNFT = async () => {
-        try {
-            document.getElementById('mint-nft-status').classList.remove('d-none');
-            document.getElementById('mintNftButton').setAttribute('disabled', '');
+      showMessage(result.message, response.status == 200 ? 'success' : 'error');
+  } catch (error) {
+      showMessage(error.message, 'error');
+  }
+};
 
-            let response = await fetch('api/mint', {
-            method: 'POST',
-            body: new FormData(form),
-            });
-            const result = await response.json();
-            const metaUri = result.data.metadata.replace('ipfs://', 'https://ipfs.io/ipfs/');
-            console.log(metaUri)
-            mintNFT (metaUri);
-            // result.data.metadata.image
+async function mintNFT (_uri) {
+  try {
+    const astarMinter = new ethers.Contract(addresses[chain].astarMinter, abis.astarMinter, signer);
+    const result = await astarMinter.safeMint(account, _uri);
 
-            showMessage(result.message, response.status == 200 ? 'success' : 'error');
-        } catch (error) {
-            showMessage(error.message, 'error');
-        }
-      };
-
-      async function mintNFT (_uri) {
-        try {
-          const astarMinter = new ethers.Contract(addresses[chain].astarMinter, abis.astarMinter, signer);
-          const result = await astarMinter.safeMint(account, _uri);
-
-            document.getElementById('mint-nft-status').classList.add('d-none');
-            document.getElementById('mintNftButton').removeAttribute('disabled', '');
-            showMessage("Your NFT is minted!", 'success');
-        } catch (error) {
-            showMessage("Something went wrong with the minting...", 'error');
-        }
-
-      };
-
-      const showMessage = (message, type = 'success') => {
-        messageEl.innerHTML += `
-            <div class="alert alert-${type}">
-            ${message}
-            </div>
-        `;
-      };
+      document.getElementById('mint-nft-status').classList.add('d-none');
+      document.getElementById('mintNftButton').removeAttribute('disabled', '');
+      showMessage("Your NFT is minted!", 'success');
+  } catch (error) {
+      showMessage("Something went wrong with the minting...", 'error');
+  }
 
 };
+
+const showMessage = (message, type = 'success') => {
+  messageEl.innerHTML += `
+      <div class="alert alert-${type}">
+      ${message}
+      </div>
+  `;
+};
+
+};
+
 
 // -----------------------
 // TABS NAV             //
@@ -1367,47 +1405,6 @@ function Tabs() {
   bindAll();
 }
 var connectTabs = new Tabs();
-
-
-
-//------------------- //
-// MINT NFTs
-//------------------- //
-
-const btn = document.querySelector('#mintNftButton');
-const form = document.querySelector('#mintNftForm');
-const messageEl = document.querySelector('#mintNftMessage');
-
-btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    postNFT();
-});
-
-const postNFT = async () => {
-  try {
-      let response = await fetch('api/mint', {
-      method: 'POST',
-      body: new FormData(form),
-      });
-      const result = await response.json();
-
-      // Get's the NFT Metadata
-      console.log(result.data.metadata);
-      // result.data.metadata.image
-
-      showMessage(result.message, response.status == 200 ? 'success' : 'error');
-  } catch (error) {
-      showMessage(error.message, 'error');
-  }
-};
-
-const showMessage = (message, type = 'success') => {
-  messageEl.innerHTML = `
-      <div class="alert alert-${type}">
-      ${message}
-      </div>
-  `;
-};
 
 
 // NFT Media Preview
