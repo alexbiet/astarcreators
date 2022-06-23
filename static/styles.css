@@ -83,3 +83,67 @@ hr {
 .image-radius {
     border-radius: 6px;
 }
+
+#network-name {
+    position: absolute;
+    right: 120px;
+    bottom: 7px;
+}
+#connected {
+    position: relative;
+}
+
+@keyframes jelloo {
+    0%,3.1%,to{
+        -webkit-transform:translateZ(0);
+        transform:translateZ(0)
+    }
+    6.2%{
+        -webkit-transform:skewX(-12.5deg) skewY(-12.5deg);
+        transform:skewX(-12.5deg) skewY(-12.5deg)
+    }
+    9.3%{
+        -webkit-transform:skewX(6.25deg) skewY(6.25deg);
+        transform:skewX(6.25deg) skewY(6.25deg)
+    }
+    12.4%{
+        -webkit-transform:skewX(-3.125deg) skewY(-3.125deg);
+        transform:skewX(-3.125deg) skewY(-3.125deg)
+    }
+    15.5%{
+        -webkit-transform:skewX(1.5625deg) skewY(1.5625deg);
+        transform:skewX(1.5625deg) skewY(1.5625deg)
+    }
+    18.6%{
+        -webkit-transform:skewX(-.78125deg) skewY(-.78125deg);
+        transform:skewX(-.78125deg) skewY(-.78125deg)
+    }
+    21.7%{
+        -webkit-transform:skewX(.390625deg) skewY(.390625deg);
+        transform:skewX(.390625deg) skewY(.390625deg)
+    }
+    24.8% {
+        -webkit-transform:skewX(-.1953125deg) skewY(-.1953125deg);
+        transform:skewX(-.1953125deg) skewY(-.1953125deg)
+    }
+    100% {
+        -webkit-transform:skewX(-.1953125deg) skewY(-.1953125deg);
+        transform:skewX(-.1953125deg) skewY(-.1953125deg)
+    }
+}
+
+.animate__jelloo {
+    -webkit-animation-name: jelloo;
+    animation-name: jelloo;
+    -webkit-transform-origin: center;
+    transform-origin: center;
+
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+
+    -webkit-animation-duration: 4s;
+    animation-duration: 4s;
+
+    -webkit-animation-delay: 2s;
+    animation-delay: 2s;
+}

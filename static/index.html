@@ -32,19 +32,14 @@
               <li><a href="#" data-tab="view-3" class="nav-link px-3 link-dark">My Wallet</a></li>
               <li><a href="#" data-bs-toggle="modal" data-bs-target="#mint-nft-modal-1" class="btn btn-outline-primary px-3 mx-3">Mint</a></li>
             </ul>
-    
-            <!-- <form class="col-12 col-lg-auto mb-3 ms-5 mb-lg-0 me-lg-3" role="search">
-              <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-            </form> -->
-
 
             <div class="col-sm text-end" id="connected" style="display:none;">
                 <small><span><strong>Wallet:</strong></span>
-                <span id="selected-account"><br>none</span>
+                <span id="selected-account"><br>none</span><span> - </span>
                 <strong><span id="account-balance"></span></strong>
                 <br>
-                <span class="badge bg-warning text-dark" id="network-name"><strong>not connected</strong></span></small>
-                <button id="btn-disconnect" type="button" class="btn btn-outline-secondary btn-sm px-4">Disconnect</button>
+                <span title="Don't click me! I'm not an easter egg :-P" class="badge bg-warning text-dark animate__animated animate__jelloo" id="network-name"><strong>not connected</strong></span></small>
+                <button id="btn-disconnect" type="button" class="btn btn-outline-secondary btn-sm px-3 mt-2">Disconnect</button>
             </div>
           </div>
         </div>
@@ -461,8 +456,8 @@
                             <div class="col">
                                 <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-1.png" alt="FaceMint #5" class="img-fluid">
                             </div>
-                            <div class="col d-flex align-items-center"> 
-                                <small class="text-muted">... and 6 more.</small>
+                            <div class="col d-flex align-items-center justify-content-center"> 
+                              <small class="text-muted">...</small>
                             </div>
                         </div>
                     </div>
@@ -751,7 +746,7 @@
                     <div class="accordion-body">
 
                         <div class="row">
-                            <div class="col d-flex align-items-center text-muted"><i>You have 3 NFTs in your wallet.</i></div>
+                            <div class="col d-flex align-items-center text-muted"><i>You have <b><span id="walletNftsCount">0</span></b> NFTs in your wallet.</i></div>
                             <div class="col text-end">
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#mint-nft-modal-1" class="btn btn-primary my-2">Mint</a>
                             </div>
@@ -776,7 +771,7 @@
                     <div class="accordion-body">
 
                         <div class="row">
-                            <div class="col d-flex align-items-center text-muted"><i>You have 3 collections listed on Astar Creators.</i></div>
+                            <div class="col d-flex align-items-center text-muted"><i>You have <b><span id="collectionsCount">0</span></b> listed collections.</i></div>
                             <div class="col text-end">
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#new-collection-modal-1" class="btn btn-primary my-2">New Collection</a> 
                             </div>
@@ -798,7 +793,7 @@
                     <div class="accordion-body">
                       
                         <div class="row">
-                            <div class="col d-flex align-items-center text-muted"><i>You have 3 NFTs listed for sale on Astar Creators.</i></div>
+                            <div class="col d-flex align-items-center text-muted"><i>You have <b><span id="marketplaceNftsCount">0</span></b> NFTs listed for sale.</i></div>
                             <div class="col text-end">
                             </div>
                         </div>
@@ -851,12 +846,12 @@
                         <div class="col-4">
 
                             <div class="mb-3">
-                                <label class="form-label">Collection Name</label>
-                                <input type="text" class="form-control" id="newCollectionName" placeholder="">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" id="newCollectionName" placeholder="" required>
                               </div>
                               <div class="mb-3">
-                                <label class="form-label">Collection Description</label>
-                                <textarea class="form-control" id="newCollectionDescription" rows="3"></textarea>
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" id="newCollectionDescription" rows="3" required></textarea>
                             </div>
 
 
@@ -976,8 +971,8 @@
             <p class="float-end mb-1">
             <a href="#">Back to top</a>
             </p>
-            <p class="mb-1 pt-2">Coffee' Hackin'! Web 3 Swaggin'!!</p>
-            <p class="mb-0">Wanna see something cool? <a href="/">This is a link.</a> Such cool. Much wow.</p>
+            <p class="mb-1 pt-2"><b>Astar Creators</b> - Your Awesome NFT Marketplace</p>
+            <p class="mb-0">Made by <a href="https://twitter.com/SokoMining" target="_blank">@Albo</a> and <a href="https://twitter.com/alex_biet" target="_blank">@Alex</a></p>
         </div>
     </footer>
 
