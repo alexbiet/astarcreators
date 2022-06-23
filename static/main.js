@@ -1002,231 +1002,109 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
 
 async function fetchCollections() {
   let collections = await MARKET_READ.getActiveCollections();
-  let containerEl = document.getElementById("my-collections")
-  let tempHTML;
-  for( let i = 0; i < collections.length; i++){
-    tempHTML += `
-    <div class="card shadow-sm">
+  console.log(collections[1])
+      // <div class="card shadow-sm">
                     
-    <div class="container text-center border-bottom">
-        <div class="row m-1 my-md-3">
-          <div class="col">
-            <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-5.png" alt="FaceMint #0" class="img-fluid">
-          </div>
-          <div class="col">
-            <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-3.png" alt="FaceMint #2" class="img-fluid">
-          </div>
-          <div class="col">
-            <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-4.png" alt="FaceMint #7" class="img-fluid">
-          </div>
-        </div>
-        <div class="row m-1 my-md-3">
-            <div class="col">
-                <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-2.png" alt="FaceMint #4" class="img-fluid">
-            </div>
-            <div class="col">
-                <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-1.png" alt="FaceMint #5" class="img-fluid">
-            </div>
-            <div class="col d-flex align-items-center"> 
-                <small class="text-muted">... and 6 more.</small>
-            </div>
-        </div>
-    </div>
-    
-
-
-    <div class="card-body">
-        <div class="row text-center border-bottom pb-3 mb-3">
-            <div class="col"> 
-                <p class="card-text"><strong>${collections[i].name}</strong></p>
-            </div>
-          </div>
-    
-          <small>
-            <div class="row">
-              <div class="col text-end pe-1">
-                <p class="card-text"><strong>TVL: </strong></p>      
-              </div>
-              <div class="col ps-1">
-                <p class="card-text">1000 ASTAR</p>
-              </div>
-            </div>
-
-            <div class="row">
-                <div class="col text-end pe-1">
-                  <p class="card-text"><strong>APY: </strong></p>       
-                </div>
-                <div class="col ps-1">
-                  <p class="card-text">11.4%</p>
-                </div>
-              </div>
-
-            <div class="row">
-                <div class="col text-end pe-1">
-                <p class="card-text"><strong>Stakers: </strong></p>     
-                </div>
-                <div class="col ps-1">
-                <p class="card-text">23</p>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col text-end pe-1">
-                <p class="card-text"><strong>Earnings: </strong></p>     
-                </div>
-                <div class="col ps-1">
-                <p class="card-text">11.23 ASTAR</p>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col text-end pe-1">
-                <p class="card-text"><strong>Total NFTs: </strong></p>     
-                </div>
-                <div class="col ps-1">
-                <p class="card-text">6</p>
-                </div>
-            </div>
-
-            <div class="row border-bottom pb-3 mb-3">
-                <div class="col text-end pe-1">
-                  <p class="card-text"><strong>Creator: </strong></p>  
-                </div>
-                <div class="col ps-1">
-                  <p class="card-text">0x1234...5678</p>
-                </div>
-            </div>
-        </small>
-
-        <div class="row text-center">
-            <div class="col">
-                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#collection-modal-2">View</button>
-                &nbsp; &nbsp; 
-                <button type="button" class="btn btn-sm btn-outline-danger" id="">Delist</button>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div class="modal fade" id="collection-modal-2" tabindex="-1" aria-labelledby="collection-aria-modal-2" style="display: none;" aria-hidden="true">
-<div class="modal-dialog modal-xl">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title h4" id="collection-aria-modal-2">${collections[i].name}</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-        <div class="row">
-            <div class="col-6">
-                <div class="container text-center">
-                    <div class="row row-cols-1 row-cols-md-2 g-3 my-2 my-md-3">
-                        
-                      <div class="col">
-                        <div class="card shadow-sm">
-
-                            <div class="card-image" style="background-image: url('https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-6.png');"> </div>
+      //                               <div class="container text-center border-bottom">
+      //                                   <div class="row m-1 my-md-3">
+      //                                     <div class="col">
+      //                                       <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-5.png" alt="FaceMint #0" class="img-fluid">
+      //                                     </div>
+      //                                     <div class="col">
+      //                                       <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-3.png" alt="FaceMint #2" class="img-fluid">
+      //                                     </div>
+      //                                     <div class="col">
+      //                                       <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-4.png" alt="FaceMint #7" class="img-fluid">
+      //                                     </div>
+      //                                   </div>
+      //                                   <div class="row m-1 my-md-3">
+      //                                       <div class="col">
+      //                                           <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-2.png" alt="FaceMint #4" class="img-fluid">
+      //                                       </div>
+      //                                       <div class="col">
+      //                                           <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-1.png" alt="FaceMint #5" class="img-fluid">
+      //                                       </div>
+      //                                       <div class="col d-flex align-items-center"> 
+      //                                           <small class="text-muted">... and 6 more.</small>
+      //                                       </div>
+      //                                   </div>
+      //                               </div>
+                                    
+                            
+                      
+      //                               <div class="card-body">
+      //                                   <div class="row text-center border-bottom pb-3 mb-3">
+      //                                       <div class="col"> 
+      //                                           <p class="card-text"><strong>Collection Name</strong></p>
+      //                                       </div>
+      //                                     </div>
+                                    
+      //                                     <small>
+      //                                       <div class="row">
+      //                                         <div class="col text-end pe-1">
+      //                                           <p class="card-text"><strong>TVL: </strong></p>      
+      //                                         </div>
+      //                                         <div class="col ps-1">
+      //                                           <p class="card-text">1000 ASTAR</p>
+      //                                         </div>
+      //                                       </div>
+                    
+      //                                       <div class="row">
+      //                                           <div class="col text-end pe-1">
+      //                                             <p class="card-text"><strong>APY: </strong></p>       
+      //                                           </div>
+      //                                           <div class="col ps-1">
+      //                                             <p class="card-text">11.4%</p>
+      //                                           </div>
+      //                                         </div>
+                    
+      //                                       <div class="row">
+      //                                           <div class="col text-end pe-1">
+      //                                           <p class="card-text"><strong>Stakers: </strong></p>     
+      //                                           </div>
+      //                                           <div class="col ps-1">
+      //                                           <p class="card-text">23</p>
+      //                                           </div>
+      //                                       </div>
+                    
+      //                                       <div class="row">
+      //                                           <div class="col text-end pe-1">
+      //                                           <p class="card-text"><strong>Earnings: </strong></p>     
+      //                                           </div>
+      //                                           <div class="col ps-1">
+      //                                           <p class="card-text">11.23 ASTAR</p>
+      //                                           </div>
+      //                                       </div>
                 
-                            <div class="card-body">
-                
-                              <div class="row text-center border-bottom pb-3 mb-3">
-                                <div class="col"> 
-                                    <p class="card-text">
-                                        <small><strong>FaceMint #14</strong></small>
-                                    </p>
-                                </div>
-                              </div>
-                        
-                              <small>
-
-                                
-                                    <div class="row">
-                                      <div class="col text-end pe-1">
-                                          <p class="card-text"><strong>Status: </strong></p>      
-                                        </div>
-                                        <div class="col text-start ps-1">
-                                          <p class="card-text">
-                                              <span class="badge text-bg-warning">For Sale</span>
-                                          </p>
-                                      </div>
-                                  </div>
-
-                                  <div class="row">
-                                      <div class="col text-end pe-1">
-                                          <p class="card-text"><strong>Price: </strong></p>      
-                                        </div>
-                                        <div class="col text-start ps-1">
-                                          <p class="card-text">0.12 SBY</p>
-                                      </div>
-                                  </div>
-
-                                  <div class="row border-bottom pb-3 mb-3">
-                                    <div class="col text-end pe-1">
-                                      <p class="card-text"><strong>Creator: </strong></p>       
-                                    </div>
-                                    <div class="col text-start ps-1">
-                                      <p class="card-text">0x0d9d...55c3</p>
-                                    </div>
-                                  </div>
-
-
-
-                                  <div class="row border-bottom pb-3 mb-3 justify-content-center">
-                                    <div class="col-auto text-center pe-1">
-                                      <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                          <b>Add to Collection</b>
-                                        </label>
-                                      </div>
-                                    </div>
-                                  </div>
-                
-                              
-                                </small>
-                
-                                <div class="row text-center">
-                                  <div class="col">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#nft-modal0">View</button>
-                                  </div>
-                                </div>
-                
-                            </div>
-                          </div>
-                      </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-1"> </div>
-
-            <div class="col-4">
-
-                <div class="mb-3">
-                    <label class="form-label">${collections[i].name}</label>
-                    <input type="text" class="form-control" placeholder="">
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Collection Description</label>
-                    <textarea class="form-control" rows="3"></textarea>
-                </div>
-
-
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-primary mb-3">Save</button>
-                </div>
-
-            </div>
-        </div>
-        
-
-    </div>
-  </div>
-</div>
-</div>`
-  }
-   containerEl.innerHTML = tempHTML;   
+      //                                       <div class="row">
+      //                                           <div class="col text-end pe-1">
+      //                                           <p class="card-text"><strong>Total NFTs: </strong></p>     
+      //                                           </div>
+      //                                           <div class="col ps-1">
+      //                                           <p class="card-text">6</p>
+      //                                           </div>
+      //                                       </div>
+                    
+      //                                       <div class="row border-bottom pb-3 mb-3">
+      //                                           <div class="col text-end pe-1">
+      //                                             <p class="card-text"><strong>Creator: </strong></p>  
+      //                                           </div>
+      //                                           <div class="col ps-1">
+      //                                             <p class="card-text">0x1234...5678</p>
+      //                                           </div>
+      //                                       </div>
+      //                                   </small>
+                    
+      //                                   <div class="row text-center">
+      //                                       <div class="col">
+      //                                           <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#collection-modal-2">View</button>
+      //                                           &nbsp; &nbsp; 
+      //                                           <button type="button" class="btn btn-sm btn-outline-danger" id="">Delist</button>
+      //                                       </div>
+      //                                   </div>
+                    
+      //                               </div>
+      //                           </div>
 }
 
 const listCollection = document.querySelector('#listCollection');
