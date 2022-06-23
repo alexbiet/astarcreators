@@ -81,24 +81,28 @@
       </div>
 
     <div class="row">
-        <div class="col-8"> </div>
-        <div class="col-4">
+        <div class="col-12 col-lg-6"> </div>
+        <div class="col-12 col-lg-6">
             <div class="alert alert-warning" role="alert">
                 <div class="row mb-2">
                     <div class="col-auto"><small><code>dev//::</code></small></div>
                 </div>
                 <div class="row">
-                    <div class="col-auto">
-                        <button id="mint-face" type="button" class="btn btn-outline-primary">Mint FACE</button>
-                        <button id="approve-all" type="button" class="btn btn-outline-primary">Approve All</button>
+                    <div class="col-12 col-md-12 col-xl-4">
+                        <button id="mint-face" type="button" class="btn btn-sm btn-outline-primary mb-2">Mint FACE</button>
+                        <button id="approve-all" type="button" class="btn btn-sm btn-outline-primary mb-2">Approve All</button>
                     </div>
-                    <div class="col">
+                    <div class="col-6 col-md-6 col-xl-4 mb-2">
                         <div class="input-group">
-                            <input id="list-input" class="form-control" type="number" placeholder="tokenId">
-                            <button id="list-face" type="button" class="btn btn-outline-primary">list FACE</button>
-                            <br></br>
-                            <input id="contract-input" class="form-control" type="number" placeholder="tokenId">
-                            <button id="contract-btn" type="button" class="btn btn-outline-primary">newContract</button>
+                            <input id="list-input" class="form-control form-control-sm" type="number" placeholder="tokenId">
+                            <button id="list-face" type="button" class="btn btn-sm btn-outline-primary">list FACE</button>
+                        </div>
+                      </div>
+
+                    <div class="col-6 col-md-6 col-xl-4 mb-2">
+                        <div class="input-group">
+                            <input id="contract-input" class="form-control form-control-sm" type="number" placeholder="tokenId">
+                            <button id="contract-btn" type="button" class="btn btn-sm btn-outline-primary">newContract</button>
                         </div>
                     </div>
                 </div>
@@ -778,23 +782,8 @@
                             </div>
                         </div>
                         <hr>
-                        <div id="" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3 my-3"> 
-                            
-                            
-                            <!-- LIST COLLECTIONS - MOCK -->
-                            <div class="col" id="my-collections">
-                            
-                                </div>
-                    
-                              
 
-
-
-
-
-
-
-                        </div>
+                        <div id="my-collections" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3 my-3"> </div>
 
                     </div>
                   </div>
@@ -871,9 +860,18 @@
                             </div>
 
 
-                            <div class="mb-3">
-                                <button type="submit" id="listCollection" class="btn btn-primary mb-3">List Collection</button>
+                            <div class="mb-3 text-center">
+                                <button type="submit" id="listCollection" class="btn btn-primary mb-3">List Collection</button> &nbsp; &nbsp;
+                                <div class="spinner-border text-primary spinner-border-sm d-none" role="status" id="listCollectionStatus">
+                                  <span class="visually-hidden">Loading...</span>
+                                </div>
                             </div>
+
+                            <div class="mb-3" id="listCollectionMessage">
+                            </div>
+                              
+                          </div>
+
 
                         </div>
                     </div>
