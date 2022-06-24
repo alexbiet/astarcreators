@@ -2,7 +2,7 @@ const addresses = {
   Shibuya: {
     dAppsStaking: "0x0000000000000000000000000000000000005001",
     faceMinter: "0x1206b3eB5920720e292903B30b61546c37C7792c",
-    marketplace: "0xb79Ca5E6b53B484bfa9397EC519a8aa7f558c6A3",
+    marketplace: "0x798B1cedD44d9bA51708f36abf09EF0cDf6bBB2A",
     astarMinter: "0x7Fe4E59b858B907e4640730731108f9234461929",
   },
   Mumbai: {
