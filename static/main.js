@@ -238,7 +238,8 @@ async function fetchExploreCards(maxAmount) {
       htmlHolder += `
       <!-- Card Listing -->
       <div class="col">
-        <div class="card shadow-sm">
+        <div class="card">
+          <div class="card__inner">
 
           <div class="card-image" style="background-image: url('${NFTImage}');"> </div>
 
@@ -281,7 +282,12 @@ async function fetchExploreCards(maxAmount) {
                 </div>
               </div>
 
+            </div>
+
+            <div class="lux"></div>
           </div>
+
+
         </div>
       </div>
 
@@ -299,9 +305,12 @@ async function fetchExploreCards(maxAmount) {
                 <div class="row">
 
                   <div class="col">
-
-                  <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
-                  
+                    <div class="card m-3">
+                      <div class="card__inner">
+                        <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
+                        <div class="lux full"></div>
+                      </div>
+                    </div>
                   </div>
 
                   <div class="col">
@@ -386,6 +395,7 @@ async function fetchExploreCards(maxAmount) {
       `;
     }
     marketNFTsEl.innerHTML = htmlHolder;
+    cardEffect('#market-NFTs');
 
     let arrayOfBuyExplore = document.querySelectorAll(".buyExplore");
     let arrayOfBuyModal = document.querySelectorAll(".buyModal");
@@ -433,8 +443,9 @@ async function fetchExploreCards(maxAmount) {
         htmlHolder += `
         <!-- Card Listing -->
         <div class="col">
-          <div class="card shadow-sm">
-  
+          <div class="card">
+            <div class="card__inner">
+
             <div class="card-image" style="background-image: url('${NFTImage}');"> </div>
   
             <div class="card-body">
@@ -470,22 +481,26 @@ async function fetchExploreCards(maxAmount) {
                 <div class="row text-center">
                   <div class="col">
                     <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#nft-modal${i}">View</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#collection-nft-modal${i}">View</button>
                       <button type="button" class="btn btn-sm btn-primary buyExplore" id="nftcard-buy${i}">Buy</button>
                     </div>
                   </div>
                 </div>
   
             </div>
+
+            <div class="lux"></div>
+            </div>
+
           </div>
         </div>
   
         <!-- Modal (default hidden) -->
-        <div class="modal fade" id="nft-modal${i}" tabisndex="-1" aria-labelledby="nft-aria-modal${i}" style="display: none;" aria-hidden="true">
+        <div class="modal fade" id="collection-nft-modal${i}" tabisndex="-1" aria-labelledby="collection-nft-aria-modal${i}" style="display: none;" aria-hidden="true">
             <div class="modal-dialog modal-xl">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title h4" id="nft-aria-modal${i}">${NFTsArray[i].name} #${NFTsArray[i].tokenId}</h5>
+                  <h5 class="modal-title h4" id="collection-nft-aria-modal${i}">${NFTsArray[i].name} #${NFTsArray[i].tokenId}</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -494,16 +509,19 @@ async function fetchExploreCards(maxAmount) {
                   <div class="row">
   
                     <div class="col">
-  
-                    <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
-                    
+                        <div class="card m-3">
+                            <div class="card__inner">
+                            <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
+                            <div class="lux full"></div>
+                            </div>
+                        </div>
                     </div>
   
                     <div class="col">
   
                       <div class="row">
                         <div class="col text-end pe-1">
-                          <p class="card-text"><strong>Name: </strong></p>      
+                          <p class="card-text"><strong>Name:</strong></p>      
                         </div>
                         <div class="col ps-1">
                           <p class="card-text"><small>${NFTName}</small></p>
@@ -581,6 +599,7 @@ async function fetchExploreCards(maxAmount) {
         `;
       }
       exploreCollections.innerHTML = htmlHolder;
+      cardEffect('#collectionsListing');
   
       // let arrayOfBuyExplore = document.querySelectorAll(".buyExplore");
       // let arrayOfBuyModal = document.querySelectorAll(".buyModal");
@@ -964,8 +983,9 @@ async function fetchWalletCards(maxAmount, nftContracts) {
         htmlHolder += `
         <!-- Card Listing -->
         <div class="col">
-          <div class="card shadow-sm">
-          
+          <div class="card">
+          <div class="card__inner">
+
             <div class="card-image" style="background-image: url('${NFTImage}');"> </div>
 
             <div class="card-body">
@@ -999,6 +1019,10 @@ async function fetchWalletCards(maxAmount, nftContracts) {
               </div>
 
             </div>
+
+            <div class="lux"></div>
+            </div>
+
           </div>
         </div>
 
@@ -1016,7 +1040,12 @@ async function fetchWalletCards(maxAmount, nftContracts) {
                   <div class="row">
 
                     <div class="col">
-                    <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
+                        <div class="card m-3">
+                            <div class="card__inner">
+                            <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
+                            <div class="lux full"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col">
@@ -1089,6 +1118,7 @@ async function fetchWalletCards(maxAmount, nftContracts) {
       }
       walletNFTsEl.innerHTML = htmlHolder;
       document.getElementById('walletNftsCount').innerHTML = walletNftsCount;
+      cardEffect('#wallet-NFTs');
 
       let arrayOfApproveWallet = document.querySelectorAll(".approveWallet");
       let arrayOfListWallet = document.querySelectorAll(".listWallet");
@@ -1157,7 +1187,8 @@ async function fetchMarketplaceCards(maxAmount, location) {
       if (!NFTsArray[i].sold && !NFTsArray[i].canceled){
       htmlHolder += `
       <div class="col">
-          <div class="card shadow-sm">
+          <div class="card">
+          <div class="card__inner">
           
           <div class="card-image" style="background-image: url('${NFTImage}');"> </div>
 
@@ -1202,6 +1233,10 @@ async function fetchMarketplaceCards(maxAmount, location) {
               </div>
 
           </div>
+
+          <div class="lux"></div>
+          </div>
+
           </div>
       </div>
 
@@ -1219,7 +1254,12 @@ async function fetchMarketplaceCards(maxAmount, location) {
                   <div class="row">
 
                   <div class="col">
-                  <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
+                      <div class="card m-3">
+                          <div class="card__inner">
+                          <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
+                          <div class="lux full"></div>
+                          </div>
+                      </div>
                   </div>
 
                   <div class="col">
@@ -1310,6 +1350,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
         }
           marketplaceNFTsEl.innerHTML = htmlHolder;
           document.getElementById('marketplaceNftsCount').innerHTML = marketplaceNftsCount;
+          cardEffect('#marketplace');
 
           let arrayOfDelist = document.querySelectorAll(`#${location} .btn-Delist`);
           let arrayOfDelistModal = document.querySelectorAll(`#${location} .btn-DelistModal`);
@@ -2213,3 +2254,58 @@ document.getElementById("network-name").addEventListener("click", function () {
   
   document.getElementById("shibooyakasha-mp3").play();
 });
+
+
+
+// Card Effect
+function cardEffect(_parentId) {
+  // let allCards = document.querySelectorAll(`${_parentId} .card__inner`);
+  // console.log(allCards);
+
+  $(`${_parentId} .card__inner`).mousemove(function(e) {
+    var off = $(this).offset();
+    var h = $(this).height() / 2;
+    var w = $(this).width() / 2;
+    var x = event.pageY - off.top - h;
+    var y = event.pageX - off.left - w;
+    var xDeg = - (x * (Math.PI / 180));
+    var yDeg = y * (Math.PI / 180);
+    var rad = Math.atan2(x,y);
+    var radPI = rad * 180 / Math.PI - 90;
+    $(this).css('transform', 'rotateX(' + xDeg + 'deg) rotateY(' + yDeg + 'deg) scale3d(1.025,1.025,1.025) perspective(1000px)' );
+    $(this).find('.lux').css('background', 'linear-gradient(' + radPI + 'deg, rgba(255,255,255,0.25) 0%,rgba(255,255,255,0) 80%)' );
+  });
+  
+  $(`${_parentId} .card__inner`).mouseout(function() {
+    $(this).css('transform', 'rotateX(0deg) rotateY(0deg) scale3d(1,1,1) perspective(0)' );
+  });
+  $(`${_parentId} .lux`).mousedown(function() {
+    $(this).hide();
+  });
+  $(`${_parentId} .lux`).mouseup(function() {
+    $(this).show();
+  });
+
+  // for (let i = 0; i < allCards.length; i++) {
+  //   allCards[i].addEventListener("mousemove", (e) => {
+  //     var off = e.offset;
+  //     console.log(e)
+  //     var h = e.height / 2;
+  //     var w = e.width / 2;
+  //     var x = e.pageY - off.top - h;
+  //     var y = e.pageX - off.left - w;
+  //     var xDeg = - (x * (Math.PI / 180));
+  //     var yDeg = y * (Math.PI / 180);
+  //     var rad = Math.atan2(x,y);
+  //     var radPI = rad * 180 / Math.PI - 90;
+  //     allCards[i].style.transform = 'rotateX(' + xDeg + 'deg) rotateY(' + yDeg + 'deg) scale3d(1.025,1.025,1.025) perspective(1000px)';
+  //     allCards[i].querySelector('.lux').style.background = 'linear-gradient(' + radPI + 'deg, rgba(255,255,255,0.25) 0%,rgba(255,255,255,0) 80%)';
+  //   });
+    
+  //   allCards[i].addEventListener("mouseout", e => {
+  //     allCards[i].style.transform = 'rotateX(0deg) rotateY(0deg) scale3d(1,1,1) perspective(0)';
+  //   });
+  // }
+}
+
+cardEffect("#view-2")
