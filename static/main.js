@@ -110,7 +110,12 @@ async function cancelMarketItem(_NFTContract, _marketItemId) {
 }
 
 async function delistCollection(_collectionId) {
+  console.log("stakeCollection ");
   MARKET_WRITE.delistCollection(_collectionId);
+}
+
+async function stakeCollection(_collectionId) {
+  MARKET_WRITE.stakeCollection(_collectionId, {value: ethers.utils.parseEther(1)});
 }
 
 async function buyMarketItem(_NFTContract, _marketId, _price) {
@@ -198,11 +203,11 @@ async function fetchMarketItemsArray() {
 
 let nftContracts = trustedContracts[chain];
 
-fetchExploreCards(8);
+fetchExploreCards(4);
 fetchExploreCollectionCards(8); // WIP
-fetchWalletCards(8, nftContracts);
-fetchMarketplaceCards(12, "marketplace");
-fetchMarketplaceCardsCollectionModal(8);
+fetchWalletCards(4, nftContracts);
+fetchMarketplaceCards(4, "marketplace");
+fetchMarketplaceCardsCollectionModal(4);
 fetchCollections();
 
 async function fetchExploreCards(maxAmount) {
@@ -1753,8 +1758,7 @@ async function fetchCollections() {
   let tempHTML = "";
   let collectionsCount = 0; 
 
-  console.log(collections);
-  
+  console.log(collections)
 
   for( let i = 0; i < collections.length; i++){
     if(collections[i].creator.toLowerCase() == account.toLowerCase()){
@@ -2014,7 +2018,8 @@ async function fetchCollections() {
                 </div>
 
                 <div class="mb-3 text-center">
-                    <button type="button" class="btn btn-outline-danger mb-3 btn-DelistCollectionModal" id="collectionModalDelist${i}">Delist</button>
+                <button type="button" class="btn btn-outline-danger mb-3 btn-DelistCollectionModal" id="collectionModalDelist${i}">Delist</button>
+                <button type="button" class="btn btn-primary mb-3 btn-StakeCollectionModal" id="collectionModalStake${i}">Stake</button>
                 </div>
 
             </div>
@@ -2035,6 +2040,7 @@ async function fetchCollections() {
 
   let arrayOfDelist = document.querySelectorAll(`#my-collections .btn-DelistCollection`);
   let arrayOfDelistModal = document.querySelectorAll(`#my-collections .btn-DelistCollectionModal`);
+  let arrayOfStakeModal = document.querySelectorAll(`#my-collections .btn-StakeCollectionModal`)
   let buttonCounter = 0;
 
   for (let i = 0; i < collections.length; i++) {
@@ -2044,6 +2050,8 @@ async function fetchCollections() {
         delistCollection(collections[i].collectionId)}); 
       arrayOfDelistModal[buttonCounter].addEventListener("click", () => {
         delistCollection(collections[i].collectionId)});
+      arrayOfStakeModal[buttonCounter].addEventListener("click", () => {
+        stakeCollection(collections[i].collectionId)});
       buttonCounter++;
     }
     
