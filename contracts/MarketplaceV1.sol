@@ -15,7 +15,6 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     CountersUpgradeable.Counter private _tokensSold;
     CountersUpgradeable.Counter private _tokensCanceled;
 
-
     mapping(uint256 => MarketItem) private marketItemIdToMarketItem;
     mapping(uint256 => Collection) private collectionIdToCollection;
 
@@ -58,44 +57,49 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         uint256 canceledItemsCount,
         uint256 availableCount
     );
-    
-    event ownerAddress(
-        address thisContractAddress
-    );
+
+    event ownerAddress(address thisContractAddress);
 
     uint256 private listingFee;
 
     CountersUpgradeable.Counter private _activeCollections;
 
-    function initialize() initializer public {
+    function initialize() public initializer {
         __UUPSUpgradeable_init();
         __Ownable_init();
-         listingFee = 0 wei;
+        listingFee = 0 wei;
     }
 
-     function updateListingFee(uint256 _listingFee) public onlyOwner {
+    function updateListingFee(uint256 _listingFee) public onlyOwner {
         listingFee = _listingFee;
     }
-    
+
     function getListingFee() public view returns (uint256) {
         return listingFee;
     }
 
-   function createCollection(string memory _name, string memory _description, uint256[] memory _marketIdsArray) public {
-
-       //check if all marketIds are created by sender
-       for(uint256 i = 0; i < _marketIdsArray.length; i++) {
-           require(marketItemIdToMarketItem[_marketIdsArray[i]].creator == msg.sender, "You must be the listing creator.");
-       }
+    function createCollection(
+        string memory _name,
+        string memory _description,
+        uint256[] memory _marketIdsArray
+    ) public {
+        //check if all marketIds are created by sender
+        for (uint256 i = 0; i < _marketIdsArray.length; i++) {
+            require(
+                marketItemIdToMarketItem[_marketIdsArray[i]].creator ==
+                    msg.sender,
+                "You must be the listing creator."
+            );
+        }
         uint256 collectionId = _collectionIds.current();
         collectionIdToCollection[collectionId] = Collection(
             _name,
             _description,
-            collectionId, 
-            _marketIdsArray, 
+            collectionId,
+            _marketIdsArray,
             msg.sender,
             true
-            );
+        );
         _collectionIds.increment();
         _activeCollections.increment();
     }
@@ -103,34 +107,42 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     // List: 0, 1, 2, 3 ...
 
     function delistCollection(uint256 _collectionId) public {
-        require(_collectionId >= 0 && _collectionId < _collectionIds.current(), "Collection with that ID dosnt exist.");
-        require(collectionIdToCollection[_collectionId].active, "Collection already delisted");
-        require(collectionIdToCollection[_collectionId].creator == msg.sender, "Not the creator of that Collection.");
+        require(
+            _collectionId >= 0 && _collectionId < _collectionIds.current(),
+            "Collection with that ID dosnt exist."
+        );
+        require(
+            collectionIdToCollection[_collectionId].active,
+            "Collection already delisted"
+        );
+        require(
+            collectionIdToCollection[_collectionId].creator == msg.sender,
+            "Not the creator of that Collection."
+        );
         collectionIdToCollection[_collectionId].active = false;
         _activeCollections.decrement();
     }
 
     // Delist: 0, 1, 2F, 3 ...
     //         A  A  -   A
-    // Count Active : 3;  
+    // Count Active : 3;
     // array [0, 1, 3]
 
-
     function getActiveCollections() public view returns (Collection[] memory) {
-        Collection[] memory activeCollections = new Collection[](_activeCollections.current());
+        Collection[] memory activeCollections = new Collection[](
+            _activeCollections.current()
+        );
 
         uint256 activeCounter = _collectionIds.current();
-        
-        for(uint256 i = 0; i < _collectionIds.current(); i++) {
-            if(collectionIdToCollection[i].active) { 
+
+        for (uint256 i = 0; i < _collectionIds.current(); i++) {
+            if (collectionIdToCollection[i].active) {
                 activeCollections[activeCounter] = collectionIdToCollection[i];
                 activeCounter++;
             }
         }
-            return activeCollections;
-
+        return activeCollections;
     }
-
 
     // List: 0, 1, 2F, 3...
 
@@ -140,11 +152,16 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         uint256 price
     ) public payable returns (uint256) {
         require(price > 0, "Price must be at least 1 wei");
-        require(msg.value == listingFee, "Price must be equal to listing price");
+        require(
+            msg.value == listingFee,
+            "Price must be equal to listing price"
+        );
         uint256 marketItemId = _marketItemIds.current();
         _marketItemIds.increment();
 
-        address creator = ERC721Upgradeable(NFTContractAddress).ownerOf(tokenId);
+        address creator = ERC721Upgradeable(NFTContractAddress).ownerOf(
+            tokenId
+        );
 
         marketItemIdToMarketItem[marketItemId] = MarketItem(
             marketItemId,
@@ -157,12 +174,13 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
             false,
             false
         );
- 
 
-        ERC721Upgradeable(NFTContractAddress).transferFrom(msg.sender, address(this), tokenId);
+        ERC721Upgradeable(NFTContractAddress).transferFrom(
+            msg.sender,
+            address(this),
+            tokenId
+        );
 
-
-       
         emit MarketItemCreated(
             marketItemId,
             NFTContractAddress,
@@ -178,14 +196,23 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         return marketItemId;
     }
 
-
-    function cancelMarketItem(address NFTContractAddress, uint256 marketItemId) public payable {
+    function cancelMarketItem(address NFTContractAddress, uint256 marketItemId)
+        public
+        payable
+    {
         uint256 tokenId = marketItemIdToMarketItem[marketItemId].tokenId;
         require(tokenId >= 0, "Market item has to exist");
 
-        require(marketItemIdToMarketItem[marketItemId].seller == msg.sender, "You are not the seller");
+        require(
+            marketItemIdToMarketItem[marketItemId].seller == msg.sender,
+            "You are not the seller"
+        );
 
-        ERC721Upgradeable(NFTContractAddress).transferFrom(address(this), msg.sender, tokenId);
+        ERC721Upgradeable(NFTContractAddress).transferFrom(
+            address(this),
+            msg.sender,
+            tokenId
+        );
 
         marketItemIdToMarketItem[marketItemId].owner = payable(msg.sender);
         marketItemIdToMarketItem[marketItemId].canceled = true;
@@ -193,8 +220,11 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         _tokensCanceled.increment();
     }
 
-
-    function getLatestMarketItemByTokenId(uint256 tokenId) public view returns (MarketItem memory, bool) {
+    function getLatestMarketItemByTokenId(uint256 tokenId)
+        public
+        view
+        returns (MarketItem memory, bool)
+    {
         uint256 itemsCount = _marketItemIds.current();
 
         for (uint256 i = itemsCount - 1; i >= 0; i--) {
@@ -206,59 +236,81 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         return (emptyMarketItem, false);
     }
 
-
-    function createMarketSale(address NFTContractAddress, uint256 marketItemId) public payable {
+    function createMarketSale(address NFTContractAddress, uint256 marketItemId)
+        public
+        payable
+    {
         uint256 price = marketItemIdToMarketItem[marketItemId].price;
         uint256 tokenId = marketItemIdToMarketItem[marketItemId].tokenId;
-        require(msg.value == price, "Please submit the asking price in order to continue");
+        require(
+            msg.value == price,
+            "Please submit the asking price in order to continue"
+        );
 
         marketItemIdToMarketItem[marketItemId].owner = payable(msg.sender);
         marketItemIdToMarketItem[marketItemId].sold = true;
 
         marketItemIdToMarketItem[marketItemId].seller.transfer(msg.value);
-        ERC721Upgradeable(NFTContractAddress).transferFrom(address(this), msg.sender, tokenId);
+        ERC721Upgradeable(NFTContractAddress).transferFrom(
+            address(this),
+            msg.sender,
+            tokenId
+        );
 
         _tokensSold.increment();
 
         payable(owner()).transfer(listingFee);
     }
 
-    function fetchAvailableMarketItems() public view returns (MarketItem[] memory) {
+    function fetchAvailableMarketItems()
+        public
+        view
+        returns (MarketItem[] memory)
+    {
         uint256 itemsCount = _marketItemIds.current();
         uint256 soldItemsCount = _tokensSold.current();
         uint256 canceledItemsCount = _tokensCanceled.current();
-        uint256 availableItemsCount = itemsCount - (soldItemsCount + canceledItemsCount);
+        uint256 availableItemsCount = itemsCount -
+            (soldItemsCount + canceledItemsCount);
         MarketItem[] memory marketItems = new MarketItem[](availableItemsCount);
         uint256 arrayCounter = 0;
 
-        for(uint256 i = 0; i < itemsCount; i++) {
+        for (uint256 i = 0; i < itemsCount; i++) {
             MarketItem memory item = marketItemIdToMarketItem[i];
-             if(item.owner != address(this)) continue;
-             marketItems[arrayCounter] = item;
-             arrayCounter++;
+            if (item.owner != address(this)) continue;
+            marketItems[arrayCounter] = item;
+            arrayCounter++;
         }
         return marketItems;
     }
 
-    function compareStrings(string memory a, string memory b) private pure returns (bool) {
-        return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
-    }
-
-
-    function getMarketItemAddressByProperty(MarketItem memory item, string memory property)
+    function compareStrings(string memory a, string memory b)
         private
         pure
-        returns (address)
+        returns (bool)
     {
+        return (keccak256(abi.encodePacked((a))) ==
+            keccak256(abi.encodePacked((b))));
+    }
+
+    function getMarketItemAddressByProperty(
+        MarketItem memory item,
+        string memory property
+    ) private pure returns (address) {
         require(
-            compareStrings(property, "seller") || compareStrings(property, "owner"),
+            compareStrings(property, "seller") ||
+                compareStrings(property, "owner"),
             "Parameter must be 'seller' or 'owner'"
         );
 
         return compareStrings(property, "seller") ? item.seller : item.owner;
     }
 
-    function fetchSellingMarketItems() public view returns (MarketItem[] memory) {
+    function fetchSellingMarketItems()
+        public
+        view
+        returns (MarketItem[] memory)
+    {
         return fetchMarketItemsByAddressProperty("seller");
     }
 
@@ -272,7 +324,8 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         returns (MarketItem[] memory)
     {
         require(
-            compareStrings(_addressProperty, "seller") || compareStrings(_addressProperty, "owner"),
+            compareStrings(_addressProperty, "seller") ||
+                compareStrings(_addressProperty, "owner"),
             "Parameter must be 'seller' or 'owner'"
         );
         uint256 totalItemsCount = _marketItemIds.current();
@@ -281,7 +334,10 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 
         for (uint256 i = 0; i < totalItemsCount; i++) {
             MarketItem storage item = marketItemIdToMarketItem[i];
-            address addressPropertyValue = getMarketItemAddressByProperty(item, _addressProperty);
+            address addressPropertyValue = getMarketItemAddressByProperty(
+                item,
+                _addressProperty
+            );
             if (addressPropertyValue != msg.sender) continue;
             itemCount += 1;
         }
@@ -290,7 +346,10 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 
         for (uint256 i = 0; i < totalItemsCount; i++) {
             MarketItem storage item = marketItemIdToMarketItem[i];
-            address addressPropertyValue = getMarketItemAddressByProperty(item, _addressProperty);
+            address addressPropertyValue = getMarketItemAddressByProperty(
+                item,
+                _addressProperty
+            );
             if (addressPropertyValue != msg.sender) continue;
             items[currentIndex] = item;
             currentIndex += 1;
@@ -299,8 +358,9 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         return items;
     }
 
-
-    function _authorizeUpgrade(address newImplementation) internal onlyOwner override    {
-        
-     }
+    function _authorizeUpgrade(address newImplementation)
+        internal
+        override
+        onlyOwner
+    {}
 }
