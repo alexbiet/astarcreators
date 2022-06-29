@@ -1758,7 +1758,7 @@ async function fetchCollections() {
   let tempHTML = "";
   let collectionsCount = 0; 
 
-  console.log(collections)
+  console.log(collections);
 
   for( let i = 0; i < collections.length; i++){
     if(collections[i].creator.toLowerCase() == account.toLowerCase()){
@@ -2316,4 +2316,4 @@ function cardEffect(_parentId) {
   // }
 }
 
-cardEffect("#view-2")
+cardEffect("#view-2");
