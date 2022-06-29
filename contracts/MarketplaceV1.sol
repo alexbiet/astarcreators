@@ -100,7 +100,7 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         _activeCollections.increment();
     }
 
-    // List: 0, 1, 2, 3 ...
+
 
     function delistCollection(uint256 _collectionId) public {
         require(_collectionId >= 0 && _collectionId < _collectionIds.current(), "Collection with that ID dosnt exist.");
@@ -110,10 +110,6 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         _activeCollections.decrement();
     }
 
-    // Delist: 0, 1, 2F, 3 ...
-    //         A  A  -   A
-    // Count Active : 3;  
-    // array [0, 1, 3]
 
 
     function getActiveCollections() public view returns (Collection[] memory) {
@@ -132,7 +128,6 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     }
 
 
-    // List: 0, 1, 2F, 3...
 
     function createMarketItem(
         address NFTContractAddress,
