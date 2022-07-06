@@ -1220,7 +1220,9 @@ async function fetchMarketplaceCards(maxAmount, location) {
     for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
       let metadata = await fetch(NFTsArray[i].tokenURI);
 
-      marketplaceNftsCount++
+      if(!NFTsArray[i].canceled) {
+        marketplaceNftsCount++
+      }
 
       if (NFTsArray[i].sold) {
         saleStatus = `<span class="badge text-bg-success">Sold</span>`;
