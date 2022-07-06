@@ -203,11 +203,11 @@ async function fetchMarketItemsArray() {
 
 let nftContracts = trustedContracts[chain];
 
-fetchExploreCards(4);
+fetchExploreCards(8);
 fetchExploreCollectionCards(8); // WIP
-fetchWalletCards(4, nftContracts);
-fetchMarketplaceCards(4, "marketplace");
-fetchMarketplaceCardsCollectionModal(4);
+fetchWalletCards(8, nftContracts);
+fetchMarketplaceCards(8, "marketplace");
+fetchMarketplaceCardsCollectionModal(8);
 fetchCollections();
 
 async function fetchExploreCards(maxAmount) {
