@@ -253,7 +253,7 @@ async function fetchExploreCards(maxAmount) {
             <div class="row text-center border-bottom pb-3 mb-3">
               <div class="col"> 
                   <p class="card-text">
-                    <strong>${NFTsArray[i].name} #${NFTsArray[i].tokenId}</strong>
+                    <strong>${NFTName} #${NFTsArray[i].tokenId}</strong>
                   </p>
               </div>
             </div>
@@ -301,7 +301,7 @@ async function fetchExploreCards(maxAmount) {
           <div class="modal-dialog modal-xl">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title h4" id="nft-aria-modal${i}">${NFTsArray[i].name} #${NFTsArray[i].tokenId}</h5>
+                <h5 class="modal-title h4" id="nft-aria-modal${i}">${NFTName} #${NFTsArray[i].tokenId}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -425,6 +425,8 @@ async function fetchExploreCards(maxAmount) {
     let NFTAttributesValues = "";
   
     let NFTsArray = await fetchMarketItemsArray();
+
+
     for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
         let metadata = await fetch(NFTsArray[i].tokenURI);
   
@@ -458,7 +460,7 @@ async function fetchExploreCards(maxAmount) {
               <div class="row text-center border-bottom pb-3 mb-3">
                 <div class="col"> 
                     <p class="card-text">
-                      <strong>${NFTsArray[i].name} #${NFTsArray[i].tokenId}</strong>
+                      <strong>${NFTName} #${NFTsArray[i].tokenId}</strong>
                     </p>
                 </div>
               </div>
@@ -505,7 +507,7 @@ async function fetchExploreCards(maxAmount) {
             <div class="modal-dialog modal-xl">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title h4" id="collection-nft-aria-modal${i}">${NFTsArray[i].name} #${NFTsArray[i].tokenId}</h5>
+                  <h5 class="modal-title h4" id="collection-nft-aria-modal${i}">${NFTName} #${NFTsArray[i].tokenId}</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -603,6 +605,7 @@ async function fetchExploreCards(maxAmount) {
           </div>
         `;
       }
+
       exploreCollections.innerHTML = htmlHolder;
       cardEffect('#collectionsListing');
   
@@ -615,17 +618,62 @@ async function fetchExploreCards(maxAmount) {
       //     buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
       // }
 
-      
+
         let collections = await MARKET_READ.getActiveCollections();
         let tempHTML = "";
+
+        // console.log(NFTsArray);
         
       
         for( let i = 0; i < collections.length; i++){
           if(collections[i].creator.toLowerCase() == account.toLowerCase()){
+
+
+            // console.log(collections[i].marketIds);
+            let activeIds = [];
+            for(let j = 0; j < collections[i].marketIds.length; j++) {
+              activeIds.push( ethers.utils.formatUnits(collections[i].marketIds[j]._hex, 0) );
+            }
+            const NFTCards = NFTsArray;
+
+            console.log(activeIds); // why no array?!
+            // console.log(NFTCards);
+            
+            const activeNFTList = NFTCards.filter((item) => {
+              return activeIds.includes(item.marketId);
+            });
+            console.log(activeNFTList);
+            
+
+            for (let j = 0; j < activeNFTList.length; j++) {
+                let metadata = await fetch(NFTsArray[j].tokenURI);
           
+                if(NFTsArray[j].tokenURI.includes("json")){
+                try{
+                  metadata = await metadata.json();
+                  NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+                  NFTName = metadata.name;
+                  NFTDescription = metadata.description;
+          
+                  for(let i=0; i < metadata.attributes.length; i++) {
+                    NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
+                    NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
+                  }
+                } catch {
+                  NFTImage = NFTsArray[i].tokenURI;
+                }
+              } else {
+                NFTImage = NFTsArray[i].tokenURI;
+              }
+          }
+
+
+          
+          // This runs....
           tempHTML += `
           <div class="col">
-          <div class="card shadow-sm">
+          <div class="card">
+            <div class="card__inner">
 
             <div class="container text-center border-bottom">
               <div class="row row-cols-2 row-cols-md-3 g-3 m-1 my-md-3">
@@ -715,12 +763,21 @@ async function fetchExploreCards(maxAmount) {
               </div>
 
               <div class="row text-center">
-                <div class="col">
+                <div class="col text-start">
                   <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#collection-explore-modal-${i}">View</button>
+                </div>
+
+                <div class="col text-end">
+                  <button type="button" class="btn btn-sm btn-link light-grey">Report (<span id="report-explore-0">0</span>)</button>
                 </div>
               </div>
 
             </div>
+
+
+            <div class="lux collections"></div>
+            </div>
+
           </div>
         </div>
 
@@ -945,6 +1002,7 @@ async function fetchExploreCards(maxAmount) {
           }
         }
         exploreCollections.innerHTML = tempHTML;
+        cardEffect('#collectionsListing');
       
         }
     
@@ -998,7 +1056,7 @@ async function fetchWalletCards(maxAmount, nftContracts) {
               <div class="row text-center border-bottom pb-3 mb-3">
                 <div class="col"> 
                     <p class="card-text">
-                      <strong>${NFTsArray[i].name} #${NFTsArray[i].tokenId}</strong>
+                      <strong>${NFTName} #${NFTsArray[i].tokenId}</strong>
                     </p>
                 </div>
               </div>
@@ -1036,7 +1094,7 @@ async function fetchWalletCards(maxAmount, nftContracts) {
             <div class="modal-dialog modal-xl">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title h4" id="nft-aria-modalWallet${i}">${NFTsArray[i].name} #${NFTsArray[i].tokenId}</h5>
+                  <h5 class="modal-title h4" id="nft-aria-modalWallet${i}">${NFTName} #${NFTsArray[i].tokenId}</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -1202,7 +1260,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
               <div class="row text-center border-bottom pb-3 mb-3">
               <div class="col"> 
                   <p class="card-text">
-                      <strong>${NFTsArray[i].name} #${NFTsArray[i].tokenId}</strong>
+                      <strong>${NFTName} #${NFTsArray[i].tokenId}</strong>
                   </p>
               </div>
               </div>
@@ -1250,7 +1308,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
           <div class="modal-dialog modal-xl">
               <div class="modal-content">
               <div class="modal-header">
-                  <h5 class="modal-title h4" id="${location}-nft-aria-modalWallet-${i}">${NFTsArray[i].name} #${NFTsArray[i].tokenId}</h5>
+                  <h5 class="modal-title h4" id="${location}-nft-aria-modalWallet-${i}">${NFTName} #${NFTsArray[i].tokenId}</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -1414,7 +1472,8 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
     if (!NFTsArray[i].sold && !NFTsArray[i].canceled){
     htmlHolder += `
     <div class="col">
-        <div class="card shadow-sm">
+        <div class="card">
+          <div class="card__inner">
           
         <div class="card-image" style="background-image: url('${NFTImage}');"> </div>
 
@@ -1423,7 +1482,7 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
             <div class="row text-center border-bottom pb-3 mb-3">
             <div class="col"> 
                 <p class="card-text">
-                    <strong>${NFTsArray[i].name} #${NFTsArray[i].tokenId}</strong>
+                    <strong>${NFTName} #${NFTsArray[i].tokenId}</strong>
                 </p>
             </div>
             </div>
@@ -1470,6 +1529,10 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
             </div>
 
         </div>
+
+        <div class="lux collections"></div>
+        </div>
+
         </div>
     </div>
 
@@ -1478,7 +1541,7 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title h4" id="marketlist-nft-aria-modalWallet-${i}">${NFTsArray[i].name} #${NFTsArray[i].tokenId}</h5>
+                <h5 class="modal-title h4" id="marketlist-nft-aria-modalWallet-${i}">${NFTName} #${NFTsArray[i].tokenId}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -1573,6 +1636,9 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
         }
       }
         marketplaceNFTsEl.innerHTML = htmlHolder;
+        cardEffect("#new-collection-modal");
+
+
         let arrayOfDelist = document.querySelectorAll(".btn-Delist-CM");
         let arrayOfDelistModal = document.querySelectorAll(".btn-DelistModal-CM");
         let buttonCounter = 0;
@@ -1634,7 +1700,7 @@ async function fetchCollections() {
   //         <div class="row text-center border-bottom pb-3 mb-3">
   //           <div class="col"> 
   //               <p class="card-text">
-  //                 <strong>${NFTsArray[i].name} #${NFTsArray[i].tokenId}</strong>
+  //                 <strong>${NFTName} #${NFTsArray[i].tokenId}</strong>
   //               </p>
   //           </div>
   //         </div>
@@ -1668,7 +1734,7 @@ async function fetchCollections() {
   //       <div class="modal-dialog modal-xl">
   //         <div class="modal-content">
   //           <div class="modal-header">
-  //             <h5 class="modal-title h4" id="nft-aria-modalWallet${i}">${NFTsArray[i].name} #${NFTsArray[i].tokenId}</h5>
+  //             <h5 class="modal-title h4" id="nft-aria-modalWallet${i}">${NFTName} #${NFTsArray[i].tokenId}</h5>
   //             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
   //           </div>
   //           <div class="modal-body">
@@ -1766,8 +1832,9 @@ async function fetchCollections() {
     tempHTML += `
 
     <div class="col">
-      <div class="card shadow-sm">
-                      
+      <div class="card">
+        <div class="card__inner">
+
         <div class="container text-center border-bottom">
           <div class="row row-cols-2 row-cols-md-3 g-3 m-1 my-md-3">
             <div class="col">
@@ -1864,6 +1931,11 @@ async function fetchCollections() {
 
           </div>
         </div>
+
+
+        <div class="lux"></div>
+        </div>
+
       </div>
     </div>
 
@@ -2033,6 +2105,7 @@ async function fetchCollections() {
     }
   }
   containerEl.innerHTML = tempHTML;
+  cardEffect("#my-collections");
 
   document.getElementById('collectionsCount').innerHTML = collectionsCount;
 
@@ -2233,8 +2306,10 @@ var loadFile = function(event) {
   if(event.target.files[0].type.includes('video/')) {
     nftMediaPreview.innerHTML = `<video controls style="width:100%;"><source src="${previewPath}" type="video/mp4"></video>`;
   } else {
-    nftMediaPreview.innerHTML = `<div class="card-image image-radius" style="background-image: url('${previewPath}');"> </div>`;
+    nftMediaPreview.innerHTML = `<div class="card__inner"> <div class="card-image image-radius" style="background-image: url('${previewPath}');"> </div> <div class="lux full"></div> </div>`;
   }
+
+  cardEffect("#mint-nft-modal-1");
 
 }
 
@@ -2267,8 +2342,6 @@ document.getElementById("network-name").addEventListener("click", function () {
 
 // Card Effect
 function cardEffect(_parentId) {
-  // let allCards = document.querySelectorAll(`${_parentId} .card__inner`);
-  // console.log(allCards);
 
   $(`${_parentId} .card__inner`).mousemove(function(e) {
     var off = $(this).offset();

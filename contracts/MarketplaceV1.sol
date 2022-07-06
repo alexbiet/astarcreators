@@ -126,7 +126,7 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
             _activeCollections.current()
         );
 
-        uint256 activeCounter = _collectionIds.current();
+        uint256 activeCounter = 0;
 
         for (uint256 i = 0; i < _collectionIds.current(); i++) {
             if (collectionIdToCollection[i].active) {

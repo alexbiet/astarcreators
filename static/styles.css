@@ -182,7 +182,22 @@ hr {
 	bottom: 0;
 }
 
+
+.card__inner .collections {
+	bottom: 120px;
+}
+
 .modal-header {
     padding-left: 30px;
     padding-right: 30px;
+}
+
+.light-grey {
+    color: #999;
+    text-decoration: none;
+}
+
+.light-grey:hover {
+    color: red;
+    text-decoration: underline;
 }

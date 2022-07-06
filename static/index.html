@@ -83,23 +83,23 @@
                     <div class="col-auto"><small><code>dev//::</code></small></div>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-md-12 col-xl-4">
+                    <div class="col-12 col-md-12 col-xl-6">
                         <button id="mint-face" type="button" class="btn btn-sm btn-outline-primary mb-2">Mint FACE</button>
                         <button id="approve-all" type="button" class="btn btn-sm btn-outline-primary mb-2">Approve All</button>
                     </div>
-                    <div class="col-6 col-md-6 col-xl-4 mb-2">
+                    <div class="col-6 col-md-6 col-xl-6 mb-2">
                         <div class="input-group">
                             <input id="list-input" class="form-control form-control-sm" type="number" placeholder="tokenId">
                             <button id="list-face" type="button" class="btn btn-sm btn-outline-primary">list FACE</button>
                         </div>
                       </div>
 
-                    <div class="col-6 col-md-6 col-xl-4 mb-2">
+                    <!-- <div class="col-6 col-md-6 col-xl-4 mb-2">
                         <div class="input-group">
                             <input id="contract-input" class="form-control form-control-sm" type="number" placeholder="tokenId">
                             <button id="contract-btn" type="button" class="btn btn-sm btn-outline-primary">newContract</button>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -261,7 +261,7 @@
                         </div>
     
                     </div>
-                    <div class="lux"></div>
+                    <div class="lux collections"></div>
                     </div>
                 </div>
                 </div>
@@ -377,7 +377,7 @@
                                                         </div>
                                         
                                                     </div>
-                                                    
+
                                                     <div class="lux"></div>
                                                     </div>
 
@@ -482,8 +482,15 @@
                     <div class="accordion-body">
 
                         <div class="row">
-                            <div class="col d-flex align-items-center text-muted"><i>You have <b><span id="walletNftsCount">0</span></b> NFTs in your wallet.</i></div>
-                            <div class="col text-end">
+                            <div class="col-12 col-md d-flex align-items-center text-muted"><i>You have <b><span id="walletNftsCount">0</span></b> NFTs in your wallet.</i></div>
+
+                              <div class="col-12 col-md d-flex align-items-center">
+                                <div class="input-group">
+                                    <input id="contract-input" class="form-control form-control-sm" type="text" placeholder="NFT smart contract address">
+                                    <button id="contract-btn" type="button" class="btn btn-sm btn-primary">Add</button>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md text-end">
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#mint-nft-modal-1" class="btn btn-primary my-2">Mint</a>
                             </div>
                         </div>
