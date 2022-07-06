@@ -220,9 +220,9 @@ async function fetchExploreCards(maxAmount) {
   let NFTAttributesValues = "";
 
   let NFTsArray = await fetchMarketItemsArray();
+
   for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
       let metadata = await fetch(NFTsArray[i].tokenURI);
-      NFTName = NFTsArray[i].name;
 
       if(NFTsArray[i].tokenURI.includes("json")){
       try{
@@ -240,6 +240,10 @@ async function fetchExploreCards(maxAmount) {
       }
     } else {
       NFTImage = NFTsArray[i].tokenURI;
+      NFTName = NFTsArray[i].name;
+      NFTDescription = "none";
+      NFTAttributesTraits = "";
+      NFTAttributesValues = "";
     }
       htmlHolder += `
       <!-- Card Listing -->
@@ -2066,6 +2070,7 @@ async function createCollection() {
 
   for(let i = 0; i < totalMarketEls.length; i++) {
     if(totalMarketEls[i].checked) {
+      console.log(totalMarketEls[i].id);
       selectedNFTs.push(totalMarketEls[i].id.slice(11)) //removes MARKET_ID: 
     }
   }
