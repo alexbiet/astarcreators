@@ -124,9 +124,9 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     function getActiveCollections() public view returns (Collection[] memory) {
         Collection[] memory activeCollections = new Collection[](
             _activeCollections.current()
-        );
+        );`
 
-        uint256 activeCounter = _collectionIds.current();
+        uint256 activeCounter = 0;
 
         for (uint256 i = 0; i < _collectionIds.current(); i++) {
             if (collectionIdToCollection[i].active) {
