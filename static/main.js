@@ -220,8 +220,10 @@ async function fetchExploreCards(maxAmount) {
   let NFTAttributesValues = "";
 
   let NFTsArray = await fetchMarketItemsArray();
+  console.log(NFTsArray)
   for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
       let metadata = await fetch(NFTsArray[i].tokenURI);
+      NFTName = NFTsArray[i].name;
 
       if(NFTsArray[i].tokenURI.includes("json")){
       try{
