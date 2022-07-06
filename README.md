@@ -1,4 +1,5 @@
 # Astar Creators
+
 <br>
 
 <img src="static/images/astar-creators.png" width="300" alt="Astar Creators">
@@ -20,7 +21,6 @@ Build during the [Polkadot Hackathon: North America Edition - Summer 2022](https
 2. Run `yarn run`
 3. Open `http://localhost:8081`
 
-
 <br>
 <br>
 <br>
@@ -29,10 +29,8 @@ Build during the [Polkadot Hackathon: North America Edition - Summer 2022](https
 
 1. Run `git push heroku main`
 
-
 <br>
 <br>
-
 
 **TO DO**
 
@@ -49,8 +47,11 @@ Build during the [Polkadot Hackathon: North America Edition - Summer 2022](https
 - Apply for dApp Staking on testNet
 
 - NFT staking
-    - stake directly on dApp Staking Contract 
-    - redistribute staking rewards 90/10 or custom 
-    - withdraw stake / claim reward 
+
+  - stake directly on dApp Staking Contract
+  - redistribute staking rewards 90/10 or custom
+  - withdraw stake / claim reward
 
 - Marketplace UI polishing
+
+- Remove Item from collection on Sell / Delist

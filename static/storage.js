@@ -2,11 +2,11 @@ const addresses = {
   Shibuya: {
     dAppsStaking: "0x0000000000000000000000000000000000005001",
     faceMinter: "0x1206b3eB5920720e292903B30b61546c37C7792c",
-    marketplace: "0x798B1cedD44d9bA51708f36abf09EF0cDf6bBB2A",
+    marketplace: "0xE9CedB215bf0b509140EA4c9D1175Fc78c1A6aF8", //0x798B1cedD44d9bA51708f36abf09EF0cDf6bBB2A
     astarMinter: "0x7Fe4E59b858B907e4640730731108f9234461929",
   },
   Mumbai: {
-    marketplace: "0xE15aEf6d89B32384ff0897b10623dD0b7a391f3d", //new proxy 06/22
+    marketplace: "",  //0xE15aEf6d89B32384ff0897b10623dD0b7a391f3d" old
     faceMinter: "0xCbD54056ba671ddF74756F18668a96C76E0C44d9",
     astarMinter: "0xb44C8f4880601B2cF51c38c7c083650bbc4FF5C4",
   },
@@ -1367,7 +1367,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.MarketItem[]",
+            "internalType": "struct Marketplace.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1433,7 +1433,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.MarketItem[]",
+            "internalType": "struct Marketplace.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1493,7 +1493,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.MarketItem[]",
+            "internalType": "struct Marketplace.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1553,7 +1553,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.MarketItem[]",
+            "internalType": "struct Marketplace.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1596,9 +1596,14 @@ const abis = {
                 "internalType": "bool",
                 "name": "active",
                 "type": "bool"
+              },
+              {
+                "internalType": "uint256",
+                "name": "reportCount",
+                "type": "uint256"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.Collection[]",
+            "internalType": "struct Marketplace.Collection[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1664,7 +1669,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.MarketItem",
+            "internalType": "struct Marketplace.MarketItem",
             "name": "",
             "type": "tuple"
           },
@@ -1726,6 +1731,19 @@ const abis = {
       {
         "inputs": [],
         "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_collectionId",
+            "type": "uint256"
+          }
+        ],
+        "name": "reportCollection",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"

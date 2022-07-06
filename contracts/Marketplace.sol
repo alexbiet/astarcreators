@@ -7,16 +7,19 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
-contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
+contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     CountersUpgradeable.Counter private _marketItemIds;
     CountersUpgradeable.Counter private _collectionIds;
     CountersUpgradeable.Counter private _tokensSold;
     CountersUpgradeable.Counter private _tokensCanceled;
+    CountersUpgradeable.Counter private _activeCollections;
 
     mapping(uint256 => MarketItem) private marketItemIdToMarketItem;
     mapping(uint256 => Collection) private collectionIdToCollection;
+    mapping(address => mapping(uint256 => bool))
+        private addressToCollectionToReported;
 
     struct MarketItem {
         uint256 marketItemId;
@@ -37,6 +40,7 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         uint256[] marketIds;
         address creator;
         bool active;
+        uint256 reportCount;
     }
 
     event MarketItemCreated(
@@ -61,8 +65,6 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     event ownerAddress(address thisContractAddress);
 
     uint256 private listingFee;
-
-    CountersUpgradeable.Counter private _activeCollections;
 
     function initialize() public initializer {
         __UUPSUpgradeable_init();
@@ -98,7 +100,8 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
             collectionId,
             _marketIdsArray,
             msg.sender,
-            true
+            true,
+            0
         );
         _collectionIds.increment();
         _activeCollections.increment();
@@ -121,10 +124,26 @@ contract MarketplaceV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         _activeCollections.decrement();
     }
 
+    function reportCollection(uint256 _collectionId) public {
+        Collection memory targetCollection = collectionIdToCollection[
+            _collectionId
+        ];
+        require(
+            addressToCollectionToReported[msg.sender][_collectionId] == false,
+            "You've already reported this collection."
+        );
+        addressToCollectionToReported[msg.sender][_collectionId] = true;
+        targetCollection.reportCount++;
+
+        if (targetCollection.reportCount > 1) {
+            targetCollection.active = false;
+        }
+    }
+
     function getActiveCollections() public view returns (Collection[] memory) {
         Collection[] memory activeCollections = new Collection[](
             _activeCollections.current()
-        );`
+        );
 
         uint256 activeCounter = 0;
 
