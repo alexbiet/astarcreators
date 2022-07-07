@@ -460,7 +460,7 @@ async function fetchExploreCards(maxAmount) {
               metadata = await metadata.json();
               NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
 
-              NFTImages += `<div class="col"><img src="${metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}" alt="${NFTName}" class="img-fluid"></div>`;
+              NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}');"> </div></div>`;
 
 
               for (let i=0; i < metadata.attributes.length; i++) {
@@ -470,11 +470,13 @@ async function fetchExploreCards(maxAmount) {
 
             } catch {
               NFTImage = activeNFTList[j].tokenURI;
-              NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
+        
+              NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${activeNFTList[j].tokenURI}');"> </div></div>`;
             }
           } else {
             NFTImage = activeNFTList[j].tokenURI;
-            NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
+        
+            NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${activeNFTList[j].tokenURI}');"> </div></div>`;
           }
 
       }
@@ -1662,7 +1664,7 @@ async function fetchCollections() {
             metadata = await metadata.json();
             NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
 
-            NFTImages += `<div class="col"><img src="${metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}" alt="${NFTName}" class="img-fluid"></div>`;
+            NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}');"> </div></div>`;
 
 
             for (let i=0; i < metadata.attributes.length; i++) {
@@ -1672,11 +1674,11 @@ async function fetchCollections() {
 
           } catch {
             NFTImage = activeNFTList[j].tokenURI;
-            NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
+            NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${activeNFTList[j].tokenURI}');"> </div></div>`;
           }
         } else {
           NFTImage = activeNFTList[j].tokenURI;
-          NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
+          NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${activeNFTList[j].tokenURI}');"> </div></div>`;
         }
 
       }
