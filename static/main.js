@@ -928,8 +928,8 @@ async function fetchExploreCards(maxAmount) {
         document.getElementById(`explore-collection-nfts-modal-${i}`).innerHTML = htmlHolder;
         cardEffect(`#explore-collection-nfts-modal-${i}`);
     
-        let arrayOfBuyExplore = document.querySelectorAll(".buyExplore");
-        let arrayOfBuyModal = document.querySelectorAll(".buyModal");
+        let arrayOfBuyExplore = document.querySelectorAll("#collectionsListing .buyExplore");
+        let arrayOfBuyModal = document.querySelectorAll("#collectionsListing .buyModal");
         for (let i = 0; i < arrayOfBuyExplore.length; i++) {
           arrayOfBuyExplore[i].addEventListener("click", () => {
             buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
