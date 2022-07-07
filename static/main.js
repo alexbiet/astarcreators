@@ -207,7 +207,7 @@ async function fetchMarketItemsArray() {
 let nftContracts = trustedContracts[chain];
 
 fetchExploreCards(8);
-fetchExploreCollectionCards(8); // WIP
+fetchExploreCollectionCards(8);
 fetchWalletCards(8, nftContracts);
 fetchMarketplaceCards(8, "marketplace");
 fetchMarketplaceCardsCollectionModal(8);
@@ -928,14 +928,14 @@ async function fetchExploreCards(maxAmount) {
         document.getElementById(`explore-collection-nfts-modal-${i}`).innerHTML = htmlHolder;
         cardEffect(`#explore-collection-nfts-modal-${i}`);
     
-        // let arrayOfBuyExplore = document.querySelectorAll(".buyExplore");
-        // let arrayOfBuyModal = document.querySelectorAll(".buyModal");
-        // for (let i = 0; i < arrayOfBuyExplore.length; i++) {
-        //   arrayOfBuyExplore[i].addEventListener("click", () => {
-        //     buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
-        //   arrayOfBuyModal[i].addEventListener("click", () => {
-        //     buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
-        // }
+        let arrayOfBuyExplore = document.querySelectorAll(".buyExplore");
+        let arrayOfBuyModal = document.querySelectorAll(".buyModal");
+        for (let i = 0; i < arrayOfBuyExplore.length; i++) {
+          arrayOfBuyExplore[i].addEventListener("click", () => {
+            buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
+          arrayOfBuyModal[i].addEventListener("click", () => {
+            buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
+        }
 
 
       }
@@ -1610,167 +1610,6 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
 
 async function fetchCollections() {
 
-  // let htmlHolder = "";
-  // let NFTName = "";
-  // let NFTDescription = "";
-  // let NFTAttributesTraits = "";
-  // let NFTAttributesValues = "";
-
-  // let NFTsArray = await fetchNFTsFromContracts(nftContracts);
-  // let NFTImage;
-  // for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
-
-  //   let metadata = await fetch(NFTsArray[i].tokenURI);
-  //   if(NFTsArray[i].tokenURI.includes("json")){
-  //   try{
-  //     metadata = await metadata.json();
-  //     NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
-
-  //     NFTName = metadata.name;
-  //     NFTDescription = metadata.description;
-
-  //     for(let i=0; i < metadata.attributes.length; i++) {
-  //       NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
-  //       NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
-  //     }
-  //   } catch {
-  //     NFTImage = NFTsArray[i].tokenURI;
-  //   }
-  // } else {
-  //   NFTImage = NFTsArray[i].tokenURI;
-  // }
-
-  //   htmlHolder += `
-  //   <!-- Card Listing -->
-  //   <div class="col">
-  //     <div class="card shadow-sm">
-      
-  //       <div class="card-image" style="background-image: url('${NFTImage}');"> </div>
-
-  //       <div class="card-body">
-
-  //         <div class="row text-center border-bottom pb-3 mb-3">
-  //           <div class="col"> 
-  //               <p class="card-text">
-  //                 <strong>${NFTName} #${NFTsArray[i].tokenId}</strong>
-  //               </p>
-  //           </div>
-  //         </div>
-
-  //         <div class="row text-center border-bottom pb-3 mb-3">
-  //           <div class="col"> 
-  //             <div class="input-group input-group-sm">
-  //               <input type="text" class="form-control inputWallet" placeholder="Price">
-  //               <span class="input-group-text">${symbol}</span>
-  //               <button class="btn btn-warning approveWallet" type="button" id="nftwallet-approve${i}">Approve</button>
-  //               <button class="btn btn-primary listWallet" type="button" id="">List</button>
-  //             </div>
-  //           </div>
-  //         </div>
-
-  //         <div class="row text-center">
-  //           <div class="col">
-  //             <div class="btn-group">
-  //               <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#nft-modalWallet${i}">View</button>
-
-  //             </div>
-  //           </div>
-  //         </div>
-
-  //       </div>
-  //     </div>
-  //   </div>
-
-  //   <!-- Modal (default hidden) -->
-  //   <div class="modal fade" id="nft-modalWallet${i}" tabisndex="-1" aria-labelledby="nft-aria-modalWallet${i}" style="display: none;" aria-hidden="true">
-  //       <div class="modal-dialog modal-xl">
-  //         <div class="modal-content">
-  //           <div class="modal-header">
-  //             <h5 class="modal-title h4" id="nft-aria-modalWallet${i}">${NFTName} #${NFTsArray[i].tokenId}</h5>
-  //             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-  //           </div>
-  //           <div class="modal-body">
-
-
-  //             <div class="row">
-
-  //               <div class="col">
-  //               <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
-  //               </div>
-
-  //               <div class="col">
-
-  //                 <div class="row">
-  //                   <div class="col text-end pe-1">
-  //                     <p class="card-text"><strong>Name: </strong></p>      
-  //                   </div>
-  //                   <div class="col ps-1">
-  //                     <p class="card-text"><small>${NFTName}</small></p>
-  //                   </div>
-  //                 </div>
-
-  //                 <div class="row">
-  //                   <div class="col text-end pe-1">
-  //                     <p class="card-text"><strong>Description: </strong></p>      
-  //                   </div>
-  //                   <div class="col ps-1">
-  //                     <p class="card-text"><small>${NFTDescription}</small></p>
-  //                   </div>
-  //                 </div>
-
-  //                 <div class="row">
-  //                   <div class="col text-end pe-1">
-  //                   <br>
-  //                     <p class="card-text"><strong>Properties </strong>
-  //                     ${NFTAttributesTraits}
-  //                     </p>      
-  //                   </div>
-  //                   <div class="col ps-1">
-  //                   <br>
-  //                     <p class="card-text">&nbsp;
-  //                     ${NFTAttributesValues}
-  //                     </p>
-  //                   </div>
-  //                 </div>
-
-  //                 <div class="row border-bottom pb-3 mb-3">
-  //                   <div class="col text-end pe-1">
-  //                     <br>
-  //                     <p class="card-text"><strong>NFT Contract: </strong></p>       
-  //                   </div>
-  //                   <div class="col ps-1">
-  //                   <br>
-  //                     <p class="card-text">${NFTsArray[i].contractAddress.substring(0,6) + "..." + NFTsArray[i].contractAddress.slice(-4)}</p>
-  //                   </div>
-  //                 </div>
-
-  //                 <div class="row text-center">
-
-  //                   <div class="col-12 col-md-8 offset-md-2"> 
-  //                     <div class="input-group">
-  //                       <input type="text" id="nftmodal-listInput${i}" class="form-control inputModal" placeholder="Price">
-  //                       <span class="input-group-text">${symbol}</span>
-  //                       <button class="btn btn-warning approveModal" type="button" id="nftmodal-approve${i}">Approve</button>
-  //                       <button class="btn btn-primary listModal" type="button" id="nftmodal-list${i}">List</button>
-  //                     </div>
-  //                   </div>
-
-  //                 </div>
-
-  //                 </div>
-  //             </div>
-
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   `;
-  // }
-  // walletNFTsEl.innerHTML = htmlHolder;
-
-
-// ------------
-
   let collections = await MARKET_READ.getActiveCollections();
   let containerEl = document.getElementById("my-collections");
   let tempHTML = "";
@@ -1788,24 +1627,11 @@ async function fetchCollections() {
 
         <div class="container text-center border-bottom">
           <div class="row row-cols-2 row-cols-md-3 g-3 m-1 my-md-3">
-            <div class="col">
-              <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-5.png" alt="FaceMint #0" class="img-fluid">
-            </div>
-            <div class="col">
-              <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-3.png" alt="FaceMint #2" class="img-fluid">
-            </div>
-            <div class="col">
-              <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-4.png" alt="FaceMint #7" class="img-fluid">
-            </div>
-            <div class="col">
-                <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-2.png" alt="FaceMint #4" class="img-fluid">
-            </div>
-            <div class="col">
-                <img src="https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-1.png" alt="FaceMint #5" class="img-fluid">
-            </div>
-            <div class="col d-flex align-items-center justify-content-center"> 
-                <small class="text-muted">...</small>
-            </div>
+            
+          
+            <!-- add mini photos -->
+
+
           </div>
         </div>
       
@@ -1901,66 +1727,10 @@ async function fetchCollections() {
         <div class="row">
             <div class="col-6">
                 <div class="container text-center">
-                    <div class="row row-cols-1 row-cols-md-2 g-3 my-2 my-md-3">
-                        
-                      <div class="col">
-                        <div class="card shadow-sm">
 
-                            <div class="card-image" style="background-image: url('https://bafybeibcoepngugidjcroor2lnxc62sxkizozk3uimvoqk4hksok4ncx4i.ipfs.nftstorage.link/face-6.png');"> </div>
-                
-                            <div class="card-body">
-                
-                              <div class="row text-center border-bottom pb-3 mb-3">
-                                <div class="col"> 
-                                    <p class="card-text">
-                                        <small><strong>FaceMint #14</strong></small>
-                                    </p>
-                                </div>
-                              </div>
-                        
-                              <small>
-                                <div class="row">
-                                  <div class="col text-end pe-1">
-                                      <p class="card-text"><strong>Status: </strong></p>      
-                                    </div>
-                                    <div class="col text-start ps-1">
-                                      <p class="card-text">
-                                          <span class="badge text-bg-warning">For Sale</span>
-                                      </p>
-                                  </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col text-end pe-1">
-                                        <p class="card-text"><strong>Price: </strong></p>      
-                                      </div>
-                                      <div class="col text-start ps-1">
-                                        <p class="card-text">0.12 ${symbol}</p>
-                                    </div>
-                                </div>
-
-                                <div class="row border-bottom pb-3 mb-3">
-                                  <div class="col text-end pe-1">
-                                    <p class="card-text"><strong>Creator: </strong></p>       
-                                  </div>
-                                  <div class="col text-start ps-1">
-                                    <p class="card-text">0x0d9d...55c3</p>
-                                  </div>
-                                </div>
-
-                              </small>
-                
-                              <div class="row text-center">
-                                <div class="col">
-                                  <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#nft-modal0">View</button>
-                                </div>
-                              </div>
-                
-                            </div>
-                          </div>
-                      </div>
-
+                    <div id="my-wallet-collection-nfts-{i}" class="row row-cols-1 row-cols-md-2 g-3 my-2 my-md-3">
                     </div>
+
                 </div>
             </div>
 
