@@ -990,6 +990,10 @@ async function fetchWalletCards(maxAmount, nftContracts) {
         }
       } else {
         NFTImage = NFTsArray[i].tokenURI;
+        NFTName = NFTsArray[i].name;
+        NFTDescription = "none";
+        NFTAttributesTraits = "";
+        NFTAttributesValues = "";
       }
 
         htmlHolder += `
@@ -1168,6 +1172,8 @@ async function fetchMarketplaceCards(maxAmount, location) {
     let NFTsArray = await fetchSellingItemsArray();
 
     for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
+
+      
       let metadata = await fetch(NFTsArray[i].tokenURI);
 
       if(!NFTsArray[i].canceled) {
@@ -1198,6 +1204,10 @@ async function fetchMarketplaceCards(maxAmount, location) {
         }
       } else {
         NFTImage = NFTsArray[i].tokenURI;
+        NFTName = NFTsArray[i].name;
+        NFTDescription = "none";
+        NFTAttributesTraits = "";
+        NFTAttributesValues = "";
       }
       if (!NFTsArray[i].sold && !NFTsArray[i].canceled){
       htmlHolder += `
