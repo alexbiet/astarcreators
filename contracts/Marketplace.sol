@@ -137,7 +137,10 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 
         if (targetCollection.reportCount > 1) {
             targetCollection.active = false;
+            _activeCollections.decrement();
         }
+
+        collectionIdToCollection[_collectionId] = targetCollection;
     }
 
     function getActiveCollections() public view returns (Collection[] memory) {
