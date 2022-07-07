@@ -706,9 +706,12 @@ async function fetchExploreCards(maxAmount) {
 
       //add report listeners
 
-       
+      
          document.getElementById(`report-${i}`).addEventListener("click", () => {
-          reportCollection(collections[i]["collectionId"])
+          console.log(collections[i]["active"])
+          console.log(collections[i]["reportCount"])
+          reportCollection(collections[i]["collectionId"]);
+      
          });
        
 
