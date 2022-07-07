@@ -702,14 +702,9 @@ async function fetchExploreCards(maxAmount) {
     exploreCollections.innerHTML = tempHTML;
     cardEffect('#collectionsListing');
 
-
-
     // Add Cards
     for( let i = 0; i < collections.length; i++){
-
-      //add report listeners
-
-      
+    
          document.getElementById(`report-${i}`).addEventListener("click", () => {
           console.log(collections[i]["active"])
           console.log(collections[i]["reportCount"])
@@ -808,7 +803,7 @@ async function fetchExploreCards(maxAmount) {
                     <div class="col">
                       <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#collection-nft-modal${j}">View</button>
-                        <button type="button" class="btn btn-sm btn-primary buyExplore" id="nftcard-buy${j}">Buy</button>
+                        <button type="button" class="btn btn-sm btn-primary buyCollectionModal-${i}" id="nftcard-buy${j}">Buy</button>
                       </div>
                     </div>
                   </div>
@@ -911,7 +906,7 @@ async function fetchExploreCards(maxAmount) {
     
                         <div class="row text-center">
                           <div class="col pe-1">
-                            <button id="nftmodal-buy${j}" type="button" class="btn btn-primary buyModal">Buy</button>     
+                            <button id="nftmodal-buy${j}" type="button" class=" buyCollection btn btn-primary">Buy</button>     
                           </div>
                         </div>
     
@@ -927,21 +922,39 @@ async function fetchExploreCards(maxAmount) {
         
         document.getElementById(`explore-collection-nfts-modal-${i}`).innerHTML = htmlHolder;
         cardEffect(`#explore-collection-nfts-modal-${i}`);
+
+        
     
-        let arrayOfBuyExplore = document.querySelectorAll(".buyExplore");
-        let arrayOfBuyModal = document.querySelectorAll(".buyModal");
-        for (let i = 0; i < arrayOfBuyExplore.length; i++) {
-          arrayOfBuyExplore[i].addEventListener("click", () => {
-            buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
-          arrayOfBuyModal[i].addEventListener("click", () => {
-            buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
-        }
+    
+      }
+
+      
+
+      //runs through each collection
+      let arrayOfBuyCollectionModal = document.querySelectorAll(`.buyCollectionModal-${i}`);
+   
+      //runs for each item inside the collection
+
+      for (let y = 0; y < arrayOfBuyCollectionModal.length; y++) {
+        currentId2 = await ethers.utils.formatUnits(collections[i]["marketIds"][y], 0);
+        console.log(collections[i]["marketIds"])
+        console.log(currentId2)
 
 
+        arrayOfBuyCollectionModal[y].addEventListener("click", async () => { 
+          currentId = await ethers.utils.formatUnits(collections[i]["marketIds"][y], 0);
+          console.log(currentId)
+          let _contract = await NFTsArray[currentId]["contractAddress"];
+          let _marketId = await NFTsArray[currentId]["marketId"];
+          let _priceBN = await NFTsArray[currentId]["priceBN"];
+   
+         buyMarketItem(_contract, _marketId, _priceBN);});
       }
     }
 
-
+ 
+      
+  }
 
 async function reportCollection(collectionId) {
   MARKET_WRITE.reportCollection(collectionId);
@@ -952,8 +965,6 @@ async function reportCollection(collectionId) {
 
 
 
-      
-  }
     
 
 
@@ -1389,6 +1400,8 @@ async function fetchMarketplaceCards(maxAmount, location) {
              cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)});
              buttonCounter++;
          }
+  
+
    
       }
       }
