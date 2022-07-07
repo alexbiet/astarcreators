@@ -561,7 +561,7 @@ async function fetchExploreCards(maxAmount) {
             </div>
 
             <div class="col text-end">
-              <button type="button" class="btn btn-sm btn-link light-grey">Report (<span id="report-explore-0">0</span>)</button>
+              <button id="report-${i}"type="button" class="btn btn-sm btn-link light-grey">Report (<span id="report-explore-0">0</span>)</button>
             </div>
           </div>
 
@@ -703,6 +703,14 @@ async function fetchExploreCards(maxAmount) {
 
     // Add Cards
     for( let i = 0; i < collections.length; i++){
+
+      //add report listeners
+
+       
+         document.getElementById(`report-${i}`).addEventListener("click", () => {
+          reportCollection(collections[i]["collectionId"])
+         });
+       
 
         let activeIds = [];
         for(let j = 0; j < collections[i].marketIds.length; j++) {
@@ -929,7 +937,9 @@ async function fetchExploreCards(maxAmount) {
 
 
 
-
+async function reportCollection(collectionId) {
+  console.log (collectionId + " reported" ) ;
+}
 
 
 
