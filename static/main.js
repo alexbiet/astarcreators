@@ -938,7 +938,7 @@ async function fetchExploreCards(maxAmount) {
 
 
 async function reportCollection(collectionId) {
-  console.log (collectionId + " reported" ) ;
+  MARKET_WRITE.reportCollection(collectionId);
 }
 
 
