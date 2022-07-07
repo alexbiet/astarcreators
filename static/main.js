@@ -71,11 +71,12 @@ async function fetchAccountData() {
   const MARKET_READ = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, provider);
 
 //mintFaceNFT();
-document.getElementById("mint-face").addEventListener("click", mintFaceNFT);
-async function mintFaceNFT() {
-  let faceMinter = new ethers.Contract(addresses[chain].faceMinter, abis.faceMinter, signer);
-  faceMinter.safeMint(account);
-}
+// document.getElementById("mint-face").addEventListener("click", mintFaceNFT);
+// async function mintFaceNFT() {
+//   let faceMinter = new ethers.Contract(addresses[chain].faceMinter, abis.faceMinter, signer);
+//   faceMinter.safeMint(account);
+// }
+
  //approveNFT(addresses[chain].faceMinter, 1);
 async function approveNFT(_NFTContract, _tokenId) {
   let NFTContract = new ethers.Contract(_NFTContract, abis.ERC721, signer);
@@ -83,12 +84,12 @@ async function approveNFT(_NFTContract, _tokenId) {
 }
 
 
-document.getElementById("approve-all").addEventListener("click", () => {
-  approveAll(addresses[chain].faceMinter, true)})
-async function approveAll(_NFTContract, _bool) {
-  let NFTContract = new ethers.Contract(_NFTContract, abis.ERC721, signer);
-  NFTContract.setApprovalForAll(addresses[chain].marketplace, _bool);
-}
+// document.getElementById("approve-all").addEventListener("click", () => {
+//   approveAll(addresses[chain].faceMinter, true)})
+// async function approveAll(_NFTContract, _bool) {
+//   let NFTContract = new ethers.Contract(_NFTContract, abis.ERC721, signer);
+//   NFTContract.setApprovalForAll(addresses[chain].marketplace, _bool);
+// }
 
 
 let inputEl2 = document.getElementById("contract-input");
@@ -96,11 +97,13 @@ document.getElementById("contract-btn").addEventListener("click", () => {
   trustedContracts.push(inputEl2.value);
   fetchWalletCards(8, trustedContracts);});
 
-let inputEl = document.getElementById("list-input");
-document.getElementById("list-face").addEventListener("click", () => {
-  console.log(inputEl.value);
-  //approveNFT(addresses[chain].faceMinter, inputEl.value);
-  listMarketItem(addresses[chain].faceMinter, inputEl.value, 1000000000000000);});
+// let inputEl = document.getElementById("list-input");
+// document.getElementById("list-face").addEventListener("click", () => {
+//   console.log(inputEl.value);
+//   //approveNFT(addresses[chain].faceMinter, inputEl.value);
+//   listMarketItem(addresses[chain].faceMinter, inputEl.value, 1000000000000000);});
+
+
 async function listMarketItem(_NFTContract, _tokenId, _price) {
   MARKET_WRITE.createMarketItem(_NFTContract, _tokenId, _price);
 }

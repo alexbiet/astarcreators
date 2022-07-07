@@ -31,27 +31,3 @@ Build during the [Polkadot Hackathon: North America Edition - Summer 2022](https
 
 <br>
 <br>
-
-**TO DO**
-
-- Approve / List NFT transactions should appear in one click \
-
-- Mint NFTs on Crust
-
-- Deployment of Dapp on Crust
-
-- NFT Collections (smart contract and UI)
-
-- Polkadot.js wallet
-
-- Apply for dApp Staking on testNet
-
-- NFT staking
-
-  - stake directly on dApp Staking Contract
-  - redistribute staking rewards 90/10 or custom
-  - withdraw stake / claim reward
-
-- Marketplace UI polishing
-
-- Remove Item from collection on Sell / Delist
