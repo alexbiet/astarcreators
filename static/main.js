@@ -423,7 +423,6 @@ async function fetchExploreCards(maxAmount) {
   async function fetchExploreCollectionCards(maxAmount) {
     let exploreCollections = document.getElementById("collectionsListing");
     let listingLimit = maxAmount -1;
-    let htmlHolder = "";
     let NFTName = "";
     let NFTDescription = "";
     let NFTAttributesTraits = "";
@@ -431,371 +430,154 @@ async function fetchExploreCards(maxAmount) {
   
     let NFTsArray = await fetchMarketItemsArray();
 
+    let collections = await MARKET_READ.getActiveCollections();
+    let tempHTML = "";
 
-    for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
-        let metadata = await fetch(NFTsArray[i].tokenURI);
-  
-        if(NFTsArray[i].tokenURI.includes("json")){
-        try{
-          metadata = await metadata.json();
-          NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
-          NFTName = metadata.name;
-          NFTDescription = metadata.description;
-  
-          for(let i=0; i < metadata.attributes.length; i++) {
-            NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
-            NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
-          }
-        } catch {
-          NFTImage = NFTsArray[i].tokenURI;
+    for( let i = 0; i < collections.length; i++){
+
+        let activeIds = [];
+        for(let j = 0; j < collections[i].marketIds.length; j++) {
+          activeIds.push( ethers.utils.formatUnits(collections[i].marketIds[j]._hex, 0) );
         }
-      } else {
-        NFTImage = NFTsArray[i].tokenURI;
-      }
-        htmlHolder += `
-        <!-- Card Listing -->
-        <div class="col">
-          <div class="card">
-            <div class="card__inner">
 
-            <div class="card-image" style="background-image: url('${NFTImage}');"> </div>
-  
-            <div class="card-body">
-  
-              <div class="row text-center border-bottom pb-3 mb-3">
-                <div class="col"> 
-                    <p class="card-text">
-                      <strong>${NFTName} #${NFTsArray[i].tokenId}</strong>
-                    </p>
-                </div>
-              </div>
-        
-              <small>
-                <div class="row">
-                  <div class="col text-end pe-1">
-                    <p class="card-text"><strong>Price: </strong></p>      
-                  </div>
-                  <div class="col ps-1">
-                    <p class="card-text">${NFTsArray[i].price} ${symbol}</p>
-                  </div>
-                </div>
-  
-                <div class="row border-bottom pb-3 mb-3">
-                    <div class="col text-end pe-1">
-                      <p class="card-text"><strong>Creator: </strong></p>       
-                    </div>
-                    <div class="col ps-1">
-                      <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + NFTsArray[i].creator.slice(-4)}</p>
-                    </div>
-                  </div>
-                </small>
-  
-                <div class="row text-center">
-                  <div class="col">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#collection-nft-modal${i}">View</button>
-                      <button type="button" class="btn btn-sm btn-primary buyExplore" id="nftcard-buy${i}">Buy</button>
-                    </div>
-                  </div>
-                </div>
-  
-            </div>
+        const activeNFTList = NFTsArray.filter((item) => {
+          return activeIds.includes(item.marketId);
+        });
 
-            <div class="lux"></div>
-            </div>
-
-          </div>
-        </div>
-  
-        <!-- Modal (default hidden) -->
-        <div class="modal fade" id="collection-nft-modal${i}" tabisndex="-1" aria-labelledby="collection-nft-aria-modal${i}" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title h4" id="collection-nft-aria-modal${i}">${NFTName} #${NFTsArray[i].tokenId}</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-  
-  
-                  <div class="row">
-  
-                    <div class="col">
-                        <div class="card m-3">
-                            <div class="card__inner">
-                            <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
-                            <div class="lux full"></div>
-                            </div>
-                        </div>
-                    </div>
-  
-                    <div class="col">
-  
-                      <div class="row">
-                        <div class="col text-end pe-1">
-                          <p class="card-text"><strong>Name:</strong></p>      
-                        </div>
-                        <div class="col ps-1">
-                          <p class="card-text"><small>${NFTName}</small></p>
-                        </div>
-                      </div>
-  
-                      <div class="row">
-                        <div class="col text-end pe-1">
-                          <p class="card-text"><strong>Description: </strong></p>      
-                        </div>
-                        <div class="col ps-1">
-                          <p class="card-text"><small>${NFTDescription}</small></p>
-                        </div>
-                      </div>
-  
-                      <div class="row">
-                        <div class="col text-end pe-1">
-                        <br>
-                          <p class="card-text"><strong>Properties </strong>    
-                          ${NFTAttributesTraits}
-                          </p>      
-                        </div>
-                        <div class="col ps-1">
-                        <br>
-                          <p class="card-text">&nbsp;   
-                          ${NFTAttributesValues}
-                          </p>
-                        </div>
-                      </div>
-  
-                      <div class="row">
-                        <div class="col text-end pe-1">
-                          <br>
-                          <p class="card-text"><strong>Creator: </strong></p>       
-                        </div>
-                        <div class="col ps-1">
-                        <br>
-                          <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + NFTsArray[i].creator.slice(-4)}</p>
-                        </div>
-                      </div>
-  
-                      <div class="row">
-                        <div class="col text-end pe-1">
-                          <p class="card-text"><strong>NFT Contract: </strong></p>       
-                        </div>
-                        <div class="col ps-1">
-                          <p class="card-text">${NFTsArray[i].contractAddress.substring(0,6) + "..." + NFTsArray[i].contractAddress.slice(-4)}</p>
-                        </div>
-                      </div>
-  
-                      <div class="row border-bottom pb-3 mb-3">
-                        <div class="col text-end pe-1">
-                          <br>
-                          <p class="card-text"><strong>Price: </strong></p>      
-                        </div>
-                        <div class="col ps-1">
-                          <br>
-                          <p class="card-text">${NFTsArray[i].price} ${symbol}</p>
-                        </div>
-                      </div>
-  
-                      <div class="row text-center">
-                        <div class="col pe-1">
-                          <button id="nftmodal-buy${i}" type="button" class="btn btn-primary buyModal">Buy</button>     
-                        </div>
-                      </div>
-  
-                      </div>
-                  </div>
-  
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      }
-
-      exploreCollections.innerHTML = htmlHolder;
-      cardEffect('#collectionsListing');
-  
-      // let arrayOfBuyExplore = document.querySelectorAll(".buyExplore");
-      // let arrayOfBuyModal = document.querySelectorAll(".buyModal");
-      // for (let i = 0; i < arrayOfBuyExplore.length; i++) {
-      //   arrayOfBuyExplore[i].addEventListener("click", () => {
-      //     buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
-      //   arrayOfBuyModal[i].addEventListener("click", () => {
-      //     buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
-      // }
+        let NFTName = NFTsArray.name;
+        let NFTImage = "";
+        let NFTImages = "";
 
 
-        let collections = await MARKET_READ.getActiveCollections();
-        let tempHTML = "";
+        for (let j = 0; j < activeNFTList.length; j++) {
 
-        console.log(collections);
-        // console.log(NFTsArray);
-        
-      
-        for( let i = 0; i < collections.length; i++){
-          if(collections[i].creator.toLowerCase() == account.toLowerCase()){
+          let metadata = await fetch(activeNFTList[j].tokenURI);
+          if(activeNFTList[j].tokenURI.includes("json")){
+            try {
+              metadata = await metadata.json();
+              NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
 
-
-            let activeIds = [];
-            for(let j = 0; j < collections[i].marketIds.length; j++) {
-              activeIds.push( ethers.utils.formatUnits(collections[i].marketIds[j]._hex, 0) );
-            }
-
-            // console.log(activeIds);
-            // console.log(NFTsArray);
-            
-            const activeNFTList = NFTsArray.filter((item) => {
-              return activeIds.includes(item.marketId);
-            });
-            console.log(activeNFTList);
-
-            let NFTName = NFTsArray.name;
-            let NFTPrice = NFTsArray.price;
-            let NFTCreator = NFTsArray.creator;
-            let NFTOwner = NFTsArray.owner;
-            let NFTContract = NFTsArray.contractAddress;
-            let NFTImage = "";
-            let NFTImages = "";
-            
-
-            for (let j = 0; j < activeNFTList.length; j++) {
-                let metadata = await fetch(NFTsArray[j].tokenURI);
-                console.log(metadata);
-          
-                if(NFTsArray[j].tokenURI.includes("json")){
-                try{
-                  metadata = await metadata.json();
-
-                  NFTName = metadata.name;
-                  NFTDescription = metadata.description;
-
-                  NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
-
-                  NFTImages += `<div class="col"><img src="${metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}" alt="${NFTName}" class="img-fluid"></div>`;
+              NFTImages += `<div class="col"><img src="${metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}" alt="${NFTName}" class="img-fluid"></div>`;
 
 
-          
-                  for(let i=0; i < metadata.attributes.length; i++) {
-                    NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
-                    NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
-                  }
-
-                } catch {
-                  NFTImage = NFTsArray[j].tokenURI;
-                  NFTImages += `<div class="col"><img src="${NFTsArray[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
-                }
-              } else {
-                NFTImage = NFTsArray[j].tokenURI;
-                NFTImages += `<div class="col"><img src="${NFTsArray[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
+              for (let i=0; i < metadata.attributes.length; i++) {
+                NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
+                NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
               }
+
+            } catch {
+              NFTImage = activeNFTList[j].tokenURI;
+              NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
+            }
+          } else {
+            NFTImage = activeNFTList[j].tokenURI;
+            NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
           }
 
-          console.log(NFTImages);
+      }
 
-          
-          // This runs....
-          tempHTML += `
-          <div class="col">
-          <div class="card">
-            <div class="card__inner">
+        
+      // This runs....
+      tempHTML += `
+      <div class="col">
+      <div class="card">
+        <div class="card__inner">
 
-            <div class="container text-center border-bottom">
-              <div class="row row-cols-2 row-cols-md-3 g-3 m-1 my-md-3">
+        <div class="container text-center border-bottom">
+          <div class="row row-cols-2 row-cols-md-3 g-2 m-1 my-md-3">
 
-                ${NFTImages}
-
-                <div class="col d-flex align-items-center justify-content-center"> 
-                    <small class="text-muted">...</small>
-                </div>
-              </div>
-            </div>
-            
-            <div class="card-body">
-              <div class="row text-center border-bottom pb-3 mb-3">
-                <div class="col"> 
-                    <p class="card-text"><strong>${collections[i].name}</strong></p>
-                </div>
-              </div>
-          
-              <small>
-                <div class="row">
-                  <div class="col text-end pe-1">
-                    <p class="card-text"><strong>TVL: </strong></p>      
-                  </div>
-                  <div class="col ps-1">
-                    <p class="card-text">0 ${symbol}</p>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col text-end pe-1">
-                    <p class="card-text"><strong>APY: </strong></p>       
-                  </div>
-                  <div class="col ps-1">
-                    <p class="card-text">0%</p>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col text-end pe-1">
-                    <p class="card-text"><strong>Stakers: </strong></p>     
-                  </div>
-                  <div class="col ps-1">
-                    <p class="card-text">0</p>
-                  </div>
-                </div>
-      
-                <div class="row">
-                    <div class="col text-end pe-1">
-                    <p class="card-text"><strong>Total NFTs: </strong></p>     
-                    </div>
-                    <div class="col ps-1">
-                    <p class="card-text">${collections[i].marketIds.length}</p>
-                    </div>
-                </div>
-  
-                <div class="row border-bottom pb-3 mb-3">
-                    <div class="col text-end pe-1">
-                      <p class="card-text"><strong>Creator: </strong></p>  
-                    </div>
-                    <div class="col ps-1">
-                      <p class="card-text">${collections[i].creator.substring(0,6) + "..." + collections[i].creator.slice(-4)}</p>
-                    </div>
-                </div>
-              </small>
-              <div class="row border-bottom pb-3 mb-3">
-                <div class="col">
-                  <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" placeholder="i.e. 100.00" aria-describedby="button-stake" id="input-explore-stake">
-                    <span class="input-group-text">${symbol}</span>
-                    <button class="btn btn-primary" type="button" id="button-explore-stake-${i}">Stake</button>
-                    <button class="btn btn-outline-danger" type="button" id="button-explore-unstake-${i}">Unstake</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row text-center">
-                <div class="col text-start">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#collection-explore-modal-${i}">View</button>
-                </div>
-
-                <div class="col text-end">
-                  <button type="button" class="btn btn-sm btn-link light-grey">Report (<span id="report-explore-0">0</span>)</button>
-                </div>
-              </div>
-
-            </div>
-
-
-            <div class="lux collections"></div>
-            </div>
+            ${NFTImages}
 
           </div>
         </div>
-
+        
+        <div class="card-body">
+          <div class="row text-center border-bottom pb-3 mb-3">
+            <div class="col"> 
+                <p class="card-text"><strong>${collections[i].name}</strong></p>
+            </div>
+          </div>
       
-<div class="modal fade" id="collection-explore-modal-${i}" tabindex="-1" aria-labelledby="collection-explore-aria-modal--${i}" style="display: none;" aria-hidden="true">
-<div class="modal-dialog modal-xl">
-  <div class="modal-content">
+          <small>
+            <div class="row">
+              <div class="col text-end pe-1">
+                <p class="card-text"><strong>TVL: </strong></p>      
+              </div>
+              <div class="col ps-1">
+                <p class="card-text">0 ${symbol}</p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col text-end pe-1">
+                <p class="card-text"><strong>APY: </strong></p>       
+              </div>
+              <div class="col ps-1">
+                <p class="card-text">0%</p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col text-end pe-1">
+                <p class="card-text"><strong>Stakers: </strong></p>     
+              </div>
+              <div class="col ps-1">
+                <p class="card-text">0</p>
+              </div>
+            </div>
+  
+            <div class="row">
+                <div class="col text-end pe-1">
+                <p class="card-text"><strong>Total NFTs: </strong></p>     
+                </div>
+                <div class="col ps-1">
+                <p class="card-text">${collections[i].marketIds.length}</p>
+                </div>
+            </div>
+
+            <div class="row border-bottom pb-3 mb-3">
+                <div class="col text-end pe-1">
+                  <p class="card-text"><strong>Creator: </strong></p>  
+                </div>
+                <div class="col ps-1">
+                  <p class="card-text">${collections[i].creator.substring(0,6) + "..." + collections[i].creator.slice(-4)}</p>
+                </div>
+            </div>
+          </small>
+          <div class="row border-bottom pb-3 mb-3">
+            <div class="col">
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control" placeholder="i.e. 100.00" aria-describedby="button-stake" id="input-explore-stake">
+                <span class="input-group-text">${symbol}</span>
+                <button class="btn btn-primary" type="button" id="button-explore-stake-${i}">Stake</button>
+                <button class="btn btn-outline-danger" type="button" id="button-explore-unstake-${i}">Unstake</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row text-center">
+            <div class="col text-start">
+              <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#collection-explore-modal-${i}">View</button>
+            </div>
+
+            <div class="col text-end">
+              <button type="button" class="btn btn-sm btn-link light-grey">Report (<span id="report-explore-0">0</span>)</button>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="lux collections"></div>
+        </div>
+
+      </div>
+    </div>
+
+  
+    <div class="modal fade" id="collection-explore-modal-${i}" tabindex="-1" aria-labelledby="collection-explore-aria-modal--${i}" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+    <div class="modal-content">
     <div class="modal-header">
       <h5 class="modal-title h4" id="collection-explore-aria-modal-${i}">${collections[i].name}</h5>
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -910,15 +692,252 @@ async function fetchExploreCards(maxAmount) {
           
       </div>
     </div>
-</div>
-</div>`;
+    </div>
+    </div>`;
 
+    }
+    exploreCollections.innerHTML = tempHTML;
+    cardEffect('#collectionsListing');
+
+
+
+    // Add Cards
+    for( let i = 0; i < collections.length; i++){
+
+        let activeIds = [];
+        for(let j = 0; j < collections[i].marketIds.length; j++) {
+          activeIds.push( ethers.utils.formatUnits(collections[i].marketIds[j]._hex, 0) );
+        }
+
+        const activeNFTList = NFTsArray.filter((item) => {
+          return activeIds.includes(item.marketId);
+        });
+
+        let NFTName = NFTsArray.name;
+        let NFTPrice = NFTsArray.price;
+        let NFTCreator = NFTsArray.creator;
+        let NFTOwner = NFTsArray.owner;
+        let NFTContract = NFTsArray.contractAddress;
+        let NFTImage = "";
+        let NFTImages = "";
+        let htmlHolder = "";
+
+
+        for (let j = 0; j < activeNFTList.length; j++) {
+
+          let metadata = await fetch(activeNFTList[j].tokenURI);
+          if(activeNFTList[j].tokenURI.includes("json")){
+            try {
+              metadata = await metadata.json();
+              NFTName = metadata.name;
+              NFTDescription = metadata.description;
+              NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+
+              NFTImages += `<div class="col"><img src="${metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}" alt="${NFTName}" class="img-fluid"></div>`;
+
+
+              for (let i=0; i < metadata.attributes.length; i++) {
+                NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
+                NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
+              }
+
+            } catch {
+              NFTImage = activeNFTList[j].tokenURI;
+              NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
+            }
+          } else {
+            NFTImage = activeNFTList[j].tokenURI;
+            NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
           }
-        }
-        exploreCollections.innerHTML = tempHTML;
-        cardEffect('#collectionsListing');
+
+
+          // add html
+          htmlHolder += `
+          <!-- Card Listing -->
+          <div class="col">
+            <div class="card">
+              <div class="card__inner">
+  
+              <div class="card-image" style="background-image: url('${NFTImage}');"> </div>
+    
+              <div class="card-body">
+    
+                <div class="row text-center border-bottom pb-3 mb-3">
+                  <div class="col"> 
+                      <p class="card-text">
+                        <strong>${NFTName} #${activeNFTList[j].tokenId}</strong>
+                      </p>
+                  </div>
+                </div>
+          
+                <small>
+                  <div class="row">
+                    <div class="col text-end pe-1">
+                      <p class="card-text"><strong>Price: </strong></p>      
+                    </div>
+                    <div class="col ps-1">
+                      <p class="card-text">${activeNFTList[j].price} ${symbol}</p>
+                    </div>
+                  </div>
+    
+                  <div class="row border-bottom pb-3 mb-3">
+                      <div class="col text-end pe-1">
+                        <p class="card-text"><strong>Creator: </strong></p>       
+                      </div>
+                      <div class="col ps-1">
+                        <p class="card-text">${activeNFTList[j].creator.substring(0,6) + "..." + activeNFTList[j].creator.slice(-4)}</p>
+                      </div>
+                    </div>
+                  </small>
+    
+                  <div class="row text-center">
+                    <div class="col">
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#collection-nft-modal${j}">View</button>
+                        <button type="button" class="btn btn-sm btn-primary buyExplore" id="nftcard-buy${j}">Buy</button>
+                      </div>
+                    </div>
+                  </div>
+    
+              </div>
+  
+              <div class="lux"></div>
+              </div>
+  
+            </div>
+          </div>
+    
+          <!-- Modal (default hidden) -->
+          <div class="modal fade" id="collection-nft-modal${j}" tabisndex="-1" aria-labelledby="collection-nft-aria-modal${j}" style="display: none;" aria-hidden="true">
+              <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title h4" id="collection-nft-aria-modal${j}">${NFTName} #${activeNFTList[j].tokenId}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+    
+    
+                    <div class="row">
+    
+                      <div class="col">
+                          <div class="card m-3">
+                              <div class="card__inner">
+                              <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
+                              <div class="lux full"></div>
+                              </div>
+                          </div>
+                      </div>
+    
+                      <div class="col">
+    
+                        <div class="row">
+                          <div class="col text-end pe-1">
+                            <p class="card-text"><strong>Name:</strong></p>      
+                          </div>
+                          <div class="col ps-1">
+                            <p class="card-text"><small>${NFTName}</small></p>
+                          </div>
+                        </div>
+    
+                        <div class="row">
+                          <div class="col text-end pe-1">
+                            <p class="card-text"><strong>Description: </strong></p>      
+                          </div>
+                          <div class="col ps-1">
+                            <p class="card-text"><small>${NFTDescription}</small></p>
+                          </div>
+                        </div>
+    
+                        <div class="row">
+                          <div class="col text-end pe-1">
+                          <br>
+                            <p class="card-text"><strong>Properties </strong>    
+                            ${NFTAttributesTraits}
+                            </p>      
+                          </div>
+                          <div class="col ps-1">
+                          <br>
+                            <p class="card-text">&nbsp;   
+                            ${NFTAttributesValues}
+                            </p>
+                          </div>
+                        </div>
+    
+                        <div class="row">
+                          <div class="col text-end pe-1">
+                            <br>
+                            <p class="card-text"><strong>Creator: </strong></p>       
+                          </div>
+                          <div class="col ps-1">
+                          <br>
+                            <p class="card-text">${activeNFTList[j].creator.substring(0,6) + "..." + activeNFTList[j].creator.slice(-4)}</p>
+                          </div>
+                        </div>
+    
+                        <div class="row">
+                          <div class="col text-end pe-1">
+                            <p class="card-text"><strong>NFT Contract: </strong></p>       
+                          </div>
+                          <div class="col ps-1">
+                            <p class="card-text">${activeNFTList[j].contractAddress.substring(0,6) + "..." + activeNFTList[j].contractAddress.slice(-4)}</p>
+                          </div>
+                        </div>
+    
+                        <div class="row border-bottom pb-3 mb-3">
+                          <div class="col text-end pe-1">
+                            <br>
+                            <p class="card-text"><strong>Price: </strong></p>      
+                          </div>
+                          <div class="col ps-1">
+                            <br>
+                            <p class="card-text">${activeNFTList[j].price} ${symbol}</p>
+                          </div>
+                        </div>
+    
+                        <div class="row text-center">
+                          <div class="col pe-1">
+                            <button id="nftmodal-buy${j}" type="button" class="btn btn-primary buyModal">Buy</button>     
+                          </div>
+                        </div>
+    
+                        </div>
+                    </div>
+    
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+
+        
+        document.getElementById(`explore-collection-nfts-modal-${i}`).innerHTML = htmlHolder;
+        cardEffect(`#explore-collection-nfts-modal-${i}`);
+    
+        // let arrayOfBuyExplore = document.querySelectorAll(".buyExplore");
+        // let arrayOfBuyModal = document.querySelectorAll(".buyModal");
+        // for (let i = 0; i < arrayOfBuyExplore.length; i++) {
+        //   arrayOfBuyExplore[i].addEventListener("click", () => {
+        //     buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
+        //   arrayOfBuyModal[i].addEventListener("click", () => {
+        //     buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
+        // }
+
+
+      }
+    }
+
+
+
+
+
+
+
+
+
+
       
-        }
+  }
     
 
 
@@ -1131,7 +1150,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
     
 
     let NFTsArray = await fetchSellingItemsArray();
-    console.log(NFTsArray);
+
     for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
       let metadata = await fetch(NFTsArray[i].tokenURI);
 
@@ -1741,7 +1760,6 @@ async function fetchCollections() {
   let tempHTML = "";
   let collectionsCount = 0; 
 
-  console.log(collections);
 
   for( let i = 0; i < collections.length; i++){
     if(collections[i].creator.toLowerCase() == account.toLowerCase()){
