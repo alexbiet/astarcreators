@@ -757,7 +757,7 @@ async function fetchExploreCards(maxAmount) {
           } else {
             NFTImage = activeNFTList[j].tokenURI;
             NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
-            NFTName = activeNFTList[j].name;
+            NFTName = NFTsArray[j].name;
             NFTDescription = "none";
             NFTAttributesTraits = "";
             NFTAttributesValues = "";
@@ -1351,6 +1351,7 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
     }
   } else {
     NFTImage = NFTsArray[i].tokenURI;
+    
   }
     if (!NFTsArray[i].sold && !NFTsArray[i].canceled){
     htmlHolder += `
@@ -1883,6 +1884,11 @@ async function fetchCollections() {
         } else {
           NFTImage = activeNFTList[j].tokenURI;
           NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
+
+          NFTName = activeNFTList[j].name;
+          NFTDescription = "none";
+          NFTAttributesTraits = "";
+          NFTAttributesValues = "";
         }
 
 
