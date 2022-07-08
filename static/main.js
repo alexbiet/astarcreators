@@ -757,6 +757,10 @@ async function fetchExploreCards(maxAmount) {
           } else {
             NFTImage = activeNFTList[j].tokenURI;
             NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
+            NFTName = activeNFTList[j].name;
+            NFTDescription = "none";
+            NFTAttributesTraits = "";
+            NFTAttributesValues = "";
           }
 
 
@@ -829,8 +833,6 @@ async function fetchExploreCards(maxAmount) {
 
       //runs through each collection
       let arrayOfBuyCollectionModal = document.querySelectorAll(`.buyCollectionModal-${i}`);
-      let arrayOfViewCollectionModal = document.querySelectorAll(`.viewCollectionModal-${i}`);
-      let arrayOfCardCollectionModal = document.querySelectorAll(`.collection-nft-modal-${i}`);
       //runs for each item inside the collection
 
       
@@ -851,11 +853,6 @@ async function fetchExploreCards(maxAmount) {
 
               buyMarketItem(_contract, _marketId, _priceBN)
             }} });
-
-          // arrayOfViewCollectionModal[y].addEventListener("click", async () => { 
-          //   console.log(arrayOfCardCollectionModal[y])
-          // arrayOfCardCollectionModal[y].style.display = "block";
-          //  });
       }
     }
     
