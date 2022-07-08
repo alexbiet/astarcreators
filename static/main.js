@@ -829,11 +829,16 @@ async function fetchExploreCards(maxAmount) {
 
       //runs through each collection
       let arrayOfBuyCollectionModal = document.querySelectorAll(`.buyCollectionModal-${i}`);
-      //console.log(arrayOfBuyCollectionModal)
+      let arrayOfViewCollectionModal = document.querySelectorAll(`.viewCollectionModal-${i}`);
+      let arrayOfCardCollectionModal = document.querySelectorAll(`.collection-nft-modal-${i}`);
+      console.log(arrayOfCardCollectionModal)
       //runs for each item inside the collection
+
+      
 
       for (let y = 0; y < arrayOfBuyCollectionModal.length; y++) {
 
+   
         arrayOfBuyCollectionModal[y].addEventListener("click", async () => { 
           currentId = await ethers.utils.formatUnits(collections[i]["marketIds"][y], 0);
           console.log(currentId)
@@ -847,8 +852,14 @@ async function fetchExploreCards(maxAmount) {
 
               buyMarketItem(_contract, _marketId, _priceBN)
             }} });
+
+          arrayOfViewCollectionModal[y].addEventListener("click", async () => { 
+            console.log(arrayOfCardCollectionModal[y])
+          arrayOfCardCollectionModal[y].style.display = "block";
+           });
       }
     }
+    
   }
 
 //returns  contract balance
