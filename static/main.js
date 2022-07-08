@@ -119,10 +119,6 @@ async function delistCollection(_collectionId) {
   MARKET_WRITE.delistCollection(_collectionId);
 }
 
-async function stakeCollection(_collectionId) {
-  MARKET_WRITE.stakeCollection(_collectionId, {value: ethers.utils.parseEther(1)});
-}
-
 async function buyMarketItem(_NFTContract, _marketId, _price) {
   MARKET_WRITE.createMarketSale(_NFTContract, _marketId, {value: _price});
 }
@@ -2062,23 +2058,28 @@ const postNFT = async () => {
   }
 };
 
-// const ADAO_WRITE = new ethers.Contract(addresses.adaoContract, abis.adaoContract, signer);
-// const ADAO_READ = new ethers.Contract(addresses.adaoContract, abis.adaoContract, provider);
+console.log(account)
 
-// await depositFor(account, 1);
+const ADAO_WRITE = new ethers.Contract(addresses[chain].adaoContract, abis.adaoContract, signer);
+const ADAO_READ = new ethers.Contract(addresses[chain].adaoContract, abis.adaoContract, provider);
 
-// async function depositFor(_address, _amount) {
-//   ADAO_WRITE.depositFor(_address, _amount);
-//   console.log("deposited");
-// }
 
-//STAKING///
-// UseStakeDApp = async (contract: IDappStakingInterface, account: string, value = '0') => {
-//   const tx = await contract.depositFor(account, {
-//     value: ethers.utils.parseEther(value),
-//     gasLimit: 1_310_000,
-//     gasPrice: 1_110_000_000,
-//   });
+await withdraw(1);
+//await deposit(account, .01);
+
+
+async function deposit(_address, _amount) {
+  ADAO_WRITE.depositFor(_address, {value: ethers.utils.parseEther(_amount.toString()) });
+
+  console.log("deposited");
+}
+
+async function withdraw(_amount) {
+  ADAO_WRITE.withdraw(ethers.utils.parseEther(_amount.toString()));
+
+  console.log("withdrawn");
+}
+
 
 async function mintNFT (_uri) {
   try {
