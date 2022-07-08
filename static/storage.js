@@ -1367,7 +1367,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct Marketplace.MarketItem[]",
+            "internalType": "struct MarketplaceV1_02.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1433,7 +1433,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct Marketplace.MarketItem[]",
+            "internalType": "struct MarketplaceV1_02.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1493,7 +1493,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct Marketplace.MarketItem[]",
+            "internalType": "struct MarketplaceV1_02.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1553,7 +1553,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct Marketplace.MarketItem[]",
+            "internalType": "struct MarketplaceV1_02.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1603,9 +1603,22 @@ const abis = {
                 "type": "uint256"
               }
             ],
-            "internalType": "struct Marketplace.Collection[]",
+            "internalType": "struct MarketplaceV1_02.Collection[]",
             "name": "",
             "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getBalance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
           }
         ],
         "stateMutability": "view",
@@ -1669,7 +1682,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct Marketplace.MarketItem",
+            "internalType": "struct MarketplaceV1_02.MarketItem",
             "name": "",
             "type": "tuple"
           },

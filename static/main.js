@@ -733,9 +733,7 @@ async function fetchExploreCards(maxAmount) {
         let NFTImages = "";
         let htmlHolder = "";
 
-
         for (let j = 0; j < activeNFTList.length; j++) {
-
           let metadata = await fetch(activeNFTList[j].tokenURI);
           if(activeNFTList[j].tokenURI.includes("json")){
             try {
@@ -934,29 +932,32 @@ async function fetchExploreCards(maxAmount) {
 
       //runs through each collection
       let arrayOfBuyCollectionModal = document.querySelectorAll(`.buyCollectionModal-${i}`);
-   
+      //console.log(arrayOfBuyCollectionModal)
       //runs for each item inside the collection
 
       for (let y = 0; y < arrayOfBuyCollectionModal.length; y++) {
-        currentId2 = await ethers.utils.formatUnits(collections[i]["marketIds"][y], 0);
-        console.log(collections[i]["marketIds"])
-        console.log(currentId2)
-
 
         arrayOfBuyCollectionModal[y].addEventListener("click", async () => { 
           currentId = await ethers.utils.formatUnits(collections[i]["marketIds"][y], 0);
           console.log(currentId)
-          let _contract = await NFTsArray[currentId]["contractAddress"];
-          let _marketId = await NFTsArray[currentId]["marketId"];
-          let _priceBN = await NFTsArray[currentId]["priceBN"];
-   
-         buyMarketItem(_contract, _marketId, _priceBN);});
+
+          //find index of marketID
+          for(let z = 0; z < NFTsArray.length; z++) {
+            if( NFTsArray[z]["marketId"] == currentId) {
+              let _contract = await NFTsArray[z]["contractAddress"];
+              let _marketId = await NFTsArray[z]["marketId"];
+              let _priceBN = await NFTsArray[z]["priceBN"];
+
+              buyMarketItem(_contract, _marketId, _priceBN)
+            }} });
       }
     }
-
- 
-      
   }
+
+//returns  contract balance
+async function getBalance() {
+  return ethers.utils.formatUnits( await MARKET_READ.getBalance(), 0);
+}
 
 async function reportCollection(collectionId) {
   MARKET_WRITE.reportCollection(collectionId);
