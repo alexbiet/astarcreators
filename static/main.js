@@ -1179,7 +1179,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
     let NFTAttributesTraits = "";
     let NFTAttributesValues = "";
     let saleStatus = "";
-    let marketplaceNftsCount = "";
+    let marketplaceNftsCount = 0;
 
     
 
@@ -1190,7 +1190,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
       
       let metadata = await fetch(NFTsArray[i].tokenURI);
 
-      if(!NFTsArray[i].canceled) {
+      if(!NFTsArray[i].canceled && !NFTsArray[i].sold) {
         marketplaceNftsCount++
       }
 
