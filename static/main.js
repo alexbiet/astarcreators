@@ -802,7 +802,7 @@ async function fetchExploreCards(maxAmount) {
                   <div class="row text-center">
                     <div class="col">
                       <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#collection-nft-modal${j}">View</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary viewCollectionModal-${i}">View</button>
                         <button type="button" class="btn btn-sm btn-primary buyCollectionModal-${i}" id="nftcard-buy${j}">Buy</button>
                       </div>
                     </div>
@@ -817,7 +817,7 @@ async function fetchExploreCards(maxAmount) {
           </div>
     
           <!-- Modal (default hidden) -->
-          <div class="modal fade" id="collection-nft-modal${j}" tabisndex="-1" aria-labelledby="collection-nft-aria-modal${j}" style="display: none;" aria-hidden="true">
+          <div class="modal fade collection-nft-modal-${i}" id="collection-nft-modal${j}" tabisndex="-1" aria-labelledby="collection-nft-aria-modal${j}" style="display: none;" aria-hidden="true">
               <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -932,11 +932,16 @@ async function fetchExploreCards(maxAmount) {
 
       //runs through each collection
       let arrayOfBuyCollectionModal = document.querySelectorAll(`.buyCollectionModal-${i}`);
-      //console.log(arrayOfBuyCollectionModal)
+      let arrayOfViewCollectionModal = document.querySelectorAll(`.viewCollectionModal-${i}`);
+      let arrayOfCardCollectionModal = document.querySelectorAll(`.collection-nft-modal-${i}`);
+      console.log(arrayOfCardCollectionModal)
       //runs for each item inside the collection
+
+      
 
       for (let y = 0; y < arrayOfBuyCollectionModal.length; y++) {
 
+   
         arrayOfBuyCollectionModal[y].addEventListener("click", async () => { 
           currentId = await ethers.utils.formatUnits(collections[i]["marketIds"][y], 0);
           console.log(currentId)
@@ -950,8 +955,14 @@ async function fetchExploreCards(maxAmount) {
 
               buyMarketItem(_contract, _marketId, _priceBN)
             }} });
+
+          arrayOfViewCollectionModal[y].addEventListener("click", async () => { 
+            console.log(arrayOfCardCollectionModal[y])
+          arrayOfCardCollectionModal[y].style.display = "block";
+           });
       }
     }
+    
   }
 
 //returns  contract balance
