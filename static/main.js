@@ -831,7 +831,6 @@ async function fetchExploreCards(maxAmount) {
       let arrayOfBuyCollectionModal = document.querySelectorAll(`.buyCollectionModal-${i}`);
       let arrayOfViewCollectionModal = document.querySelectorAll(`.viewCollectionModal-${i}`);
       let arrayOfCardCollectionModal = document.querySelectorAll(`.collection-nft-modal-${i}`);
-      console.log(arrayOfCardCollectionModal)
       //runs for each item inside the collection
 
       
@@ -853,10 +852,10 @@ async function fetchExploreCards(maxAmount) {
               buyMarketItem(_contract, _marketId, _priceBN)
             }} });
 
-          arrayOfViewCollectionModal[y].addEventListener("click", async () => { 
-            console.log(arrayOfCardCollectionModal[y])
-          arrayOfCardCollectionModal[y].style.display = "block";
-           });
+          // arrayOfViewCollectionModal[y].addEventListener("click", async () => { 
+          //   console.log(arrayOfCardCollectionModal[y])
+          // arrayOfCardCollectionModal[y].style.display = "block";
+          //  });
       }
     }
     
@@ -1173,7 +1172,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
 
               <div class="row text-center">
               <div class="col">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#${location}-nft-modalWallet-${i}">View</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#${location}-nft-modalWallet-${NFTsArray[i].marketId}">View</button>
                   &nbsp; &nbsp; 
                   <button type="button" class="btn btn-sm btn-outline-danger btn-Delist" id="Delist${i}">Delist</button>
               </div>
@@ -1188,7 +1187,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
       </div>
 
       <!-- Modal (default hidden) -->
-      <div class="modal fade" id="${location}-nft-modalWallet-${i}" tabisndex="-1" aria-labelledby="${location}-nft-aria-modalWallet-${i}" style="display: none;" aria-hidden="true">
+      <div class="modal fade" id="${location}-nft-modalWallet-${NFTsArray[i].marketId}" tabisndex="-1" aria-labelledby="${location}-nft-aria-modalWallet-${i}" style="display: none;" aria-hidden="true">
           <div class="modal-dialog modal-xl">
               <div class="modal-content">
               <div class="modal-header">
@@ -1321,6 +1320,7 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
   let marketplaceNFTsEl = document.getElementById("new-collection-modal");
   let listingLimit = maxAmount -1;
   let htmlHolder = "";
+  let htmlModalHolder = "";
   let NFTName = "";
   let NFTDescription = "";
   let NFTAttributesTraits = "";
@@ -1420,26 +1420,31 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
         </div>
 
         </div>
-    </div>
+    </div>`;
 
-    <!-- Modal (default hidden) -->
-    <div class="modal fade" id="marketlist-nft-modalWallet-${i}" tabisndex="-1" aria-labelledby="marketlist-nft-aria-modalWallet-${i}" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title h4" id="marketlist-nft-aria-modalWallet-${i}">${NFTName} #${NFTsArray[i].tokenId}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
+    htmlModalHolder +=`
+      <!-- Modal (default hidden) -->
+      <div class="modal fade" id="marketlist-nft-modalWallet-${i}" tabisndex="-1" aria-labelledby="marketlist-nft-aria-modalWallet-${i}" style="display: none;" aria-hidden="true">
+          <div class="modal-dialog modal-xl">
+              <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title h4" id="marketlist-nft-aria-modalWallet-${i}">${NFTName} #${NFTsArray[i].tokenId}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
 
+                  <div class="row">
 
-                <div class="row">
+                  <div class="col">
+                      <div class="card m-3">
+                          <div class="card__inner">
+                          <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
+                          <div class="lux full"></div>
+                          </div>
+                      </div>
+                  </div>
 
-                <div class="col">
-                  <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
-                </div>
-
-                <div class="col">
+                  <div class="col">
 
                     <div class="row">
                     <div class="col text-end pe-1">
@@ -1450,79 +1455,85 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
                     </div>
                     </div>
 
-                    <div class="row">
-                    <div class="col text-end pe-1">
-                        <p class="card-text"><strong>Description: </strong></p>      
-                    </div>
-                    <div class="col ps-1">
-                        <p class="card-text"><small>${NFTDescription}</small></p>
-                    </div>
-                    </div>
+                      <div class="row">
+                      <div class="col text-end pe-1">
+                          <p class="card-text"><strong>Description: </strong></p>      
+                      </div>
+                      <div class="col ps-1">
+                          <p class="card-text"><small>${NFTDescription}</small></p>
+                      </div>
+                      </div>
 
-                    <div class="row">
-                    <div class="col text-end pe-1">
-                    <br>
-                        <p class="card-text"><strong>Properties </strong>    
-                        ${NFTAttributesTraits}
-                        </p>      
-                    </div>
-                    <div class="col ps-1">
-                    <br>
-                        <p class="card-text">&nbsp;  
-                        ${NFTAttributesValues}
-                        </p>
-                    </div>
-                    </div>
+                      <div class="row">
+                      <div class="col text-end pe-1">
+                      <br>
+                          <p class="card-text"><strong>Properties</strong>
+                          ${NFTAttributesTraits}
+                          </p>      
+                      </div>
+                      <div class="col ps-1">
+                      <br>
+                          <p class="card-text">&nbsp;
+                          ${NFTAttributesValues}
+                          </p>
+                      </div>
+                      </div>
 
-                    <div class="row">
-                    <div class="col text-end pe-1">
-                        <p class="card-text"><strong>Contract: </strong></p>       
-                    </div>
-                    <div class="col ps-1">
-                        <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + NFTsArray[i].creator.slice(-4)}</p>
-                    </div>
-                    </div>
+                      <div class="row">
+                      <div class="col text-end pe-1">
+                      <br>
+                          <p class="card-text"><strong>Creator: </strong></p>       
+                      </div>
+                      <div class="col ps-1">
+                      <br>
+                          <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + NFTsArray[i].creator.slice(-4)}</p>
+                      </div>
+                      </div>
 
-                    <div class="row">
-                        <div class="col text-end pe-1">
-                            <p class="card-text"><strong>Status: </strong></p>      
-                        </div>
-                        <div class="col text-start ps-1">
-                            <p class="card-text">
-                              ${saleStatus}
-                            </p>
-                        </div>
-                    </div>
-    
-                    <div class="row border-bottom pb-3 mb-3">
-                        <div class="col text-end pe-1">
-                            <p class="card-text"><strong>Price: </strong></p>      
-                        </div>
-                        <div class="col text-start ps-1">
-                            <p class="card-text">${NFTsArray[i].price} ${symbol}</p>
-                        </div>
-                    </div>
+                      <div class="row">
+                          <div class="col text-end pe-1">
+                              <br>
+                              <p class="card-text"><strong>Status: </strong></p>      
+                          </div>
+                          <div class="col text-start ps-1">
+                              <br>
+                              <p class="card-text">
+                                ${saleStatus}
+                              </p>
+                          </div>
+                      </div>
+      
+                      <div class="row border-bottom pb-3 mb-3">
+                          <div class="col text-end pe-1">
+                              <p class="card-text"><strong>Price: </strong></p>      
+                          </div>
+                          <div class="col text-start ps-1">
+                              <p class="card-text">${NFTsArray[i].price} ${symbol}</p>
+                          </div>
+                      </div>
 
-                    <div class="row text-center border-bottom pb-3 mb-3">
+                      <div class="row text-center">
 
-                    <div class="col text-center"> 
-                        
+                      <div class="col text-center"> 
+                          
                         <button type="button" class="btn btn-sm btn-outline-danger btn-DelistModal-CM" id="Delist${i}">Delist</button>
+                                                                                                    
+                      </div>
+                      </div>
 
-                    </div>
-                    </div>
+                      </div>
+                  </div>
 
-                    </div>
-                </div>
-
-            </div>
-            </div>
-        </div>
-        </div>`
+              </div>
+              </div>
+          </div>
+          </div>`
         }
       }
         marketplaceNFTsEl.innerHTML = htmlHolder;
+        document.getElementById("my-wallet-new-collection-nft-modals").innerHTML = htmlModalHolder;
         cardEffect("#new-collection-modal");
+        cardEffect("#my-wallet-new-collection-nft-modals");
 
 
         let arrayOfDelist = document.querySelectorAll(".btn-Delist-CM");
@@ -1930,10 +1941,7 @@ async function fetchCollections() {
   
                 <div class="row text-center">
                   <div class="col">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#my-wallet-collection-nft-modal${j}">View</button>
-                      <button type="button" class="btn btn-sm btn-primary buyExplore" id="my-wallet-nftcard-buy${j}">Buy</button>
-                    </div>
+                      <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#marketplace-nft-modalWallet-${activeNFTList[j].marketId}">View</button>
                   </div>
                 </div>
   
@@ -1943,123 +1951,20 @@ async function fetchCollections() {
             </div>
 
           </div>
-        </div>
-  
-        <!-- Modal (default hidden) -->
-        <div class="modal fade" id="my-wallet-collection-nft-modal${j}" tabisndex="-1" aria-labelledby="my-wallet-collection-nft-aria-modal${j}" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title h4" id="my-wallet-collection-nft-aria-modal${j}">${NFTName} #${activeNFTList[j].tokenId}</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-  
-  
-                  <div class="row">
-  
-                    <div class="col">
-                        <div class="card m-3">
-                            <div class="card__inner">
-                            <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
-                            <div class="lux full"></div>
-                            </div>
-                        </div>
-                    </div>
-  
-                    <div class="col">
-  
-                      <div class="row">
-                        <div class="col text-end pe-1">
-                          <p class="card-text"><strong>Name:</strong></p>      
-                        </div>
-                        <div class="col ps-1">
-                          <p class="card-text"><small>${NFTName}</small></p>
-                        </div>
-                      </div>
-  
-                      <div class="row">
-                        <div class="col text-end pe-1">
-                          <p class="card-text"><strong>Description: </strong></p>      
-                        </div>
-                        <div class="col ps-1">
-                          <p class="card-text"><small>${NFTDescription}</small></p>
-                        </div>
-                      </div>
-  
-                      <div class="row">
-                        <div class="col text-end pe-1">
-                        <br>
-                          <p class="card-text"><strong>Properties </strong>    
-                          ${NFTAttributesTraits}
-                          </p>      
-                        </div>
-                        <div class="col ps-1">
-                        <br>
-                          <p class="card-text">&nbsp;   
-                          ${NFTAttributesValues}
-                          </p>
-                        </div>
-                      </div>
-  
-                      <div class="row">
-                        <div class="col text-end pe-1">
-                          <br>
-                          <p class="card-text"><strong>Creator: </strong></p>       
-                        </div>
-                        <div class="col ps-1">
-                        <br>
-                          <p class="card-text">${activeNFTList[j].creator.substring(0,6) + "..." + activeNFTList[j].creator.slice(-4)}</p>
-                        </div>
-                      </div>
-  
-                      <div class="row">
-                        <div class="col text-end pe-1">
-                          <p class="card-text"><strong>NFT Contract: </strong></p>       
-                        </div>
-                        <div class="col ps-1">
-                          <p class="card-text">${activeNFTList[j].contractAddress.substring(0,6) + "..." + activeNFTList[j].contractAddress.slice(-4)}</p>
-                        </div>
-                      </div>
-  
-                      <div class="row border-bottom pb-3 mb-3">
-                        <div class="col text-end pe-1">
-                          <br>
-                          <p class="card-text"><strong>Price: </strong></p>      
-                        </div>
-                        <div class="col ps-1">
-                          <br>
-                          <p class="card-text">${activeNFTList[j].price} ${symbol}</p>
-                        </div>
-                      </div>
-  
-                      <div class="row text-center">
-                        <div class="col pe-1">
-                          <button id="nftmodal-buy${j}" type="button" class="btn btn-primary buyModal">Buy</button>     
-                        </div>
-                      </div>
-  
-                      </div>
-                  </div>
-  
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
+        </div>`;
 
       
       document.getElementById(`my-wallet-collection-nfts-modal-${i}`).innerHTML = htmlHolder;
       cardEffect(`#my-wallet-collection-nfts-modal-${i}`);
   
-      let arrayOfBuyExplore = document.querySelectorAll("#my-collections .buyExplore");
-      let arrayOfBuyModal = document.querySelectorAll("#my-collections .buyModal");
-      for (let i = 0; i < arrayOfBuyExplore.length; i++) {
-        arrayOfBuyExplore[i].addEventListener("click", () => {
-          buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
-        arrayOfBuyModal[i].addEventListener("click", () => {
-          buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
-      }
+      // let arrayOfBuyExplore = document.querySelectorAll("#my-collections .buyExplore");
+      // let arrayOfBuyModal = document.querySelectorAll("#my-collections .buyModal");
+      // for (let i = 0; i < arrayOfBuyExplore.length; i++) {
+      //   arrayOfBuyExplore[i].addEventListener("click", () => {
+      //     buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
+      //   arrayOfBuyModal[i].addEventListener("click", () => {
+      //     buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
+      // }
 
     }
   }
@@ -2304,26 +2209,6 @@ function cardEffect(_parentId) {
     $(this).show();
   });
 
-  // for (let i = 0; i < allCards.length; i++) {
-  //   allCards[i].addEventListener("mousemove", (e) => {
-  //     var off = e.offset;
-  //     console.log(e)
-  //     var h = e.height / 2;
-  //     var w = e.width / 2;
-  //     var x = e.pageY - off.top - h;
-  //     var y = e.pageX - off.left - w;
-  //     var xDeg = - (x * (Math.PI / 180));
-  //     var yDeg = y * (Math.PI / 180);
-  //     var rad = Math.atan2(x,y);
-  //     var radPI = rad * 180 / Math.PI - 90;
-  //     allCards[i].style.transform = 'rotateX(' + xDeg + 'deg) rotateY(' + yDeg + 'deg) scale3d(1.025,1.025,1.025) perspective(1000px)';
-  //     allCards[i].querySelector('.lux').style.background = 'linear-gradient(' + radPI + 'deg, rgba(255,255,255,0.25) 0%,rgba(255,255,255,0) 80%)';
-  //   });
-    
-  //   allCards[i].addEventListener("mouseout", e => {
-  //     allCards[i].style.transform = 'rotateX(0deg) rotateY(0deg) scale3d(1,1,1) perspective(0)';
-  //   });
-  // }
 }
 
 cardEffect("#view-2");
