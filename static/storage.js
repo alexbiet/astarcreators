@@ -10,10 +10,17 @@ const addresses = {
     faceMinter: "0xCbD54056ba671ddF74756F18668a96C76E0C44d9",
     astarMinter: "0xb44C8f4880601B2cF51c38c7c083650bbc4FF5C4",
   },
+  Astar: {
+    marketplace: "0x8485d2d055601503145eCE6fc784dd9Aa62dbA14",
+    adaoContract: "0x3BFcAE71e7d5ebC1e18313CeCEbCaD8239aA386c",
+    astarMinter: "0x7ecf20A28b2DFf9CaE85c060e9632ae5aF877209",
+
+  },
 }
 const trustedContracts = {
   Shibuya: [addresses["Shibuya"].faceMinter, addresses["Shibuya"].astarMinter],
-  Mumbai: [addresses["Mumbai"].faceMinter, addresses["Mumbai"].astarMinter]
+  Mumbai: [addresses["Mumbai"].faceMinter, addresses["Mumbai"].astarMinter],
+  Astar: [addresses["Astar"].astarMinter]
 }
 
 const abis = {
@@ -1367,7 +1374,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.MarketItem[]",
+            "internalType": "struct Marketplace.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1433,7 +1440,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.MarketItem[]",
+            "internalType": "struct Marketplace.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1493,7 +1500,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.MarketItem[]",
+            "internalType": "struct Marketplace.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1553,7 +1560,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.MarketItem[]",
+            "internalType": "struct Marketplace.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1603,7 +1610,7 @@ const abis = {
                 "type": "uint256"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.Collection[]",
+            "internalType": "struct Marketplace.Collection[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1682,7 +1689,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.MarketItem",
+            "internalType": "struct Marketplace.MarketItem",
             "name": "",
             "type": "tuple"
           },
@@ -2226,6 +2233,11 @@ const abis = {
         "type": "function"
       }
     ],
+    adaoContract: [
+      {"type":"constructor","stateMutability":"payable","inputs":[{"type":"address","name":"_logic","internalType":"address"},{"type":"address","name":"admin_","internalType":"address"},{"type":"bytes","name":"_data","internalType":"bytes"}]},{"type":"event","name":"AdminChanged","inputs":[{"type":"address","name":"previousAdmin","internalType":"address","indexed":false},{"type":"address","name":"newAdmin","internalType":"address","indexed":false}],"anonymous":false},{"type":"event","name":"BeaconUpgraded","inputs":[{"type":"address","name":"beacon","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"Upgraded","inputs":[{"type":"address","name":"implementation","internalType":"address","indexed":true}],"anonymous":false},{"type":"fallback","stateMutability":"payable"},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"address","name":"admin_","internalType":"address"}],"name":"admin","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"changeAdmin","inputs":[{"type":"address","name":"newAdmin","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"address","name":"implementation_","internalType":"address"}],"name":"implementation","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"upgradeTo","inputs":[{"type":"address","name":"newImplementation","internalType":"address"}]},{"type":"function","stateMutability":"payable","outputs":[],"name":"upgradeToAndCall","inputs":[{"type":"address","name":"newImplementation","internalType":"address"},{"type":"bytes","name":"data","internalType":"bytes"}]},{"type":"receive","stateMutability":"payable"}
+    ],
+    
+
 }
 
 const chainIdMap = {
@@ -2299,6 +2311,10 @@ const chainIdMap = {
   },
   81: {
        name: "Shibuya",
-       symbol: "SBY"
+       symbol: "SBY",
+  },
+  592: {
+       name: "Astar",
+       symbol: "ASTR",
   },
   }

@@ -67,6 +67,8 @@ async function fetchAccountData() {
 
   let chain = chainIdMap[Number(ethereum.chainId)].name;
   let symbol = chainIdMap[Number(ethereum.chainId)].symbol;
+
+  console.log(chain)
   const MARKET_WRITE = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, signer);
   const MARKET_READ = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, provider);
 
@@ -2059,6 +2061,24 @@ const postNFT = async () => {
       showMessage(error.message, 'error');
   }
 };
+
+// const ADAO_WRITE = new ethers.Contract(addresses.adaoContract, abis.adaoContract, signer);
+// const ADAO_READ = new ethers.Contract(addresses.adaoContract, abis.adaoContract, provider);
+
+// await depositFor(account, 1);
+
+// async function depositFor(_address, _amount) {
+//   ADAO_WRITE.depositFor(_address, _amount);
+//   console.log("deposited");
+// }
+
+//STAKING///
+// UseStakeDApp = async (contract: IDappStakingInterface, account: string, value = '0') => {
+//   const tx = await contract.depositFor(account, {
+//     value: ethers.utils.parseEther(value),
+//     gasLimit: 1_310_000,
+//     gasPrice: 1_110_000_000,
+//   });
 
 async function mintNFT (_uri) {
   try {
