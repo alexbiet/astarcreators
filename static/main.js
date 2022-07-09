@@ -564,7 +564,7 @@ async function fetchExploreCards(maxAmount) {
             </div>
 
             <div class="col text-end">
-              <button id="report-${i}"type="button" class="btn btn-sm btn-link light-grey">Report</button>
+              <button id="report-${i}"type="button" class="btn btn-sm btn-link light-grey">Report (<span id="report-explore-0">0</span>)</button>
             </div>
           </div>
 
@@ -2058,27 +2058,32 @@ const postNFT = async () => {
   }
 };
 
-console.log(account)
+////////////////////
+///ADAO STAKING ///
+///////////////////
 
-const ADAO_WRITE = new ethers.Contract(addresses[chain].adaoContract, abis.adaoContract, signer);
-const ADAO_READ = new ethers.Contract(addresses[chain].adaoContract, abis.adaoContract, provider);
+// console.log(account)
+
+// const ADAO_WRITE = new ethers.Contract(addresses[chain].adaoContract, abis.adaoContract, signer);
+// const ADAO_READ = new ethers.Contract(addresses[chain].adaoContract, abis.adaoContract, provider);
 
 
-await withdraw(1);
-//await deposit(account, .01);
+// await withdraw(1);
+// //await deposit(account, .01);
 
 
-async function deposit(_address, _amount) {
-  ADAO_WRITE.depositFor(_address, {value: ethers.utils.parseEther(_amount.toString()) });
+// async function deposit(_address, _amount) {
+//   ADAO_WRITE.depositFor(_address, {value: ethers.utils.parseEther(_amount.toString()) });
+  
 
-  console.log("deposited");
-}
+//   console.log("deposited");
+// }
 
-async function withdraw(_amount) {
-  ADAO_WRITE.withdraw(ethers.utils.parseEther(_amount.toString()));
+// async function withdraw(_amount) {
+//   ADAO_WRITE.withdraw(ethers.utils.parseEther(_amount.toString()));
 
-  console.log("withdrawn");
-}
+//   console.log("withdrawn");
+// }
 
 
 async function mintNFT (_uri) {
