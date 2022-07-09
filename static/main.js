@@ -566,7 +566,7 @@ async function fetchExploreCards(maxAmount) {
             </div>
 
             <div class="col text-end">
-              <button id="report-${i}"type="button" class="btn btn-sm btn-link light-grey">Report (<span id="report-explore-0">0</span>)</button>
+              <button id="report-${i}"type="button" class="btn btn-sm btn-link light-grey">Report</button>
             </div>
           </div>
 
