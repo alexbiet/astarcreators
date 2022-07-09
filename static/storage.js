@@ -10,10 +10,17 @@ const addresses = {
     faceMinter: "0xCbD54056ba671ddF74756F18668a96C76E0C44d9",
     astarMinter: "0xb44C8f4880601B2cF51c38c7c083650bbc4FF5C4",
   },
+  Astar: {
+    marketplace: "0x8485d2d055601503145eCE6fc784dd9Aa62dbA14",
+    adaoContract: "0x3BFcAE71e7d5ebC1e18313CeCEbCaD8239aA386c",
+    astarMinter: "0x7ecf20A28b2DFf9CaE85c060e9632ae5aF877209",
+
+  },
 }
 const trustedContracts = {
   Shibuya: [addresses["Shibuya"].faceMinter, addresses["Shibuya"].astarMinter],
-  Mumbai: [addresses["Mumbai"].faceMinter, addresses["Mumbai"].astarMinter]
+  Mumbai: [addresses["Mumbai"].faceMinter, addresses["Mumbai"].astarMinter],
+  Astar: [addresses["Astar"].astarMinter]
 }
 
 const abis = {
@@ -1367,7 +1374,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.MarketItem[]",
+            "internalType": "struct Marketplace.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1433,7 +1440,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.MarketItem[]",
+            "internalType": "struct Marketplace.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1493,7 +1500,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.MarketItem[]",
+            "internalType": "struct Marketplace.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1553,7 +1560,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.MarketItem[]",
+            "internalType": "struct Marketplace.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1603,7 +1610,7 @@ const abis = {
                 "type": "uint256"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.Collection[]",
+            "internalType": "struct Marketplace.Collection[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1682,7 +1689,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_02.MarketItem",
+            "internalType": "struct Marketplace.MarketItem",
             "name": "",
             "type": "tuple"
           },
@@ -2226,6 +2233,9 @@ const abis = {
         "type": "function"
       }
     ],
+    adaoContract: [{"type":"event","name":"Approval","inputs":[{"type":"address","name":"owner","internalType":"address","indexed":true},{"type":"address","name":"spender","internalType":"address","indexed":true},{"type":"uint256","name":"value","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"ClaimFailed","inputs":[{"type":"uint256","name":"era","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"OwnershipTransferred","inputs":[{"type":"address","name":"previousOwner","internalType":"address","indexed":true},{"type":"address","name":"newOwner","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"PoolUpdate","inputs":[{"type":"uint256","name":"_recordsIndex","internalType":"uint256","indexed":false},{"type":"uint256","name":"_ibASTR","internalType":"uint256","indexed":false},{"type":"uint256","name":"_ratio","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Transfer","inputs":[{"type":"address","name":"from","internalType":"address","indexed":true},{"type":"address","name":"to","internalType":"address","indexed":true},{"type":"uint256","name":"value","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract DappsStaking"}],"name":"DAPPS_STAKING","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"MAX_TRANSFERS","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"MINIMUM_REMAINING","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"MINIMUM_WITHDRAW","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"RATIO_PRECISION","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"allowance","inputs":[{"type":"address","name":"owner","internalType":"address"},{"type":"address","name":"spender","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"approve","inputs":[{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"balanceOf","inputs":[{"type":"address","name":"account","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"calcDailyApr","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"contractAddress","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint8","name":"","internalType":"uint8"}],"name":"decimals","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"decreaseAllowance","inputs":[{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"subtractedValue","internalType":"uint256"}]},{"type":"function","stateMutability":"payable","outputs":[],"name":"depositFor","inputs":[{"type":"address","name":"account","internalType":"address payable"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256[]","name":"","internalType":"uint256[]"}],"name":"erasToClaim","inputs":[]},{"type":"function","stateMutability":"pure","outputs":[{"type":"uint256","name":"_formatedEra","internalType":"uint256"}],"name":"formatEra","inputs":[{"type":"uint256","name":"_era","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint128","name":"_balance","internalType":"uint128"}],"name":"getBalance","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"_length","internalType":"uint256"}],"name":"getRecordsLength","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"_NStakedAmount","internalType":"uint256"}],"name":"getStaked","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"_length","internalType":"uint256"}],"name":"getUserRecordsLength","inputs":[{"type":"address","name":"account","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"tuple[]","name":"","internalType":"struct AdaoDappsStaking.WithdrawRecord[]","components":[{"type":"uint256","name":"era","internalType":"uint256"},{"type":"address","name":"account","internalType":"address payable"},{"type":"uint256","name":"amount","internalType":"uint256"},{"type":"uint256","name":"index","internalType":"uint256"}]}],"name":"getUserWithdrawRecords","inputs":[{"type":"address","name":"account","internalType":"address"},{"type":"uint256","name":"_startIndex","internalType":"uint256"},{"type":"uint256","name":"_capacity","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"tuple[]","name":"","internalType":"struct AdaoDappsStaking.WithdrawRecord[]","components":[{"type":"uint256","name":"era","internalType":"uint256"},{"type":"address","name":"account","internalType":"address payable"},{"type":"uint256","name":"amount","internalType":"uint256"},{"type":"uint256","name":"index","internalType":"uint256"}]}],"name":"getWithdrawRecords","inputs":[{"type":"uint256","name":"_startIndex","internalType":"uint256"},{"type":"uint256","name":"_capacity","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"increaseAllowance","inputs":[{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"addedValue","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"initialize","inputs":[{"type":"string","name":"name","internalType":"string"},{"type":"string","name":"symbol","internalType":"string"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"isWithdrawDone","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"lastClaimedEra","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"string","name":"","internalType":"string"}],"name":"name","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"owner","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"queuedAmount","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"ratio","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"era","internalType":"uint256"},{"type":"address","name":"account","internalType":"address payable"},{"type":"uint256","name":"amount","internalType":"uint256"},{"type":"uint256","name":"index","internalType":"uint256"}],"name":"records","inputs":[{"type":"uint256","name":"","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"recordsIndex","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"renounceOwnership","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"resetEra","inputs":[{"type":"uint256","name":"_index","internalType":"uint256"},{"type":"uint256","name":"_era","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setContractAddress","inputs":[{"type":"address","name":"_contract","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setWhiteList","inputs":[{"type":"address","name":"_contract","internalType":"address payable"},{"type":"bool","name":"isTrue","internalType":"bool"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"string","name":"","internalType":"string"}],"name":"symbol","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"toWithdrawed","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"totalSupply","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"transfer","inputs":[{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"transferFrom","inputs":[{"type":"address","name":"from","internalType":"address"},{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"transferOwnership","inputs":[{"type":"address","name":"newOwner","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"unbondingPeriod","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"updateUnbondingPeriod","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"userRecordsIndexes","inputs":[{"type":"address","name":"","internalType":"address"},{"type":"uint256","name":"","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"whiteList","inputs":[{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"withdraw","inputs":[{"type":"uint256","name":"ibASTRAmount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"withdrawTo","inputs":[{"type":"address","name":"account","internalType":"address payable"},{"type":"uint256","name":"ibASTRAmount","internalType":"uint256"}]},{"type":"receive","stateMutability":"payable"}],
+    
+
 }
 
 const chainIdMap = {
@@ -2299,6 +2309,10 @@ const chainIdMap = {
   },
   81: {
        name: "Shibuya",
-       symbol: "SBY"
+       symbol: "SBY",
+  },
+  592: {
+       name: "Astar",
+       symbol: "ASTR",
   },
   }

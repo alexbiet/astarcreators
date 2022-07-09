@@ -67,6 +67,8 @@ async function fetchAccountData() {
 
   let chain = chainIdMap[Number(ethereum.chainId)].name;
   let symbol = chainIdMap[Number(ethereum.chainId)].symbol;
+
+  console.log(chain)
   const MARKET_WRITE = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, signer);
   const MARKET_READ = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, provider);
 
@@ -115,10 +117,6 @@ async function cancelMarketItem(_NFTContract, _marketItemId) {
 async function delistCollection(_collectionId) {
   console.log("stakeCollection ");
   MARKET_WRITE.delistCollection(_collectionId);
-}
-
-async function stakeCollection(_collectionId) {
-  MARKET_WRITE.stakeCollection(_collectionId, {value: ethers.utils.parseEther(1)});
 }
 
 async function buyMarketItem(_NFTContract, _marketId, _price) {
@@ -757,7 +755,7 @@ async function fetchExploreCards(maxAmount) {
           } else {
             NFTImage = activeNFTList[j].tokenURI;
             NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
-            NFTName = activeNFTList[j].name;
+            NFTName = NFTsArray[j].name;
             NFTDescription = "none";
             NFTAttributesTraits = "";
             NFTAttributesValues = "";
@@ -1351,6 +1349,7 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
     }
   } else {
     NFTImage = NFTsArray[i].tokenURI;
+    
   }
     if (!NFTsArray[i].sold && !NFTsArray[i].canceled){
     htmlHolder += `
@@ -1894,6 +1893,11 @@ async function fetchCollections() {
         } else {
           NFTImage = activeNFTList[j].tokenURI;
           NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
+
+          NFTName = activeNFTList[j].name;
+          NFTDescription = "none";
+          NFTAttributesTraits = "";
+          NFTAttributesValues = "";
         }
 
 
@@ -2053,6 +2057,29 @@ const postNFT = async () => {
       showMessage(error.message, 'error');
   }
 };
+
+console.log(account)
+
+const ADAO_WRITE = new ethers.Contract(addresses[chain].adaoContract, abis.adaoContract, signer);
+const ADAO_READ = new ethers.Contract(addresses[chain].adaoContract, abis.adaoContract, provider);
+
+
+await withdraw(1);
+//await deposit(account, .01);
+
+
+async function deposit(_address, _amount) {
+  ADAO_WRITE.depositFor(_address, {value: ethers.utils.parseEther(_amount.toString()) });
+
+  console.log("deposited");
+}
+
+async function withdraw(_amount) {
+  ADAO_WRITE.withdraw(ethers.utils.parseEther(_amount.toString()));
+
+  console.log("withdrawn");
+}
+
 
 async function mintNFT (_uri) {
   try {
