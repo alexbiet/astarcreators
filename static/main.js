@@ -2076,42 +2076,41 @@ const postNFT = async () => {
 //////////////////////////////
 ///REAL dApp Staking !!///
 ///////////////////////////////
-// function bond_and_stake(address, uint128) external;
 
  const DAPPS_WRITE = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, signer);
  const DAPPS_READ = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, provider);
 
-//await DAPPS_WRITE.bond_and_stake("0xE9CedB215bf0b509140EA4c9D1175Fc78c1A6aF8", 1);
 
 //console.log(await DAPPS_READ.read_current_era());
 
-////////////////////
-///ADAO STAKING ///
-///////////////////
+// function read_current_era() external view returns (uint256);
 
-// console.log(account)
+//     /// @notice Read unbonding period constant.
+//     /// @return period, The unbonding period in eras
+//     function read_unbonding_period() external view returns (uint256);
 
-// const ADAO_WRITE = new ethers.Contract(addresses[chain].adaoContract, abis.adaoContract, signer);
-// const ADAO_READ = new ethers.Contract(addresses[chain].adaoContract, abis.adaoContract, provider);
+//     /// @notice Read Total network reward for the given era
+//     /// @return reward, Total network reward for the given era
+//     function read_era_reward(uint32 era) external view returns (uint128);
 
+//     /// @notice Read Total staked amount for the given era
+//     /// @return staked, Total staked amount for the given era
+//     function read_era_staked(uint32 era) external view returns (uint128);
 
-// await withdraw(1);
-// //await deposit(account, .01);
+//     /// @notice Read Staked amount for the staker
+//     /// @param staker in form of 20 or 32 hex bytes
+//     /// @return amount, Staked amount by the staker
+//     function read_staked_amount(bytes calldata staker) external view returns (uint128);
 
+//     /// @notice Read Staked amount on a given contract for the staker
+//     /// @param contract_id contract evm address
+//     /// @param staker in form of 20 or 32 hex bytes
+//     /// @return amount, Staked amount by the staker
+//     function read_staked_amount_on_contract(address contract_id, bytes calldata staker) external view returns (uint128);
 
-// async function deposit(_address, _amount) {
-// ADAO_WRITE.depositFor(_address, {value: ethers.utils.parseEther(_amount.toString()) });
-  
-
-//   console.log("deposited");
-// }
-
-// async function withdraw(_amount) {
-//   ADAO_WRITE.withdraw(ethers.utils.parseEther(_amount.toString()));
-
-//   console.log("withdrawn");
-// }
-
+//     /// @notice Read the staked amount from the era when the amount was last staked/unstaked
+//     /// @return total, The most recent total staked amount on contract
+//     function read_contract_stake(address contract_id) external view returns (uint128);
 
 async function mintNFT (_uri) {
   try {
