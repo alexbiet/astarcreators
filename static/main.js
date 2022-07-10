@@ -529,6 +529,15 @@ async function fetchExploreCards(maxAmount) {
 
             <div class="row">
               <div class="col text-end pe-1">
+                <p class="card-text"><strong>Your Stake: </strong></p>      
+              </div>
+              <div class="col ps-1">
+                <p class="card-text">0 ${symbol}</p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col text-end pe-1">
                 <p class="card-text"><strong>APR: </strong></p>       
               </div>
               <div class="col ps-1">
@@ -643,6 +652,15 @@ async function fetchExploreCards(maxAmount) {
           <div class="row">
             <div class="col text-end pe-1">
               <p class="card-text"><strong>TVL: </strong></p>      
+            </div>
+            <div class="col ps-1">
+              <p class="card-text">0 ${symbol}</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col text-end pe-1">
+              <p class="card-text"><strong>Your Stake: </strong></p>      
             </div>
             <div class="col ps-1">
               <p class="card-text">0 ${symbol}</p>
@@ -1980,7 +1998,7 @@ async function fetchCollections() {
 
           </div>
         </div>`;
-        
+
       NFTAttributesTraits = "";
       NFTAttributesValues = "";
 
