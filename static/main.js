@@ -2239,7 +2239,13 @@ function cardEffect(_parentId) {
     var rad = Math.atan2(x,y);
     var radPI = rad * 180 / Math.PI - 90;
     $(this).css('transform', 'rotateX(' + xDeg + 'deg) rotateY(' + yDeg + 'deg) scale3d(1.025,1.025,1.025) perspective(1000px)' );
-    $(this).find('.lux').css('background', 'linear-gradient(' + radPI + 'deg, rgba(255,255,255,0.25) 0%,rgba(255,255,255,0) 80%)' );
+
+
+    if($(`body`).hasClass('bg-dark')) {
+      $(this).find('.lux').css('background', 'linear-gradient(' + radPI + 'deg, rgba(255,255,255,0.1) 0%,rgba(255,255,255,0) 80%)' );
+    } else {
+      $(this).find('.lux').css('background', 'linear-gradient(' + radPI + 'deg, rgba(255,255,255,0.25) 0%,rgba(255,255,255,0) 80%)' );
+    }
   });
   
   $(`${_parentId} .card__inner`).mouseout(function() {
