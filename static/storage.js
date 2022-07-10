@@ -1222,6 +1222,19 @@ const abis = {
         "type": "event"
       },
       {
+        "inputs": [],
+        "name": "DAPPS_STAKING",
+        "outputs": [
+          {
+            "internalType": "contract DappsStaking",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
         "inputs": [
           {
             "internalType": "address",
@@ -1608,6 +1621,16 @@ const abis = {
                 "internalType": "uint256",
                 "name": "reportCount",
                 "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "tvl",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "numStakers",
+                "type": "uint256"
               }
             ],
             "internalType": "struct Marketplace.Collection[]",
@@ -1716,6 +1739,52 @@ const abis = {
         "type": "function"
       },
       {
+        "inputs": [
+          {
+            "internalType": "uint128",
+            "name": "_collection",
+            "type": "uint128"
+          }
+        ],
+        "name": "getStakes",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "staker",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "bondedEra",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "unbondedEra",
+                "type": "uint256"
+              },
+              {
+                "internalType": "enum Marketplace.StakingStatus",
+                "name": "status",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct Marketplace.Stake",
+            "name": "",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
         "inputs": [],
         "name": "initialize",
         "outputs": [],
@@ -1771,12 +1840,51 @@ const abis = {
       {
         "inputs": [
           {
+            "internalType": "uint128",
+            "name": "_collectionId",
+            "type": "uint128"
+          }
+        ],
+        "name": "requestWithdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint128",
+            "name": "_collectionId",
+            "type": "uint128"
+          }
+        ],
+        "name": "stake",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
             "internalType": "address",
             "name": "newOwner",
             "type": "address"
           }
         ],
         "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint128",
+            "name": "_collectionId",
+            "type": "uint128"
+          }
+        ],
+        "name": "unBond",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -1824,6 +1932,10 @@ const abis = {
         "outputs": [],
         "stateMutability": "payable",
         "type": "function"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "receive"
       }
     ],
     astarMinter: [
