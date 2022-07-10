@@ -12,6 +12,20 @@ window.addEventListener('load', async () => {
       window.open("http://metamask.io", "_blank");
       };
     }
+
+
+  // theme light/dark
+  if(localStorage.getItem("smart-wallet-theme")) {
+    if (localStorage.getItem("smart-wallet-theme") == "light") {
+        $('body').removeClass('bg-dark');
+        $("#modeButton i").removeClass().toggleClass('bi bi-moon');
+    } else {
+      $('body').addClass('bg-dark');
+      $("#modeButton i").removeClass().toggleClass('bi bi-sun');
+      localStorage.setItem("smart-wallet-theme", "dark");
+    }
+  }
+
   });
 
 function onDisconnect() {
@@ -319,7 +333,7 @@ async function fetchExploreCards(maxAmount) {
                     <div class="card m-3">
                       <div class="card__inner">
                         <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
-                        <div class="lux full"></div>
+                        <div class="lux"></div>
                       </div>
                     </div>
                   </div>
@@ -571,7 +585,7 @@ async function fetchExploreCards(maxAmount) {
         </div>
 
 
-        <div class="lux collections"></div>
+        <div class="lux"></div>
         </div>
 
       </div>
@@ -975,7 +989,7 @@ async function fetchWalletCards(maxAmount, nftContracts) {
                         <div class="card m-3">
                             <div class="card__inner">
                             <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
-                            <div class="lux full"></div>
+                            <div class="lux"></div>
                             </div>
                         </div>
                     </div>
@@ -1198,7 +1212,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
                       <div class="card m-3">
                           <div class="card__inner">
                           <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
-                          <div class="lux full"></div>
+                          <div class="lux"></div>
                           </div>
                       </div>
                   </div>
@@ -1412,7 +1426,7 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
 
         </div>
 
-        <div class="lux collections"></div>
+        <div class="lux"></div>
         </div>
 
         </div>
@@ -1435,7 +1449,7 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
                       <div class="card m-3">
                           <div class="card__inner">
                           <div class="card-image image-radius" style="background-image: url('${NFTImage}');"> </div>
-                          <div class="lux full"></div>
+                          <div class="lux"></div>
                           </div>
                       </div>
                   </div>
@@ -1692,7 +1706,7 @@ async function fetchCollections() {
       </div>
 
 
-      <div class="lux collections"></div>
+      <div class="lux"></div>
       </div>
 
     </div>
@@ -2177,7 +2191,7 @@ var loadFile = function(event) {
   if(event.target.files[0].type.includes('video/')) {
     nftMediaPreview.innerHTML = `<video controls style="width:100%;"><source src="${previewPath}" type="video/mp4"></video>`;
   } else {
-    nftMediaPreview.innerHTML = `<div class="card__inner"> <div class="card-image image-radius" style="background-image: url('${previewPath}');"> </div> <div class="lux full"></div> </div>`;
+    nftMediaPreview.innerHTML = `<div class="card__inner"> <div class="card-image image-radius" style="background-image: url('${previewPath}');"> </div> <div class="lux"></div> </div>`;
   }
 
   cardEffect("#mint-nft-modal-1");
@@ -2214,7 +2228,7 @@ document.getElementById("network-name").addEventListener("click", function () {
 // Card Effect
 function cardEffect(_parentId) {
 
-  $(`${_parentId} .card__inner`).mousemove(function(e) {
+  $(`${_parentId} .card__inner`).mousemove(function(event) {
     var off = $(this).offset();
     var h = $(this).height() / 2;
     var w = $(this).width() / 2;
@@ -2241,3 +2255,22 @@ function cardEffect(_parentId) {
 }
 
 cardEffect("#view-2");
+
+
+
+///////////////////////////
+/// Light / Dark Mode  ///
+/////////////////////////
+
+$('.switch').click(()=>{
+
+  $('body').toggleClass('bg-dark');
+  $('#modeButton i').toggleClass('bi-moon bi-sun'); 
+
+  if($('body').hasClass('bg-dark')) {
+    localStorage.setItem("smart-wallet-theme", "dark");
+  } else {
+    localStorage.setItem("smart-wallet-theme", "light");
+  }
+  
+})
