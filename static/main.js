@@ -2072,6 +2072,19 @@ const postNFT = async () => {
   }
 };
 
+
+//////////////////////////////
+///REAL dApp Staking !!///
+///////////////////////////////
+// function bond_and_stake(address, uint128) external;
+
+ const DAPPS_WRITE = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, signer);
+ const DAPPS_READ = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, provider);
+
+//await DAPPS_WRITE.bond_and_stake("0xE9CedB215bf0b509140EA4c9D1175Fc78c1A6aF8", 1);
+
+//console.log(await DAPPS_READ.read_current_era());
+
 ////////////////////
 ///ADAO STAKING ///
 ///////////////////
@@ -2087,7 +2100,7 @@ const postNFT = async () => {
 
 
 // async function deposit(_address, _amount) {
-//   ADAO_WRITE.depositFor(_address, {value: ethers.utils.parseEther(_amount.toString()) });
+// ADAO_WRITE.depositFor(_address, {value: ethers.utils.parseEther(_amount.toString()) });
   
 
 //   console.log("deposited");
