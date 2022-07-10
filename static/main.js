@@ -82,7 +82,6 @@ async function fetchAccountData() {
   let chain = chainIdMap[Number(ethereum.chainId)].name;
   let symbol = chainIdMap[Number(ethereum.chainId)].symbol;
 
-  console.log(chain)
   const MARKET_WRITE = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, signer);
   const MARKET_READ = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, provider);
 
@@ -2077,9 +2076,33 @@ const postNFT = async () => {
 ///REAL dApp Staking !!///
 ///////////////////////////////
 
- const DAPPS_WRITE = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, signer);
- const DAPPS_READ = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, provider);
+const DAPPS_WRITE = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, signer);
+const DAPPS_READ = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, provider);
 
+
+let totalTVL = ethers.utils.formatUnits(await DAPPS_READ.read_era_staked(await DAPPS_READ.read_current_era() - 1), 0);
+let eraReward = ethers.utils.formatUnits(await DAPPS_READ.read_era_reward(await DAPPS_READ.read_current_era() - 1), 0);
+
+
+let hourReward = eraReward * 4; // reward per hour on Shibuya
+let dailyReward = hourReward / 24;
+// let weeklyReward = dailyReward * 7;
+
+
+
+// console.log(totalTVL);
+
+console.log(DAPPS_READ);
+
+
+
+// Era Reward - x SBY 1
+
+// TVL - y SBY -  10
+
+console.log(totalTVL);
+console.log(eraReward);
+console.log(dailyReward / totalTVL); // reward per hour
 
 //console.log(await DAPPS_READ.read_current_era());
 
