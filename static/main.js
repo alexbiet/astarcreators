@@ -2080,29 +2080,23 @@ const DAPPS_WRITE = new ethers.Contract(addresses[chain].dAppsStaking, abis.dApp
 const DAPPS_READ = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, provider);
 
 
-let totalTVL = ethers.utils.formatUnits(await DAPPS_READ.read_era_staked(await DAPPS_READ.read_current_era() - 1), 0);
-let eraReward = ethers.utils.formatUnits(await DAPPS_READ.read_era_reward(await DAPPS_READ.read_current_era() - 1), 0);
+// async function getTotalTVL(eraModifier) {
+//   return ethers.utils.formatUnits(await DAPPS_READ.read_era_staked(await DAPPS_READ.read_current_era() - eraModifier), 0);
+// }
+// async function getEraReward(eraModifier) {
+//   return ethers.utils.formatUnits(await DAPPS_READ.read_era_reward(await DAPPS_READ.read_current_era() - eraModifier), 0);
+// }
 
 
-let hourReward = eraReward * 4; // reward per hour on Shibuya
-let dailyReward = hourReward / 24;
-// let weeklyReward = dailyReward * 7;
+// let currentEra = await DAPPS_READ.read_current_era() - 1;
+
+// let hour = currentEra * 4; // reward per hour on Shibuya
+// let day = currentEra / 24;
 
 
-
-// console.log(totalTVL);
-
-console.log(DAPPS_READ);
-
-
-
-// Era Reward - x SBY 1
-
-// TVL - y SBY -  10
-
-console.log(totalTVL);
-console.log(eraReward);
-console.log(dailyReward / totalTVL); // reward per hour
+// for(let i = 1; i <= 240; i = i +10 ) {
+//   console.log(await getTotalTVL(i) / await getEraReward(i) *24 / 365);
+// }
 
 //console.log(await DAPPS_READ.read_current_era());
 
