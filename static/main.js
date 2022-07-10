@@ -217,9 +217,9 @@ async function fetchMarketItemsArray() {
 
 let nftContracts = trustedContracts[chain];
 
-fetchExploreCards(8);
+fetchExploreCards(24);
 fetchExploreCollectionCards(8);
-fetchWalletCards(8, nftContracts);
+fetchWalletCards(24, nftContracts);
 fetchMarketplaceCards(8, "marketplace");
 fetchMarketplaceCardsCollectionModal(8);
 fetchCollections();
@@ -417,6 +417,9 @@ async function fetchExploreCards(maxAmount) {
           </div>
         </div>
       `;
+
+      NFTAttributesTraits = "";
+      NFTAttributesValues = "";
     }
     marketNFTsEl.innerHTML = htmlHolder;
     cardEffect('#market-NFTs');
@@ -836,6 +839,8 @@ async function fetchExploreCards(maxAmount) {
         cardEffect(`#explore-collection-nfts-modal-${i}`);
 
         
+        NFTAttributesTraits = "";
+        NFTAttributesValues = "";
     
     
       }
@@ -1060,6 +1065,9 @@ async function fetchWalletCards(maxAmount, nftContracts) {
             </div>
           </div>
         `;
+
+      NFTAttributesTraits = "";
+      NFTAttributesValues = "";
       }
       walletNFTsEl.innerHTML = htmlHolder;
       document.getElementById('walletNftsCount').innerHTML = walletNftsCount;
@@ -1300,6 +1308,9 @@ async function fetchMarketplaceCards(maxAmount, location) {
               </div>
           </div>
           </div>`
+
+          NFTAttributesTraits = "";
+          NFTAttributesValues = "";
           }
         }
           marketplaceNFTsEl.innerHTML = htmlHolder;
@@ -1537,6 +1548,9 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
               </div>
           </div>
           </div>`
+
+      NFTAttributesTraits = "";
+      NFTAttributesValues = "";
         }
       }
         marketplaceNFTsEl.innerHTML = htmlHolder;
@@ -1966,6 +1980,9 @@ async function fetchCollections() {
 
           </div>
         </div>`;
+        
+      NFTAttributesTraits = "";
+      NFTAttributesValues = "";
 
       
       document.getElementById(`my-wallet-collection-nfts-modal-${i}`).innerHTML = htmlHolder;
