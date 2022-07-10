@@ -526,10 +526,10 @@ async function fetchExploreCards(maxAmount) {
 
             <div class="row">
               <div class="col text-end pe-1">
-                <p class="card-text"><strong>APY: </strong></p>       
+                <p class="card-text"><strong>APR: </strong></p>       
               </div>
               <div class="col ps-1">
-                <p class="card-text">0%</p>
+                <p class="card-text">94.3%</p>
               </div>
             </div>
 
@@ -648,10 +648,10 @@ async function fetchExploreCards(maxAmount) {
 
           <div class="row">
             <div class="col text-end pe-1">
-              <p class="card-text"><strong>APY: </strong></p>       
+              <p class="card-text"><strong>APR: </strong></p>       
             </div>
             <div class="col ps-1">
-              <p class="card-text">0%</p>
+              <p class="card-text">94.3%</p>
             </div>
           </div>
 
