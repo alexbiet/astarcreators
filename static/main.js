@@ -128,7 +128,6 @@ async function cancelMarketItem(_NFTContract, _marketItemId) {
 }
 
 async function delistCollection(_collectionId) {
-  console.log("stakeCollection ");
   MARKET_WRITE.delistCollection(_collectionId);
 }
 
@@ -498,7 +497,7 @@ async function fetchExploreCards(maxAmount) {
 
       }
 
-        
+        console.log(collections[i]["tvl"])
       // This runs....
       tempHTML += `
       <div class="col">
@@ -578,10 +577,11 @@ async function fetchExploreCards(maxAmount) {
           <div class="row border-bottom pb-3 mb-3">
             <div class="col">
               <div class="input-group input-group-sm">
-                <input type="text" class="form-control" placeholder="i.e. 100.00" aria-describedby="button-stake" id="input-explore-stake">
+                <input type="text" class="form-control" placeholder="i.e. 100.00" aria-describedby="button-stake" id="input-explore-stake-${i}">
                 <span class="input-group-text">${symbol}</span>
                 <button class="btn btn-primary" type="button" id="button-explore-stake-${i}">Stake</button>
                 <button class="btn btn-outline-danger" type="button" id="button-explore-unstake-${i}">Unstake</button>
+                <button class="btn btn-success" type="button" id="button-explore-claim-${i}">Claim</button>
               </div>
             </div>
           </div>
@@ -709,10 +709,11 @@ async function fetchExploreCards(maxAmount) {
           <div class="row pb-3 mb-3">
             <div class="col">
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="i.e. 100.00" aria-describedby="button-stake" id="modal-input-explore-stake">
+                <input type="text" class="form-control" placeholder="i.e. 100.00" aria-describedby="button-stake" id="modal-input-explore-stake-${i}">
                 <span class="input-group-text">${symbol}</span>
                 <button class="btn btn-primary" type="button" id="modal-button-explore-stake-${i}">Stake</button>
                 <button class="btn btn-outline-danger" type="button" id="modal-button-explore-unstake-${i}">Unstake</button>
+                <button class="btn btn-success" type="button" id="modal-button-explore-claim-${i}">Claim</button>
               </div>
             </div>
           </div> 
@@ -721,7 +722,7 @@ async function fetchExploreCards(maxAmount) {
         </div>
       </div>
           
-      </div>
+</div>
     </div>
     </div>
     </div>`;
@@ -730,9 +731,29 @@ async function fetchExploreCards(maxAmount) {
     exploreCollections.innerHTML = tempHTML;
     cardEffect('#collectionsListing');
 
-    // Add Cards
     for( let i = 0; i < collections.length; i++){
-    
+      
+      document.getElementById(`button-explore-stake-${i}`).addEventListener("click", () => {
+      let stakeVal = document.getElementById(`input-explore-stake-${i}`).value;
+      stakeCollection(i, stakeVal.toString());   });
+
+      document.getElementById(`modal-button-explore-stake-${i}`).addEventListener("click", () => {
+      let stakeVal2 = document.getElementById(`modal-input-explore-stake-${i}`).value;
+      stakeCollection(i % collections.length, stakeVal2.toString());});
+
+      document.getElementById(`button-explore-unstake-${i}`).addEventListener("click", () => {
+      unStakeCollection(i); });
+
+      document.getElementById(`modal-button-explore-unstake-${i}`).addEventListener("click", () => {
+      unStakeCollection(i % collections.length);});
+
+      document.getElementById(`button-explore-claim-${i}`).addEventListener("click", () => {
+      withdrawCollection(i); });
+  
+      document.getElementById(`modal-button-explore-claim-${i}`).addEventListener("click", () => {
+      withdrawCollection(i % collections.length);});
+         
+       
          document.getElementById(`report-${i}`).addEventListener("click", () => {
           console.log(collections[i]["active"])
           console.log(collections[i]["reportCount"])
@@ -886,17 +907,21 @@ async function fetchExploreCards(maxAmount) {
     
   }
 
-//returns  contract balance
-async function getBalance() {
-  return ethers.utils.formatUnits( await MARKET_READ.getBalance(), 0);
-}
-
 async function reportCollection(collectionId) {
   MARKET_WRITE.reportCollection(collectionId);
 }
 
+async function stakeCollection(collectionId, amount) {
+  MARKET_WRITE.stake(collectionId, { value: ethers.utils.parseEther(amount) });
+}
 
+async function unStakeCollection(collectionId) {
+  MARKET_WRITE.unBond(collectionId);
+}
 
+async function withdrawCollection(collectionId) {
+  MARKET_WRITE.requestWithdraw(collectionId);
+}
 
 
 
@@ -1650,10 +1675,8 @@ async function fetchCollections() {
           NFTImage = activeNFTList[j].tokenURI;
           NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${activeNFTList[j].tokenURI}');"> </div></div>`;
         }
-
       }
-
-      
+    
     tempHTML += `
     <div class="col">
     <div class="card">
@@ -1874,7 +1897,6 @@ async function fetchCollections() {
 
   let arrayOfDelist = document.querySelectorAll(`#my-collections .btn-DelistCollection`);
   let arrayOfDelistModal = document.querySelectorAll(`#my-collections .btn-DelistCollectionModal`);
-  // let arrayOfStakeModal = document.querySelectorAll(`#my-collections .btn-StakeCollectionModal`);
   let buttonCounter = 0;
 
   for (let i = 0; i < collections.length; i++) {
@@ -1884,8 +1906,8 @@ async function fetchCollections() {
         delistCollection(collections[i].collectionId)}); 
       arrayOfDelistModal[buttonCounter].addEventListener("click", () => {
         delistCollection(collections[i].collectionId)});
-      // arrayOfStakeModal[buttonCounter].addEventListener("click", () => {
-      //   stakeCollection(collections[i].collectionId)});
+
+
       buttonCounter++;
     }
     
@@ -2025,9 +2047,6 @@ async function fetchCollections() {
   }
 }
 
-
-// Create new collection
-
 const listCollection = document.querySelector('#listCollection');
 const listCollectionMessage = document.querySelector('#listCollectionMessage');
 
@@ -2075,8 +2094,6 @@ const showMessageCollection = (message, type = 'success') => {
   `;
 };
 
-
-
 //------------------- //
 // MINT NFTs
 //------------------- //
@@ -2112,64 +2129,11 @@ const postNFT = async () => {
 };
 
 
-//////////////////////////////
-///REAL dApp Staking !!///
 ///////////////////////////////
-
+///  dAppStaking Precompile ////
+///////////////////////////////
 const DAPPS_WRITE = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, signer);
 const DAPPS_READ = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, provider);
-
-// console.log(DAPPS_READ);
-// console.log(await MARKET_READ.getStakes(0));
-
-// async function getTotalTVL(eraModifier) {
-//   return ethers.utils.formatUnits(await DAPPS_READ.read_era_staked(await DAPPS_READ.read_current_era() - eraModifier), 0);
-// }
-// async function getEraReward(eraModifier) {
-//   return ethers.utils.formatUnits(await DAPPS_READ.read_era_reward(await DAPPS_READ.read_current_era() - eraModifier), 0);
-// }
-
-
-// let currentEra = await DAPPS_READ.read_current_era() - 1;
-
-// let hour = currentEra * 4; // reward per hour on Shibuya
-// let day = currentEra / 24;
-
-
-// for(let i = 1; i <= 240; i = i +10 ) {
-//   console.log(await getTotalTVL(i) / await getEraReward(i) *24 / 365);
-// }
-
-//console.log(await DAPPS_READ.read_current_era());
-
-// function read_current_era() external view returns (uint256);
-
-//     /// @notice Read unbonding period constant.
-//     /// @return period, The unbonding period in eras
-//     function read_unbonding_period() external view returns (uint256);
-
-//     /// @notice Read Total network reward for the given era
-//     /// @return reward, Total network reward for the given era
-//     function read_era_reward(uint32 era) external view returns (uint128);
-
-//     /// @notice Read Total staked amount for the given era
-//     /// @return staked, Total staked amount for the given era
-//     function read_era_staked(uint32 era) external view returns (uint128);
-
-//     /// @notice Read Staked amount for the staker
-//     /// @param staker in form of 20 or 32 hex bytes
-//     /// @return amount, Staked amount by the staker
-//     function read_staked_amount(bytes calldata staker) external view returns (uint128);
-
-//     /// @notice Read Staked amount on a given contract for the staker
-//     /// @param contract_id contract evm address
-//     /// @param staker in form of 20 or 32 hex bytes
-//     /// @return amount, Staked amount by the staker
-//     function read_staked_amount_on_contract(address contract_id, bytes calldata staker) external view returns (uint128);
-
-//     /// @notice Read the staked amount from the era when the amount was last staked/unstaked
-//     /// @return total, The most recent total staked amount on contract
-//     function read_contract_stake(address contract_id) external view returns (uint128);
 
 async function mintNFT (_uri) {
   try {

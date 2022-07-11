@@ -1088,67 +1088,6 @@ const abis = {
         "inputs": [
           {
             "indexed": true,
-            "internalType": "uint256",
-            "name": "marketItemId",
-            "type": "uint256"
-          },
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "NFTContract",
-            "type": "address"
-          },
-          {
-            "indexed": true,
-            "internalType": "uint256",
-            "name": "tokenId",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "creator",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "seller",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "price",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "internalType": "bool",
-            "name": "sold",
-            "type": "bool"
-          },
-          {
-            "indexed": false,
-            "internalType": "bool",
-            "name": "canceled",
-            "type": "bool"
-          }
-        ],
-        "name": "MarketItemCreated",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
             "internalType": "address",
             "name": "previousOwner",
             "type": "address"
@@ -1174,50 +1113,6 @@ const abis = {
           }
         ],
         "name": "Upgraded",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "itemsCount",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "soldCount",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "canceledItemsCount",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "availableCount",
-            "type": "uint256"
-          }
-        ],
-        "name": "countMessage",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "thisContractAddress",
-            "type": "address"
-          }
-        ],
-        "name": "ownerAddress",
         "type": "event"
       },
       {
