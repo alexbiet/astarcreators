@@ -450,8 +450,9 @@ async function fetchExploreCards(maxAmount) {
     let collections = await MARKET_READ.getActiveCollections();
     let tempHTML = "";
 
-    for( let i = 0; i < collections.length; i++){
+    console.log(collections);
 
+    for( let i = 0; i < collections.length; i++){
         let activeIds = [];
         for(let j = 0; j < collections[i].marketIds.length; j++) {
           activeIds.push( ethers.utils.formatUnits(collections[i].marketIds[j]._hex, 0) );
@@ -464,8 +465,12 @@ async function fetchExploreCards(maxAmount) {
         let NFTName = NFTsArray.name;
         let NFTImage = "";
         let NFTImages = "";
+        let yourStake = "";
 
-
+        let collectionId = ethers.utils.formatUnits(collections[i].collectionId, 0);
+        yourStake = await MARKET_READ.getStakes(collectionId);
+        yourStake = ethers.utils.formatUnits(yourStake.amount, 0);
+  
         for (let j = 0; j < activeNFTList.length; j++) {
 
           let metadata = await fetch(activeNFTList[j].tokenURI);
@@ -523,7 +528,7 @@ async function fetchExploreCards(maxAmount) {
                 <p class="card-text"><strong>TVL: </strong></p>      
               </div>
               <div class="col ps-1">
-                <p class="card-text">0 ${symbol}</p>
+                <p class="card-text">${collections[i].tvl} ${symbol}</p>
               </div>
             </div>
 
@@ -532,7 +537,7 @@ async function fetchExploreCards(maxAmount) {
                 <p class="card-text"><strong>Your Stake: </strong></p>      
               </div>
               <div class="col ps-1">
-                <p class="card-text">0 ${symbol}</p>
+                <p class="card-text">${yourStake} ${symbol}</p>
               </div>
             </div>
 
@@ -541,7 +546,7 @@ async function fetchExploreCards(maxAmount) {
                 <p class="card-text"><strong>APR: </strong></p>       
               </div>
               <div class="col ps-1">
-                <p class="card-text">94.3%</p>
+                <p class="card-text">94.4%</p>
               </div>
             </div>
 
@@ -550,7 +555,7 @@ async function fetchExploreCards(maxAmount) {
                 <p class="card-text"><strong>Stakers: </strong></p>     
               </div>
               <div class="col ps-1">
-                <p class="card-text">0</p>
+                <p class="card-text">${collections[i].numStakers}</p>
               </div>
             </div>
   
@@ -654,7 +659,7 @@ async function fetchExploreCards(maxAmount) {
               <p class="card-text"><strong>TVL: </strong></p>      
             </div>
             <div class="col ps-1">
-              <p class="card-text">0 ${symbol}</p>
+              <p class="card-text">${collections[i].tvl} ${symbol}</p>
             </div>
           </div>
 
@@ -663,7 +668,7 @@ async function fetchExploreCards(maxAmount) {
               <p class="card-text"><strong>Your Stake: </strong></p>      
             </div>
             <div class="col ps-1">
-              <p class="card-text">0 ${symbol}</p>
+              <p class="card-text">${yourStake} ${symbol}</p>
             </div>
           </div>
 
@@ -672,7 +677,7 @@ async function fetchExploreCards(maxAmount) {
               <p class="card-text"><strong>APR: </strong></p>       
             </div>
             <div class="col ps-1">
-              <p class="card-text">94.3%</p>
+              <p class="card-text">94.4%</p>
             </div>
           </div>
 
@@ -681,16 +686,7 @@ async function fetchExploreCards(maxAmount) {
               <p class="card-text"><strong>Stakers: </strong></p>     
             </div>
             <div class="col ps-1">
-              <p class="card-text">0</p>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col text-end pe-1">
-              <p class="card-text"><strong>Earnings: </strong></p>     
-            </div>
-            <div class="col ps-1">
-              <p class="card-text">0 ${symbol}</p>
+              <p class="card-text">${collections[i].numStakers}</p>
             </div>
           </div>
 
@@ -1338,7 +1334,6 @@ async function fetchMarketplaceCards(maxAmount, location) {
           let arrayOfDelist = document.querySelectorAll(`#${location} .btn-Delist`);
           let arrayOfDelistModal = document.querySelectorAll(`#${location} .btn-DelistModal`);
           let buttonCounter = 0;
-          
           for (let i = 0; i < NFTsArray.length; i++) {
              if(!NFTsArray[i].canceled && !NFTsArray[i].sold) {
            arrayOfDelist[buttonCounter].addEventListener("click", () => {
@@ -1611,7 +1606,7 @@ async function fetchCollections() {
   let NFTAttributesValues = "";
 
   let NFTsArray = await fetchMarketItemsArray();
-
+console.log(collections);
   for( let i = 0; i < collections.length; i++){
     if(collections[i].creator.toLowerCase() == account.toLowerCase()) {
       collectionsCount++;
@@ -1628,6 +1623,11 @@ async function fetchCollections() {
       let NFTName = NFTsArray.name;
       let NFTImage = "";
       let NFTImages = "";
+
+
+      let collectionId = ethers.utils.formatUnits(collections[i].collectionId, 0);
+      yourStake = await MARKET_READ.getStakes(collectionId);
+      yourStake = ethers.utils.formatUnits(yourStake.amount, 0);
 
 
       for (let j = 0; j < activeNFTList.length; j++) {
@@ -1684,7 +1684,16 @@ async function fetchCollections() {
               <p class="card-text"><strong>TVL: </strong></p>      
             </div>
             <div class="col ps-1">
-              <p class="card-text">0 ${symbol}</p>
+              <p class="card-text">${collections[i].tvl} ${symbol}</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col text-end pe-1">
+              <p class="card-text"><strong>Your Stake: </strong></p>      
+            </div>
+            <div class="col ps-1">
+              <p class="card-text">${yourStake} ${symbol}</p>
             </div>
           </div>
 
@@ -1693,7 +1702,7 @@ async function fetchCollections() {
               <p class="card-text"><strong>APY: </strong></p>       
             </div>
             <div class="col ps-1">
-              <p class="card-text">0%</p>
+              <p class="card-text">94.4%</p>
             </div>
           </div>
 
@@ -1702,7 +1711,7 @@ async function fetchCollections() {
               <p class="card-text"><strong>Stakers: </strong></p>     
             </div>
             <div class="col ps-1">
-              <p class="card-text">0</p>
+              <p class="card-text">${collections[i].numStakers}</p>
             </div>
           </div>
 
@@ -1795,7 +1804,16 @@ async function fetchCollections() {
             <p class="card-text"><strong>TVL: </strong></p>      
           </div>
           <div class="col ps-1">
-            <p class="card-text">0 ${symbol}</p>
+            <p class="card-text">${collections[i].tvl} ${symbol}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col text-end pe-1">
+            <p class="card-text"><strong>Your Stake: </strong></p>      
+          </div>
+          <div class="col ps-1">
+            <p class="card-text">${yourStake} ${symbol}</p>
           </div>
         </div>
 
@@ -1813,16 +1831,7 @@ async function fetchCollections() {
             <p class="card-text"><strong>Stakers: </strong></p>     
           </div>
           <div class="col ps-1">
-            <p class="card-text">0</p>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col text-end pe-1">
-            <p class="card-text"><strong>Earnings: </strong></p>     
-          </div>
-          <div class="col ps-1">
-            <p class="card-text">0 ${symbol}</p>
+            <p class="card-text">${collections[i].numStakers}</p>
           </div>
         </div>
 
@@ -2114,6 +2123,8 @@ const postNFT = async () => {
 const DAPPS_WRITE = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, signer);
 const DAPPS_READ = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, provider);
 
+// console.log(DAPPS_READ);
+// console.log(await MARKET_READ.getStakes(0));
 
 // async function getTotalTVL(eraModifier) {
 //   return ethers.utils.formatUnits(await DAPPS_READ.read_era_staked(await DAPPS_READ.read_current_era() - eraModifier), 0);
