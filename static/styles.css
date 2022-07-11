@@ -143,6 +143,13 @@ hr {
     animation-delay: 2s;
 }
 
+footer a {
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
 
 
 .card {
