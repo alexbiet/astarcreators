@@ -6,8 +6,13 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
+import "./DappsStaking.sol";
 
-contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
+contract MarketplaceV1_07 is
+    Initializable,
+    UUPSUpgradeable,
+    OwnableUpgradeable
+{
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     CountersUpgradeable.Counter private _marketItemIds;
@@ -41,30 +46,121 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         address creator;
         bool active;
         uint256 reportCount;
+        uint256 tvl;
+        uint256 numStakers;
     }
 
-    event MarketItemCreated(
-        uint256 indexed marketItemId,
-        address indexed NFTContract,
-        uint256 indexed tokenId,
-        address creator,
-        address seller,
-        address owner,
-        uint256 price,
-        bool sold,
-        bool canceled
-    );
+    enum StakingStatus {
+        Bonded,
+        Unbonding,
+        Withdrawable,
+        Expired
+    }
 
-    event countMessage(
-        uint256 itemsCount,
-        uint256 soldCount,
-        uint256 canceledItemsCount,
-        uint256 availableCount
-    );
-
-    event ownerAddress(address thisContractAddress);
+    struct Stake {
+        address staker;
+        uint256 amount;
+        uint256 bondedEra;
+        uint256 unbondedEra;
+        StakingStatus status;
+    }
 
     uint256 private listingFee;
+    DappsStaking public constant DAPPS_STAKING =
+        DappsStaking(0x0000000000000000000000000000000000005001);
+
+    CountersUpgradeable.Counter private _numStakers;
+    mapping(address => mapping(uint128 => Stake))
+        private addressToCollectionIdToStake;
+
+    uint256 latestWithdrawnEra;
+
+    receive() external payable {}
+
+    function stake(uint128 _collectionId) external payable {
+        require(msg.value > 100000000000000000);
+        DAPPS_STAKING.bond_and_stake(address(this), uint128(msg.value));
+        Stake memory newStake = Stake(
+            msg.sender,
+            msg.value,
+            DAPPS_STAKING.read_current_era(),
+            0,
+            StakingStatus.Bonded
+        );
+        addressToCollectionIdToStake[msg.sender][_collectionId] = newStake;
+
+        collectionIdToCollection[_collectionId].tvl += msg.value;
+        _numStakers.increment();
+    }
+
+    function unBond(uint128 _collectionId) external {
+        require(
+            addressToCollectionIdToStake[msg.sender][_collectionId].status ==
+                StakingStatus.Bonded
+        );
+        require(
+            addressToCollectionIdToStake[msg.sender][_collectionId].amount > 0
+        );
+        uint128 amount = uint128(
+            addressToCollectionIdToStake[msg.sender][_collectionId].amount
+        );
+        DAPPS_STAKING.unbond_and_unstake(address(this), amount);
+        addressToCollectionIdToStake[msg.sender][_collectionId]
+            .unbondedEra = DAPPS_STAKING.read_current_era();
+        addressToCollectionIdToStake[msg.sender][_collectionId]
+            .status = StakingStatus.Unbonding;
+    }
+
+    function requestWithdraw(uint128 _collectionId) public {
+        //check unbondingperiod is over for current staker/amount
+        if (
+            addressToCollectionIdToStake[msg.sender][_collectionId]
+                .unbondedEra +
+                2 <=
+            DAPPS_STAKING.read_current_era()
+        ) {
+            addressToCollectionIdToStake[msg.sender][_collectionId]
+                .status = StakingStatus.Withdrawable;
+        }
+        //hardcodeFTW (skips unbond)
+        addressToCollectionIdToStake[msg.sender][_collectionId]
+            .status = StakingStatus.Withdrawable;
+
+        require(
+            addressToCollectionIdToStake[msg.sender][_collectionId].status ==
+                StakingStatus.Withdrawable
+        );
+        require(
+            addressToCollectionIdToStake[msg.sender][_collectionId].amount > 0
+        );
+        require(
+            addressToCollectionIdToStake[msg.sender][_collectionId]
+                .unbondedEra > 0
+        );
+        require(
+            latestWithdrawnEra != 0 &&
+                latestWithdrawnEra + 2 <= DAPPS_STAKING.read_current_era()
+        );
+        DAPPS_STAKING.withdraw_unbonded();
+
+        payable(msg.sender).transfer(
+            addressToCollectionIdToStake[msg.sender][_collectionId].amount
+        );
+
+        addressToCollectionIdToStake[msg.sender][_collectionId]
+            .status = StakingStatus.Expired;
+
+        collectionIdToCollection[_collectionId]
+            .tvl -= addressToCollectionIdToStake[msg.sender][_collectionId]
+            .amount;
+        _numStakers.decrement();
+
+        latestWithdrawnEra = DAPPS_STAKING.read_current_era();
+    }
+
+    function getStakes(uint128 _collection) public view returns (Stake memory) {
+        return addressToCollectionIdToStake[msg.sender][_collection];
+    }
 
     function initialize() public initializer {
         __UUPSUpgradeable_init();
@@ -89,8 +185,7 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         for (uint256 i = 0; i < _marketIdsArray.length; i++) {
             require(
                 marketItemIdToMarketItem[_marketIdsArray[i]].creator ==
-                    msg.sender,
-                "You must be the listing creator."
+                    msg.sender
             );
         }
         uint256 collectionId = _collectionIds.current();
@@ -101,6 +196,8 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
             _marketIdsArray,
             msg.sender,
             true,
+            0,
+            0,
             0
         );
         _collectionIds.increment();
@@ -108,18 +205,9 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     }
 
     function delistCollection(uint256 _collectionId) public {
-        require(
-            _collectionId >= 0 && _collectionId < _collectionIds.current(),
-            "Collection with that ID dosnt exist."
-        );
-        require(
-            collectionIdToCollection[_collectionId].active,
-            "Collection already delisted"
-        );
-        require(
-            collectionIdToCollection[_collectionId].creator == msg.sender,
-            "Not the creator of that Collection."
-        );
+        require(_collectionId >= 0 && _collectionId < _collectionIds.current());
+        require(collectionIdToCollection[_collectionId].active);
+        require(collectionIdToCollection[_collectionId].creator == msg.sender);
         collectionIdToCollection[_collectionId].active = false;
         _activeCollections.decrement();
     }
@@ -129,8 +217,7 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
             _collectionId
         ];
         require(
-            addressToCollectionToReported[msg.sender][_collectionId] == false,
-            "You've already reported this collection."
+            addressToCollectionToReported[msg.sender][_collectionId] == false
         );
         addressToCollectionToReported[msg.sender][_collectionId] = true;
         targetCollection.reportCount++;
@@ -164,11 +251,8 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         uint256 tokenId,
         uint256 price
     ) public payable returns (uint256) {
-        require(price > 0, "Price must be at least 1 wei");
-        require(
-            msg.value == listingFee,
-            "Price must be equal to listing price"
-        );
+        require(price > 0);
+        require(msg.value == listingFee);
         uint256 marketItemId = _marketItemIds.current();
         _marketItemIds.increment();
 
@@ -194,18 +278,6 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
             tokenId
         );
 
-        emit MarketItemCreated(
-            marketItemId,
-            NFTContractAddress,
-            tokenId,
-            payable(creator),
-            payable(msg.sender),
-            payable(address(this)),
-            price,
-            false,
-            false
-        );
-
         return marketItemId;
     }
 
@@ -214,12 +286,9 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         payable
     {
         uint256 tokenId = marketItemIdToMarketItem[marketItemId].tokenId;
-        require(tokenId >= 0, "Market item has to exist");
+        require(tokenId >= 0);
 
-        require(
-            marketItemIdToMarketItem[marketItemId].seller == msg.sender,
-            "You are not the seller"
-        );
+        require(marketItemIdToMarketItem[marketItemId].seller == msg.sender);
 
         ERC721Upgradeable(NFTContractAddress).transferFrom(
             address(this),
@@ -255,10 +324,7 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     {
         uint256 price = marketItemIdToMarketItem[marketItemId].price;
         uint256 tokenId = marketItemIdToMarketItem[marketItemId].tokenId;
-        require(
-            msg.value == price,
-            "Please submit the asking price in order to continue"
-        );
+        require(msg.value == price);
 
         marketItemIdToMarketItem[marketItemId].owner = payable(msg.sender);
         marketItemIdToMarketItem[marketItemId].sold = true;
@@ -312,8 +378,7 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     ) private pure returns (address) {
         require(
             compareStrings(property, "seller") ||
-                compareStrings(property, "owner"),
-            "Parameter must be 'seller' or 'owner'"
+                compareStrings(property, "owner")
         );
 
         return compareStrings(property, "seller") ? item.seller : item.owner;
@@ -338,8 +403,7 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     {
         require(
             compareStrings(_addressProperty, "seller") ||
-                compareStrings(_addressProperty, "owner"),
-            "Parameter must be 'seller' or 'owner'"
+                compareStrings(_addressProperty, "owner")
         );
         uint256 totalItemsCount = _marketItemIds.current();
         uint256 itemCount = 0;
@@ -369,6 +433,10 @@ contract Marketplace is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         }
 
         return items;
+    }
+
+    function getBalance() public view returns (uint256) {
+        return address(this).balance;
     }
 
     function _authorizeUpgrade(address newImplementation)
