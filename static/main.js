@@ -466,18 +466,31 @@ async function fetchExploreCards(maxAmount) {
         let NFTImage = "";
         let NFTImages = "";
         let yourStake = "";
-        let toWithdraw = `<span class="text-success">0 ${symbol}</span>`;
-
+        let stakeStatus = "None";
         yourStake = await MARKET_READ.getStakes(collections[i].collectionId, account);
+
+        let boundedEra = ethers.utils.formatUnits(yourStake.bondedEra, 0);
+        let currentEra = await DAPPS_READ.read_current_era();
+        currentEra = ethers.utils.formatUnits(currentEra, 0);
+
+        console.log(currentEra + " / " + boundedEra)
+
+        if ( boundedEra == 0 ) {
+          stakeStatus = "None";
+        } else if ( yourStake.status == 0) {
+          stakeStatus = "Staked";
+        } else if ( yourStake.status == 1 ) {
+          stakeStatus = "Unstaking...";
+        } else if ( boundedEra + 2 <= currentEra ) {
+          stakeStatus = "Withdrawable";
+        } else if ( yourStake.status == 3 ) {
+          stakeStatus = "Stake removed!";
+        }
 
         if ( yourStake.status == 3 ) {
           yourStake = 0;
         } else {
           yourStake = ethers.utils.formatEther(ethers.utils.formatUnits(yourStake.amount, 0));
-        }
-
-        if ( yourStake.status == 2 ) {
-          toWithdraw = `<span class="text-success">${ethers.utils.formatEther(yourStake.amount)} ${symbol}</span>`;
         }
 
         for (let j = 0; j < activeNFTList.length; j++) {
@@ -551,10 +564,10 @@ async function fetchExploreCards(maxAmount) {
 
             <div class="row">
               <div class="col text-end pe-1">
-                <p class="card-text"><strong>Withdraw: </strong></p>      
+                <p class="card-text"><strong>Status: </strong></p>      
               </div>
               <div class="col ps-1">
-                <p class="card-text">${toWithdraw}</p>
+                <p class="card-text">${stakeStatus}</p>
               </div>
             </div>
 
@@ -696,10 +709,10 @@ async function fetchExploreCards(maxAmount) {
 
           <div class="row">
             <div class="col text-end pe-1">
-              <p class="card-text"><strong>Withdraw: </strong></p>      
+              <p class="card-text"><strong>Status: </strong></p>      
             </div>
             <div class="col ps-1">
-              <p class="card-text">${toWithdraw}</p>
+              <p class="card-text">${stakeStatus}</p>
             </div>
           </div>
 
