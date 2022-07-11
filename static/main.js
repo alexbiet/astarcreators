@@ -601,6 +601,8 @@ async function fetchExploreCards(maxAmount) {
 
               <button class="btn btn-sm btn-outline-success my-2" type="button" id="button-explore-claim-${i}">Withdraw</button>
 
+              <button class="btn btn-sm btn-outline-warning my-2" type="button" id="button-explore-claim-rewards-${i}">Claim Rewards</button>
+
             </div>
           </div>
 
@@ -743,6 +745,9 @@ async function fetchExploreCards(maxAmount) {
               </div>
 
               <button class="btn btn-outline-success my-2" type="button" id="modal-button-explore-claim-${i}">Withdraw</button>
+
+              <button class="btn btn-outline-warning my-2" type="button" id="mondal-button-explore-claim-rewards-${i}">Claim Rewards</button>
+
             </div>
           </div> 
           
