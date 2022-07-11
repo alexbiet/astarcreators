@@ -220,8 +220,8 @@ let nftContracts = trustedContracts[chain];
 fetchExploreCards(24);
 fetchExploreCollectionCards(8);
 fetchWalletCards(24, nftContracts);
-fetchMarketplaceCards(8, "marketplace");
-fetchMarketplaceCardsCollectionModal(8);
+fetchMarketplaceCards(30, "marketplace");
+fetchMarketplaceCardsCollectionModal(30);
 fetchCollections();
 
 async function fetchExploreCards(maxAmount) {
@@ -449,8 +449,6 @@ async function fetchExploreCards(maxAmount) {
 
     let collections = await MARKET_READ.getActiveCollections();
     let tempHTML = "";
-
-    console.log(collections);
 
     for( let i = 0; i < collections.length; i++){
         let activeIds = [];
@@ -1124,7 +1122,6 @@ async function fetchMarketplaceCards(maxAmount, location) {
 
     for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
 
-      
       let metadata = await fetch(NFTsArray[i].tokenURI);
 
       if(!NFTsArray[i].canceled && !NFTsArray[i].sold) {
@@ -1333,19 +1330,18 @@ async function fetchMarketplaceCards(maxAmount, location) {
 
           let arrayOfDelist = document.querySelectorAll(`#${location} .btn-Delist`);
           let arrayOfDelistModal = document.querySelectorAll(`#${location} .btn-DelistModal`);
+          
           let buttonCounter = 0;
           for (let i = 0; i < NFTsArray.length; i++) {
-             if(!NFTsArray[i].canceled && !NFTsArray[i].sold) {
-           arrayOfDelist[buttonCounter].addEventListener("click", () => {
-             cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)}); 
-           arrayOfDelistModal[buttonCounter].addEventListener("click", () => {
-             cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)});
-             buttonCounter++;
-         }
-  
+            if(!NFTsArray[i].canceled && !NFTsArray[i].sold) {
+              arrayOfDelist[buttonCounter].addEventListener("click", () => {
+                cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)}); 
+              arrayOfDelistModal[buttonCounter].addEventListener("click", () => {
+                cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)});
+              buttonCounter++;
+            }
+          }
 
-   
-      }
       }
 
 async function fetchMarketplaceCardsCollectionModal(maxAmount) {
@@ -1606,7 +1602,7 @@ async function fetchCollections() {
   let NFTAttributesValues = "";
 
   let NFTsArray = await fetchMarketItemsArray();
-console.log(collections);
+
   for( let i = 0; i < collections.length; i++){
     if(collections[i].creator.toLowerCase() == account.toLowerCase()) {
       collectionsCount++;
