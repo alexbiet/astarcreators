@@ -1147,6 +1147,13 @@ const abis = {
         "type": "function"
       },
       {
+        "inputs": [],
+        "name": "claim",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
         "inputs": [
           {
             "internalType": "string",
@@ -1536,19 +1543,6 @@ const abis = {
         "type": "function"
       },
       {
-        "inputs": [],
-        "name": "getBalance",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
         "inputs": [
           {
             "internalType": "uint256",
@@ -1614,19 +1608,6 @@ const abis = {
             "internalType": "bool",
             "name": "",
             "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "getListingFee",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
           }
         ],
         "stateMutability": "view",
@@ -1784,19 +1765,6 @@ const abis = {
           }
         ],
         "name": "unBond",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "_listingFee",
-            "type": "uint256"
-          }
-        ],
-        "name": "updateListingFee",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"

@@ -99,6 +99,7 @@ async function approveNFT(_NFTContract, _tokenId) {
 }
 
 
+
 // document.getElementById("approve-all").addEventListener("click", () => {
 //   approveAll(addresses[chain].faceMinter, true)})
 // async function approveAll(_NFTContract, _bool) {
@@ -921,8 +922,10 @@ async function withdrawCollection(collectionId) {
 }
 
 
-
-
+await claimRewards();
+async function claimRewards() {
+ MARKET_WRITE.claim();
+}
 
     
 
@@ -1609,6 +1612,8 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
     }
 
 
+
+    
 async function fetchCollections() {
 
   let collections = await MARKET_READ.getActiveCollections();

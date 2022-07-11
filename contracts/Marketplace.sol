@@ -8,7 +8,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "./DappsStaking.sol";
 
-contract MarketplaceV1_07 is
+contract MarketplaceV1_08 is
     Initializable,
     UUPSUpgradeable,
     OwnableUpgradeable
@@ -79,6 +79,13 @@ contract MarketplaceV1_07 is
 
     function stake(uint128 _collectionId) external payable {
         require(msg.value > 100000000000000000);
+        require(
+            addressToCollectionIdToStake[msg.sender][_collectionId].amount <=
+                0 ||
+                addressToCollectionIdToStake[msg.sender][_collectionId]
+                    .status ==
+                StakingStatus.Expired
+        );
         DAPPS_STAKING.bond_and_stake(address(this), uint128(msg.value));
         Stake memory newStake = Stake(
             msg.sender,
@@ -90,7 +97,8 @@ contract MarketplaceV1_07 is
         addressToCollectionIdToStake[msg.sender][_collectionId] = newStake;
 
         collectionIdToCollection[_collectionId].tvl += msg.value;
-        _numStakers.increment();
+
+        collectionIdToCollection[_collectionId].numStakers += 1;
     }
 
     function unBond(uint128 _collectionId) external {
@@ -111,7 +119,7 @@ contract MarketplaceV1_07 is
             .status = StakingStatus.Unbonding;
     }
 
-    function requestWithdraw(uint128 _collectionId) public {
+    function requestWithdraw(uint128 _collectionId) external {
         //check unbondingperiod is over for current staker/amount
         if (
             addressToCollectionIdToStake[msg.sender][_collectionId]
@@ -122,9 +130,6 @@ contract MarketplaceV1_07 is
             addressToCollectionIdToStake[msg.sender][_collectionId]
                 .status = StakingStatus.Withdrawable;
         }
-        //hardcodeFTW (skips unbond)
-        addressToCollectionIdToStake[msg.sender][_collectionId]
-            .status = StakingStatus.Withdrawable;
 
         require(
             addressToCollectionIdToStake[msg.sender][_collectionId].status ==
@@ -137,10 +142,11 @@ contract MarketplaceV1_07 is
             addressToCollectionIdToStake[msg.sender][_collectionId]
                 .unbondedEra > 0
         );
-        require(
-            latestWithdrawnEra != 0 &&
-                latestWithdrawnEra + 2 <= DAPPS_STAKING.read_current_era()
-        );
+
+        // require(
+        //     latestWithdrawnEra != 0 &&
+        //         latestWithdrawnEra + 2 <= DAPPS_STAKING.read_current_era()
+        // );
         DAPPS_STAKING.withdraw_unbonded();
 
         payable(msg.sender).transfer(
@@ -153,27 +159,35 @@ contract MarketplaceV1_07 is
         collectionIdToCollection[_collectionId]
             .tvl -= addressToCollectionIdToStake[msg.sender][_collectionId]
             .amount;
-        _numStakers.decrement();
-
-        latestWithdrawnEra = DAPPS_STAKING.read_current_era();
+        collectionIdToCollection[_collectionId].numStakers -= 1;
     }
 
-    function getStakes(uint128 _collection) public view returns (Stake memory) {
-        return addressToCollectionIdToStake[msg.sender][_collection];
+    function claim() external {
+        for (
+            uint256 i = 0;
+            i < DAPPS_STAKING.read_current_era() - latestWithdrawnEra;
+            i++
+        ) {
+            DAPPS_STAKING.claim_staker(address(this));
+            DAPPS_STAKING.claim_dapp(
+                address(this),
+                uint128(latestWithdrawnEra + i)
+            );
+        }
+    }
+
+    function getStakes(uint128 _collection, address _address)
+        public
+        view
+        returns (Stake memory)
+    {
+        return addressToCollectionIdToStake[_address][_collection];
     }
 
     function initialize() public initializer {
         __UUPSUpgradeable_init();
         __Ownable_init();
         listingFee = 0 wei;
-    }
-
-    function updateListingFee(uint256 _listingFee) public onlyOwner {
-        listingFee = _listingFee;
-    }
-
-    function getListingFee() public view returns (uint256) {
-        return listingFee;
     }
 
     function createCollection(
@@ -433,10 +447,6 @@ contract MarketplaceV1_07 is
         }
 
         return items;
-    }
-
-    function getBalance() public view returns (uint256) {
-        return address(this).balance;
     }
 
     function _authorizeUpgrade(address newImplementation)
