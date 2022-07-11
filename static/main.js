@@ -220,7 +220,7 @@ async function fetchMarketItemsArray() {
 let nftContracts = trustedContracts[chain];
 
 fetchExploreCards(24);
-fetchExploreCollectionCards(8);
+fetchExploreCollectionCards(24);
 fetchWalletCards(24, nftContracts);
 fetchMarketplaceCards(30, "marketplace");
 fetchMarketplaceCardsCollectionModal(60);
@@ -965,10 +965,14 @@ async function unStakeCollection(collectionId) {
 async function withdrawCollection(collectionId) {
   MARKET_WRITE.requestWithdraw(collectionId);
 }
+
 //8.289999999999990002
+
 console.log( ethers.utils.formatUnits(await MARKET_READ.getBalance(), 18))
-latestClaim =  ethers.utils.formatUnits(await MARKET_READ.getLatestWithdrawEra(), 0);
+
+
 async function claimCollection(collection) {
+  latestClaim =  ethers.utils.formatUnits(await MARKET_READ.getLatestWithdrawEra(), 0);
   MARKET_WRITE.claim(Number(latestClaim) + 1)
 }
 
