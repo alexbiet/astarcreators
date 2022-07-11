@@ -965,11 +965,10 @@ async function unStakeCollection(collectionId) {
 async function withdrawCollection(collectionId) {
   MARKET_WRITE.requestWithdraw(collectionId);
 }
-
-
-
-// await claimRewards(await DAPPS_READ.read_current_era());
-async function claimRewards(era) {
+//8.289999999999990002
+console.log( ethers.utils.formatUnits(await MARKET_READ.getBalance(), 18))
+latestClaim =  ethers.utils.formatUnits(await MARKET_READ.getLatestWithdrawEra(), 0);
+async function claimCollection(collection) {
   MARKET_WRITE.claim(Number(latestClaim) + 1)
 }
 
