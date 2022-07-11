@@ -464,7 +464,7 @@ async function fetchExploreCards(maxAmount) {
         let NFTImages = "";
         let yourStake = "";
 
-        yourStake = await MARKET_READ.getStakes(collections[i].collectionId);
+        yourStake = await MARKET_READ.getStakes(collections[i].collectionId, account);
         console.log(yourStake)
         yourStake = ethers.utils.formatUnits(yourStake.amount, 0);
   
@@ -1608,7 +1608,6 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
     }
     }
 
-    yourStake2 = await MARKET_READ.getStakes(0);
 
 async function fetchCollections() {
 
@@ -1648,7 +1647,7 @@ async function fetchCollections() {
 
   
       let collectionId = ethers.utils.formatUnits(collections[i].collectionId, 0);
-      yourStake = await MARKET_READ.getStakes(collectionId);   
+      yourStake = await MARKET_READ.getStakes(collectionId, account);   
       yourStake = ethers.utils.formatUnits(yourStake.amount, 0);
 
 
