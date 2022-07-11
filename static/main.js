@@ -533,7 +533,7 @@ async function fetchExploreCards(maxAmount) {
                 <p class="card-text"><strong>Your Stake: </strong></p>      
               </div>
               <div class="col ps-1">
-                <p class="card-text">${yourStake} ${symbol}</p>
+                <p class="card-text">${ethers.utils.formatEther(yourStake)} ${symbol}</p>
               </div>
             </div>
 
@@ -665,7 +665,7 @@ async function fetchExploreCards(maxAmount) {
               <p class="card-text"><strong>Your Stake: </strong></p>      
             </div>
             <div class="col ps-1">
-              <p class="card-text">${yourStake} ${symbol}</p>
+              <p class="card-text">${ethers.utils.formatEther(yourStake)} ${symbol}</p>
             </div>
           </div>
 
@@ -1712,7 +1712,7 @@ async function fetchCollections() {
               <p class="card-text"><strong>Your Stake: </strong></p>      
             </div>
             <div class="col ps-1">
-              <p class="card-text">${yourStake} ${symbol}</p>
+              <p class="card-text">${ethers.utils.formatEther(yourStake)} ${symbol}</p>
             </div>
           </div>
 
@@ -1832,7 +1832,7 @@ async function fetchCollections() {
             <p class="card-text"><strong>Your Stake: </strong></p>      
           </div>
           <div class="col ps-1">
-            <p class="card-text">${yourStake} ${symbol}</p>
+            <p class="card-text">${ethers.utils.formatEther(yourStake)} ${symbol}</p>
           </div>
         </div>
 
