@@ -473,8 +473,6 @@ async function fetchExploreCards(maxAmount) {
         let currentEra = await DAPPS_READ.read_current_era();
         currentEra = ethers.utils.formatUnits(currentEra, 0);
 
-        console.log(  boundedEra +" / " + currentEra)
-
         if ( Number(boundedEra) == 0 ) {
           stakeStatus = "None";
         } else if ( yourStake.status == 0) {
@@ -763,7 +761,7 @@ async function fetchExploreCards(maxAmount) {
 
               <button class="btn btn-outline-success my-2" type="button" id="modal-button-explore-withdraw-${i}">Withdraw</button>
 
-              <button class="btn btn-outline-warning my-2" type="button" id="mondal-button-explore-claim-rewards-${i}">Claim Rewards</button>
+              <button class="btn btn-outline-warning my-2" type="button" id="modal-button-explore-claim-rewards-${i}">Claim Rewards</button>
 
             </div>
           </div> 
@@ -805,10 +803,10 @@ async function fetchExploreCards(maxAmount) {
       document.getElementById(`modal-button-explore-withdraw-${i}`).addEventListener("click", () => {
       withdrawCollection(collectionIdModal);});
 
-      document.getElementById(`button-explore-withdraw-${i}`).addEventListener("click", () => {
+      document.getElementById(`button-explore-claim-rewards-${i}`).addEventListener("click", () => {
       claimCollection(collectionId); });
     
-      document.getElementById(`modal-button-explore-withdraw-${i}`).addEventListener("click", () => {
+      document.getElementById(`modal-button-explore-claim-rewards-${i}`).addEventListener("click", () => {
       claimCollection(collectionIdModal);});
       
        
@@ -985,8 +983,13 @@ console.log( ethers.utils.formatUnits(await MARKET_READ.getBalance(), 18))
 
 
 async function claimCollection(collection) {
-  latestClaim =  ethers.utils.formatUnits(await MARKET_READ.getLatestWithdrawEra(), 0);
-  MARKET_WRITE.claim(Number(latestClaim) + 1)
+  latestClaim =  Number(ethers.utils.formatUnits(await MARKET_READ.getLatestWithdrawEra(), 0));
+  currentEra = Number(ethers.utils.formatUnits(await DAPPS_READ.read_current_era(), 0));
+  if(latestClaim != currentEra) {
+    console.log( latestClaim + 1)
+    MARKET_WRITE.claim(latestClaim + 1);
+  }
+  
 }
 
     

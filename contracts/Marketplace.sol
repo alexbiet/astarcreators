@@ -8,7 +8,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "./DappsStaking.sol";
 
-contract MarketplaceV1_08 is
+contract MarketplaceV1_09 is
     Initializable,
     UUPSUpgradeable,
     OwnableUpgradeable
@@ -78,7 +78,6 @@ contract MarketplaceV1_08 is
     receive() external payable {}
 
     function stake(uint128 _collectionId) external payable {
-        require(msg.value > 100000000000000000);
         require(
             addressToCollectionIdToStake[msg.sender][_collectionId].amount <=
                 0 ||
@@ -87,14 +86,14 @@ contract MarketplaceV1_08 is
                 StakingStatus.Expired
         );
         DAPPS_STAKING.bond_and_stake(address(this), uint128(msg.value));
-        Stake memory newStake = Stake(
+
+        addressToCollectionIdToStake[msg.sender][_collectionId] = Stake(
             msg.sender,
             msg.value,
             DAPPS_STAKING.read_current_era(),
             0,
             StakingStatus.Bonded
         );
-        addressToCollectionIdToStake[msg.sender][_collectionId] = newStake;
 
         collectionIdToCollection[_collectionId].tvl += msg.value;
 
@@ -119,61 +118,56 @@ contract MarketplaceV1_08 is
             .status = StakingStatus.Unbonding;
     }
 
-    function requestWithdraw(uint128 _collectionId) external {
+    function requestWithdraw(uint128 _collectionId, address _address) external {
         //check unbondingperiod is over for current staker/amount
         if (
-            addressToCollectionIdToStake[msg.sender][_collectionId]
-                .unbondedEra +
-                2 <=
+            addressToCollectionIdToStake[_address][_collectionId].unbondedEra +
+                2 <
             DAPPS_STAKING.read_current_era()
         ) {
-            addressToCollectionIdToStake[msg.sender][_collectionId]
+            addressToCollectionIdToStake[_address][_collectionId]
                 .status = StakingStatus.Withdrawable;
         }
 
         require(
-            addressToCollectionIdToStake[msg.sender][_collectionId].status ==
+            addressToCollectionIdToStake[_address][_collectionId].status ==
                 StakingStatus.Withdrawable
         );
         require(
-            addressToCollectionIdToStake[msg.sender][_collectionId].amount > 0
+            addressToCollectionIdToStake[_address][_collectionId].amount > 0
         );
         require(
-            addressToCollectionIdToStake[msg.sender][_collectionId]
-                .unbondedEra > 0
+            addressToCollectionIdToStake[_address][_collectionId].unbondedEra >
+                0
         );
 
-        // require(
-        //     latestWithdrawnEra != 0 &&
-        //         latestWithdrawnEra + 2 <= DAPPS_STAKING.read_current_era()
-        // );
         DAPPS_STAKING.withdraw_unbonded();
 
-        payable(msg.sender).transfer(
-            addressToCollectionIdToStake[msg.sender][_collectionId].amount
+        payable(_address).transfer(
+            addressToCollectionIdToStake[_address][_collectionId].amount
         );
 
-        addressToCollectionIdToStake[msg.sender][_collectionId]
+        addressToCollectionIdToStake[_address][_collectionId]
             .status = StakingStatus.Expired;
 
         collectionIdToCollection[_collectionId]
-            .tvl -= addressToCollectionIdToStake[msg.sender][_collectionId]
+            .tvl -= addressToCollectionIdToStake[_address][_collectionId]
             .amount;
         collectionIdToCollection[_collectionId].numStakers -= 1;
     }
 
-    function claim() external {
-        for (
-            uint256 i = 0;
-            i < DAPPS_STAKING.read_current_era() - latestWithdrawnEra;
-            i++
-        ) {
-            DAPPS_STAKING.claim_staker(address(this));
-            DAPPS_STAKING.claim_dapp(
-                address(this),
-                uint128(latestWithdrawnEra + i)
-            );
-        }
+    function claim(uint128 _era) external {
+        DAPPS_STAKING.claim_staker(address(this));
+        DAPPS_STAKING.claim_dapp(address(this), _era);
+        latestWithdrawnEra = uint256(_era);
+    }
+
+    function getBalance() public view returns (uint256) {
+        return address(this).balance;
+    }
+
+    function getLatestWithdrawEra() public view returns (uint256) {
+        return latestWithdrawnEra;
     }
 
     function getStakes(uint128 _collection, address _address)
@@ -188,6 +182,7 @@ contract MarketplaceV1_08 is
         __UUPSUpgradeable_init();
         __Ownable_init();
         listingFee = 0 wei;
+        if (latestWithdrawnEra < 1350) latestWithdrawnEra = 1350;
     }
 
     function createCollection(
@@ -316,21 +311,21 @@ contract MarketplaceV1_08 is
         _tokensCanceled.increment();
     }
 
-    function getLatestMarketItemByTokenId(uint256 tokenId)
-        public
-        view
-        returns (MarketItem memory, bool)
-    {
-        uint256 itemsCount = _marketItemIds.current();
+    // function getLatestMarketItemByTokenId(uint256 tokenId)
+    //     public
+    //     view
+    //     returns (MarketItem memory, bool)
+    // {
+    //     uint256 itemsCount = _marketItemIds.current();
 
-        for (uint256 i = itemsCount - 1; i >= 0; i--) {
-            MarketItem memory item = marketItemIdToMarketItem[i];
-            if (item.tokenId != tokenId) continue;
-            return (item, true);
-        }
-        MarketItem memory emptyMarketItem;
-        return (emptyMarketItem, false);
-    }
+    //     for (uint256 i = itemsCount - 1; i >= 0; i--) {
+    //         MarketItem memory item = marketItemIdToMarketItem[i];
+    //         if (item.tokenId != tokenId) continue;
+    //         return (item, true);
+    //     }
+    //     MarketItem memory emptyMarketItem;
+    //     return (emptyMarketItem, false);
+    // }
 
     function createMarketSale(address NFTContractAddress, uint256 marketItemId)
         public
