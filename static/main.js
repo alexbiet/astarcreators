@@ -99,12 +99,12 @@ async function approveNFT(_NFTContract, _tokenId) {
 
 
 
-// document.getElementById("approve-all").addEventListener("click", () => {
-//   approveAll(addresses[chain].faceMinter, true)})
-// async function approveAll(_NFTContract, _bool) {
-//   let NFTContract = new ethers.Contract(_NFTContract, abis.ERC721, signer);
-//   NFTContract.setApprovalForAll(addresses[chain].marketplace, _bool);
-// }
+document.getElementById("approve-all").addEventListener("click", () => {
+  approveAll(addresses[chain].faceMinter, true)})
+async function approveAll(_NFTContract, _bool) {
+  let NFTContract = new ethers.Contract(_NFTContract, abis.ERC721, signer);
+  NFTContract.setApprovalForAll(addresses[chain].marketplace, _bool);
+}
 
 
 let inputEl2 = document.getElementById("contract-input");
