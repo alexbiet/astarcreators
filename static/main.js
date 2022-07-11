@@ -1417,7 +1417,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
           let arrayOfDelistModal = document.querySelectorAll(`#${location} .btn-DelistModal`);
           
           let buttonCounter = 0;
-          for (let i = 0; i < NFTsArray.length; i++) {
+          for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
             if(!NFTsArray[i].canceled && !NFTsArray[i].sold) {
               arrayOfDelist[buttonCounter].addEventListener("click", () => {
                 cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)}); 
