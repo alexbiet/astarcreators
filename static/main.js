@@ -464,8 +464,6 @@ async function fetchExploreCards(maxAmount) {
         let NFTImages = "";
         let yourStake = "";
 
-        let collectionId = ethers.utils.formatUnits(collections[i].collectionId, 0);
-        console.log(collectionId)
         yourStake = await MARKET_READ.getStakes(collections[i].collectionId);
         console.log(yourStake)
         yourStake = ethers.utils.formatUnits(yourStake.amount, 0);
