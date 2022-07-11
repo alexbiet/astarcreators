@@ -114,7 +114,7 @@ document.getElementById("contract-btn").addEventListener("click", () => {
 
 // let inputEl = document.getElementById("list-input");
 // document.getElementById("list-face").addEventListener("click", () => {
-//   console.log(inputEl.value);
+
 //   //approveNFT(addresses[chain].faceMinter, inputEl.value);
 //   listMarketItem(addresses[chain].faceMinter, inputEl.value, 1000000000000000);});
 
@@ -465,7 +465,9 @@ async function fetchExploreCards(maxAmount) {
         let yourStake = "";
 
         let collectionId = ethers.utils.formatUnits(collections[i].collectionId, 0);
+        console.log(collectionId)
         yourStake = await MARKET_READ.getStakes(collectionId);
+        console.log(yourStake)
         yourStake = ethers.utils.formatUnits(yourStake.amount, 0);
   
         for (let j = 0; j < activeNFTList.length; j++) {
@@ -497,7 +499,6 @@ async function fetchExploreCards(maxAmount) {
 
       }
 
-        console.log(collections[i]["tvl"])
       // This runs....
       tempHTML += `
       <div class="col">
@@ -732,31 +733,29 @@ async function fetchExploreCards(maxAmount) {
     cardEffect('#collectionsListing');
 
     for( let i = 0; i < collections.length; i++){
-      
+      let collectionId = ethers.utils.formatUnits(collections[i].collectionId, 0);
       document.getElementById(`button-explore-stake-${i}`).addEventListener("click", () => {
       let stakeVal = document.getElementById(`input-explore-stake-${i}`).value;
-      stakeCollection(i, stakeVal.toString());   });
+      stakeCollection(collectionId, stakeVal.toString());   });
 
       document.getElementById(`modal-button-explore-stake-${i}`).addEventListener("click", () => {
       let stakeVal2 = document.getElementById(`modal-input-explore-stake-${i}`).value;
       stakeCollection(i % collections.length, stakeVal2.toString());});
 
       document.getElementById(`button-explore-unstake-${i}`).addEventListener("click", () => {
-      unStakeCollection(i); });
+      unStakeCollection(collectionId); });
 
       document.getElementById(`modal-button-explore-unstake-${i}`).addEventListener("click", () => {
       unStakeCollection(i % collections.length);});
 
       document.getElementById(`button-explore-claim-${i}`).addEventListener("click", () => {
-      withdrawCollection(i); });
+      withdrawCollection(collectionId); });
   
       document.getElementById(`modal-button-explore-claim-${i}`).addEventListener("click", () => {
       withdrawCollection(i % collections.length);});
          
        
          document.getElementById(`report-${i}`).addEventListener("click", () => {
-          console.log(collections[i]["active"])
-          console.log(collections[i]["reportCount"])
           reportCollection(collections[i]["collectionId"]);
       
          });
@@ -891,7 +890,7 @@ async function fetchExploreCards(maxAmount) {
    
         arrayOfBuyCollectionModal[y].addEventListener("click", async () => { 
           currentId = await ethers.utils.formatUnits(collections[i]["marketIds"][y], 0);
-          console.log(currentId)
+    
 
           //find index of marketID
           for(let z = 0; z < NFTsArray.length; z++) {
@@ -922,6 +921,8 @@ async function unStakeCollection(collectionId) {
 async function withdrawCollection(collectionId) {
   MARKET_WRITE.requestWithdraw(collectionId);
 }
+
+
 
 
 
@@ -1609,6 +1610,7 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
     }
     }
 
+    yourStake2 = await MARKET_READ.getStakes(0);
 
 async function fetchCollections() {
 
@@ -1646,8 +1648,9 @@ async function fetchCollections() {
       let NFTImages = "";
 
 
+  
       let collectionId = ethers.utils.formatUnits(collections[i].collectionId, 0);
-      yourStake = await MARKET_READ.getStakes(collectionId);
+      yourStake = await MARKET_READ.getStakes(collectionId);   
       yourStake = ethers.utils.formatUnits(yourStake.amount, 0);
 
 
@@ -2065,7 +2068,6 @@ async function createCollection() {
 
   for(let i = 0; i < totalMarketEls.length; i++) {
     if(totalMarketEls[i].checked) {
-      console.log(totalMarketEls[i].id);
       selectedNFTs.push(totalMarketEls[i].id.slice(11)) //removes MARKET_ID: 
     }
   }
@@ -2118,7 +2120,6 @@ const postNFT = async () => {
       });
       const result = await response.json();
       const metaUri = result.data.metadata.replace('ipfs://', 'https://ipfs.io/ipfs/');
-      console.log(metaUri)
       mintNFT (metaUri);
       // result.data.metadata.image
 
