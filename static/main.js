@@ -102,7 +102,8 @@ async function approveNFT(_NFTContract, _tokenId) {
 
 
 document.getElementById("approve-all").addEventListener("click", () => {
-  approveAll(addresses[chain].faceMinter, true)})
+  approveAll(addresses[chain].astarMinter, true)})
+
 async function approveAll(_NFTContract, _bool) {
   let NFTContract = new ethers.Contract(_NFTContract, abis.ERC721, signer);
   NFTContract.setApprovalForAll(addresses[chain].marketplace, _bool);
@@ -222,7 +223,7 @@ fetchExploreCards(24);
 fetchExploreCollectionCards(8);
 fetchWalletCards(24, nftContracts);
 fetchMarketplaceCards(30, "marketplace");
-fetchMarketplaceCardsCollectionModal(30);
+fetchMarketplaceCardsCollectionModal(60);
 fetchCollections();
 
 async function fetchExploreCards(maxAmount) {
@@ -964,10 +965,10 @@ async function unStakeCollection(collectionId) {
 async function withdrawCollection(collectionId) {
   MARKET_WRITE.requestWithdraw(collectionId);
 }
-//8.289999999999990002
-console.log( ethers.utils.formatUnits(await MARKET_READ.getBalance(), 18))
-latestClaim =  ethers.utils.formatUnits(await MARKET_READ.getLatestWithdrawEra(), 0);
-await claimCollection(await DAPPS_READ.read_current_era());
+
+
+
+// await claimRewards(await DAPPS_READ.read_current_era());
 async function claimRewards(era) {
   MARKET_WRITE.claim(Number(latestClaim) + 1)
 }
