@@ -767,25 +767,27 @@ async function fetchExploreCards(maxAmount) {
 
     for( let i = 0; i < collections.length; i++){
       let collectionId = ethers.utils.formatUnits(collections[i].collectionId, 0);
+      let collectionIdModal = ethers.utils.formatUnits(collections[i % collections.length].collectionId, 0);
+
       document.getElementById(`button-explore-stake-${i}`).addEventListener("click", () => {
       let stakeVal = document.getElementById(`input-explore-stake-${i}`).value;
       stakeCollection(collectionId, stakeVal.toString());   });
 
       document.getElementById(`modal-button-explore-stake-${i}`).addEventListener("click", () => {
       let stakeVal2 = document.getElementById(`modal-input-explore-stake-${i}`).value;
-      stakeCollection(i % collections.length, stakeVal2.toString());});
+      stakeCollection(collectionIdModal, stakeVal2.toString());});
 
       document.getElementById(`button-explore-unstake-${i}`).addEventListener("click", () => {
       unStakeCollection(collectionId); });
 
       document.getElementById(`modal-button-explore-unstake-${i}`).addEventListener("click", () => {
-      unStakeCollection(i % collections.length);});
+      unStakeCollection(collectionIdModal);});
 
       document.getElementById(`button-explore-claim-${i}`).addEventListener("click", () => {
       withdrawCollection(collectionId); });
   
       document.getElementById(`modal-button-explore-claim-${i}`).addEventListener("click", () => {
-      withdrawCollection(i % collections.length);});
+      withdrawCollection(collectionIdModal);});
          
        
          document.getElementById(`report-${i}`).addEventListener("click", () => {
