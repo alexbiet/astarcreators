@@ -482,7 +482,7 @@ async function fetchExploreCards(maxAmount) {
         } else if ( Number(boundedEra) + 2 <= Number(currentEra) ) {
           stakeStatus = "Withdrawable";
         } else if ( yourStake.status == 1 ) {
-          stakeStatus = "Unstaking...";
+          stakeStatus = "Unstaking (2 eras)";
         } else if ( yourStake.status == 3 ) {
           stakeStatus = "Stake removed!";
         }
