@@ -526,7 +526,7 @@ async function fetchExploreCards(maxAmount) {
                 <p class="card-text"><strong>TVL: </strong></p>      
               </div>
               <div class="col ps-1">
-                <p class="card-text">${collections[i].tvl} ${symbol}</p>
+                <p class="card-text">${ethers.utils.formatEther(collections[i].tvl)} ${symbol}</p>
               </div>
             </div>
 
@@ -582,7 +582,7 @@ async function fetchExploreCards(maxAmount) {
                 <span class="input-group-text">${symbol}</span>
                 <button class="btn btn-primary" type="button" id="button-explore-stake-${i}">Stake</button>
                 <button class="btn btn-outline-danger" type="button" id="button-explore-unstake-${i}">Unstake</button>
-                <button class="btn btn-success" type="button" id="button-explore-claim-${i}">Claim</button>
+                <button class="btn btn-outline-success" type="button" id="button-explore-claim-${i}">Claim</button>
               </div>
             </div>
           </div>
@@ -658,7 +658,7 @@ async function fetchExploreCards(maxAmount) {
               <p class="card-text"><strong>TVL: </strong></p>      
             </div>
             <div class="col ps-1">
-              <p class="card-text">${collections[i].tvl} ${symbol}</p>
+              <p class="card-text">${ethers.utils.formatEther(collections[i].tvl)} ${symbol}</p>
             </div>
           </div>
 
@@ -714,7 +714,7 @@ async function fetchExploreCards(maxAmount) {
                 <span class="input-group-text">${symbol}</span>
                 <button class="btn btn-primary" type="button" id="modal-button-explore-stake-${i}">Stake</button>
                 <button class="btn btn-outline-danger" type="button" id="modal-button-explore-unstake-${i}">Unstake</button>
-                <button class="btn btn-success" type="button" id="modal-button-explore-claim-${i}">Claim</button>
+                <button class="btn btn-outline-success" type="button" id="modal-button-explore-claim-${i}">Claim</button>
               </div>
             </div>
           </div> 
@@ -1706,7 +1706,7 @@ async function fetchCollections() {
               <p class="card-text"><strong>TVL: </strong></p>      
             </div>
             <div class="col ps-1">
-              <p class="card-text">${collections[i].tvl} ${symbol}</p>
+              <p class="card-text">${ethers.utils.formatEther(collections[i].tvl)} ${symbol}</p>
             </div>
           </div>
 
@@ -1826,7 +1826,7 @@ async function fetchCollections() {
             <p class="card-text"><strong>TVL: </strong></p>      
           </div>
           <div class="col ps-1">
-            <p class="card-text">${collections[i].tvl} ${symbol}</p>
+            <p class="card-text">${ethers.utils.formatEther(collections[i].tvl)} ${symbol}</p>
           </div>
         </div>
 
