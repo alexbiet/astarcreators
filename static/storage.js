@@ -1147,7 +1147,13 @@ const abis = {
         "type": "function"
       },
       {
-        "inputs": [],
+        "inputs": [
+          {
+            "internalType": "uint128",
+            "name": "_era",
+            "type": "uint128"
+          }
+        ],
         "name": "claim",
         "outputs": [],
         "stateMutability": "nonpayable",
@@ -1537,6 +1543,19 @@ const abis = {
             "internalType": "struct MarketplaceV1_08.Collection[]",
             "name": "",
             "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getBalance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
           }
         ],
         "stateMutability": "view",

@@ -84,6 +84,8 @@ async function fetchAccountData() {
   const MARKET_WRITE = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, signer);
   const MARKET_READ = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, provider);
 
+  const DAPPS_WRITE = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, signer);
+const DAPPS_READ = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, provider);
 //mintFaceNFT();
 // document.getElementById("mint-face").addEventListener("click", mintFaceNFT);
 // async function mintFaceNFT() {
@@ -958,9 +960,10 @@ async function withdrawCollection(collectionId) {
 }
 
 
-await claimRewards();
-async function claimRewards() {
- MARKET_WRITE.claim();
+
+await claimRewards(await DAPPS_READ.read_current_era());
+async function claimRewards(era) {
+  MARKET_WRITE.claim(ethers.utils.formatUnits(era, 0) - 10);
 }
 
     
@@ -2170,12 +2173,6 @@ const postNFT = async () => {
   }
 };
 
-
-///////////////////////////////
-///  dAppStaking Precompile ////
-///////////////////////////////
-const DAPPS_WRITE = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, signer);
-const DAPPS_READ = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, provider);
 
 async function mintNFT (_uri) {
   try {
