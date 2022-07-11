@@ -2324,7 +2324,7 @@ function cardEffect(_parentId) {
 
 }
 
-cardEffect("#view-2");
+// cardEffect("#view-2");
 
 
 
