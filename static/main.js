@@ -602,7 +602,7 @@ async function fetchExploreCards(maxAmount) {
                 <button class="btn btn-outline-danger" type="button" id="button-explore-unstake-${i}">Unstake</button>
               </div>
 
-              <button class="btn btn-sm btn-outline-success my-2" type="button" id="button-explore-claim-${i}">Withdraw</button>
+              <button class="btn btn-sm btn-outline-success my-2" type="button" id="button-explore-withdraw-${i}">Withdraw</button>
 
               <button class="btn btn-sm btn-outline-warning my-2" type="button" id="button-explore-claim-rewards-${i}">Claim Rewards</button>
 
@@ -747,7 +747,7 @@ async function fetchExploreCards(maxAmount) {
                 <button class="btn btn-outline-danger" type="button" id="modal-button-explore-unstake-${i}">Unstake</button>
               </div>
 
-              <button class="btn btn-outline-success my-2" type="button" id="modal-button-explore-claim-${i}">Withdraw</button>
+              <button class="btn btn-outline-success my-2" type="button" id="modal-button-explore-withdraw-${i}">Withdraw</button>
 
               <button class="btn btn-outline-warning my-2" type="button" id="mondal-button-explore-claim-rewards-${i}">Claim Rewards</button>
 
@@ -785,12 +785,18 @@ async function fetchExploreCards(maxAmount) {
       document.getElementById(`modal-button-explore-unstake-${i}`).addEventListener("click", () => {
       unStakeCollection(collectionIdModal);});
 
-      document.getElementById(`button-explore-claim-${i}`).addEventListener("click", () => {
+      document.getElementById(`button-explore-withdraw-${i}`).addEventListener("click", () => {
       withdrawCollection(collectionId); });
   
-      document.getElementById(`modal-button-explore-claim-${i}`).addEventListener("click", () => {
+      document.getElementById(`modal-button-explore-withdraw-${i}`).addEventListener("click", () => {
       withdrawCollection(collectionIdModal);});
-         
+
+      document.getElementById(`button-explore-withdraw-${i}`).addEventListener("click", () => {
+      claimCollection(collectionId); });
+    
+      document.getElementById(`modal-button-explore-withdraw-${i}`).addEventListener("click", () => {
+      claimCollection(collectionIdModal);});
+      
        
          document.getElementById(`report-${i}`).addEventListener("click", () => {
           reportCollection(collections[i]["collectionId"]);
@@ -958,12 +964,12 @@ async function unStakeCollection(collectionId) {
 async function withdrawCollection(collectionId) {
   MARKET_WRITE.requestWithdraw(collectionId);
 }
-
-
-
-await claimRewards(await DAPPS_READ.read_current_era());
+//8.289999999999990002
+console.log( ethers.utils.formatUnits(await MARKET_READ.getBalance(), 18))
+latestClaim =  ethers.utils.formatUnits(await MARKET_READ.getLatestWithdrawEra(), 0);
+await claimCollection(await DAPPS_READ.read_current_era());
 async function claimRewards(era) {
-  MARKET_WRITE.claim(ethers.utils.formatUnits(era, 0) - 10);
+  MARKET_WRITE.claim(Number(latestClaim) + 1)
 }
 
     

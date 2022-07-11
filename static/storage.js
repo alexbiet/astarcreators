@@ -1562,71 +1562,13 @@ const abis = {
         "type": "function"
       },
       {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "tokenId",
-            "type": "uint256"
-          }
-        ],
-        "name": "getLatestMarketItemByTokenId",
+        "inputs": [],
+        "name": "getLatestWithdrawEra",
         "outputs": [
           {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "marketItemId",
-                "type": "uint256"
-              },
-              {
-                "internalType": "address",
-                "name": "NFTContractAddress",
-                "type": "address"
-              },
-              {
-                "internalType": "uint256",
-                "name": "tokenId",
-                "type": "uint256"
-              },
-              {
-                "internalType": "address payable",
-                "name": "creator",
-                "type": "address"
-              },
-              {
-                "internalType": "address payable",
-                "name": "seller",
-                "type": "address"
-              },
-              {
-                "internalType": "address payable",
-                "name": "owner",
-                "type": "address"
-              },
-              {
-                "internalType": "uint256",
-                "name": "price",
-                "type": "uint256"
-              },
-              {
-                "internalType": "bool",
-                "name": "sold",
-                "type": "bool"
-              },
-              {
-                "internalType": "bool",
-                "name": "canceled",
-                "type": "bool"
-              }
-            ],
-            "internalType": "struct MarketplaceV1_08.MarketItem",
+            "internalType": "uint256",
             "name": "",
-            "type": "tuple"
-          },
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
+            "type": "uint256"
           }
         ],
         "stateMutability": "view",
