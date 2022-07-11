@@ -1071,107 +1071,6 @@ const abis = {
         "type": "event"
       },
       {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "NFTContractAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "marketItemId",
-            "type": "uint256"
-          }
-        ],
-        "name": "cancelMarketItem",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "string",
-            "name": "_name",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "_description",
-            "type": "string"
-          },
-          {
-            "internalType": "uint256[]",
-            "name": "_marketIdsArray",
-            "type": "uint256[]"
-          }
-        ],
-        "name": "createCollection",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "NFTContractAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "tokenId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "price",
-            "type": "uint256"
-          }
-        ],
-        "name": "createMarketItem",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "payable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "NFTContractAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "marketItemId",
-            "type": "uint256"
-          }
-        ],
-        "name": "createMarketSale",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "_collectionId",
-            "type": "uint256"
-          }
-        ],
-        "name": "delistCollection",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
         "anonymous": false,
         "inputs": [
           {
@@ -1309,13 +1208,6 @@ const abis = {
         "type": "event"
       },
       {
-        "inputs": [],
-        "name": "initialize",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
         "anonymous": false,
         "inputs": [
           {
@@ -1330,126 +1222,6 @@ const abis = {
       },
       {
         "inputs": [],
-        "name": "renounceOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "_collectionId",
-            "type": "uint256"
-          }
-        ],
-        "name": "reportCollection",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint128",
-            "name": "_collectionId",
-            "type": "uint128"
-          }
-        ],
-        "name": "requestWithdraw",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint128",
-            "name": "_collectionId",
-            "type": "uint128"
-          }
-        ],
-        "name": "stake",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "newOwner",
-            "type": "address"
-          }
-        ],
-        "name": "transferOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint128",
-            "name": "_collectionId",
-            "type": "uint128"
-          }
-        ],
-        "name": "unBond",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "_listingFee",
-            "type": "uint256"
-          }
-        ],
-        "name": "updateListingFee",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "newImplementation",
-            "type": "address"
-          }
-        ],
-        "name": "upgradeTo",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "newImplementation",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes",
-            "name": "data",
-            "type": "bytes"
-          }
-        ],
-        "name": "upgradeToAndCall",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
-      },
-      {
-        "stateMutability": "payable",
-        "type": "receive"
-      },
-      {
-        "inputs": [],
         "name": "DAPPS_STAKING",
         "outputs": [
           {
@@ -1459,6 +1231,107 @@ const abis = {
           }
         ],
         "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "NFTContractAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "marketItemId",
+            "type": "uint256"
+          }
+        ],
+        "name": "cancelMarketItem",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_description",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "_marketIdsArray",
+            "type": "uint256[]"
+          }
+        ],
+        "name": "createCollection",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "NFTContractAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "price",
+            "type": "uint256"
+          }
+        ],
+        "name": "createMarketItem",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "NFTContractAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "marketItemId",
+            "type": "uint256"
+          }
+        ],
+        "name": "createMarketSale",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_collectionId",
+            "type": "uint256"
+          }
+        ],
+        "name": "delistCollection",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
       },
       {
@@ -1912,6 +1785,13 @@ const abis = {
       },
       {
         "inputs": [],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
         "name": "owner",
         "outputs": [
           {
@@ -1935,6 +1815,126 @@ const abis = {
         ],
         "stateMutability": "view",
         "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_collectionId",
+            "type": "uint256"
+          }
+        ],
+        "name": "reportCollection",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint128",
+            "name": "_collectionId",
+            "type": "uint128"
+          }
+        ],
+        "name": "requestWithdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint128",
+            "name": "_collectionId",
+            "type": "uint128"
+          }
+        ],
+        "name": "stake",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint128",
+            "name": "_collectionId",
+            "type": "uint128"
+          }
+        ],
+        "name": "unBond",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_listingFee",
+            "type": "uint256"
+          }
+        ],
+        "name": "updateListingFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newImplementation",
+            "type": "address"
+          }
+        ],
+        "name": "upgradeTo",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newImplementation",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "data",
+            "type": "bytes"
+          }
+        ],
+        "name": "upgradeToAndCall",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "receive"
       }
     ],
     astarMinter: [
