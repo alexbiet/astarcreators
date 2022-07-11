@@ -473,16 +473,16 @@ async function fetchExploreCards(maxAmount) {
         let currentEra = await DAPPS_READ.read_current_era();
         currentEra = ethers.utils.formatUnits(currentEra, 0);
 
-        console.log(currentEra + " / " + boundedEra)
+        console.log(  boundedEra +" / " + currentEra)
 
-        if ( boundedEra == 0 ) {
+        if ( Number(boundedEra) == 0 ) {
           stakeStatus = "None";
         } else if ( yourStake.status == 0) {
           stakeStatus = "Staked";
+        } else if ( Number(boundedEra) + 2 <= Number(currentEra) ) {
+          stakeStatus = "Withdrawable";
         } else if ( yourStake.status == 1 ) {
           stakeStatus = "Unstaking...";
-        } else if ( boundedEra + 2 <= currentEra ) {
-          stakeStatus = "Withdrawable";
         } else if ( yourStake.status == 3 ) {
           stakeStatus = "Stake removed!";
         }
@@ -976,7 +976,7 @@ async function unStakeCollection(collectionId) {
 }
 
 async function withdrawCollection(collectionId) {
-  MARKET_WRITE.requestWithdraw(collectionId);
+  MARKET_WRITE.requestWithdraw(collectionId, account);
 }
 
 //8.289999999999990002
