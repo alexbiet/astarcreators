@@ -1,4 +1,3 @@
-
 window.addEventListener('load', async () => {
   document.getElementById("btn-connect").addEventListener("click", fetchAccountData);
   document.getElementById("btn-disconnect").addEventListener("click", onDisconnect);
@@ -463,11 +462,20 @@ async function fetchExploreCards(maxAmount) {
         let NFTImage = "";
         let NFTImages = "";
         let yourStake = "";
+        let toWithdraw = `<span class="text-success">0 ${symbol}</span>`;
 
         yourStake = await MARKET_READ.getStakes(collections[i].collectionId, account);
-        console.log(yourStake)
-        yourStake = ethers.utils.formatUnits(yourStake.amount, 0);
-  
+
+        if ( yourStake.status == 3 ) {
+          yourStake = 0;
+        } else {
+          yourStake = ethers.utils.formatEther(ethers.utils.formatUnits(yourStake.amount, 0));
+        }
+
+        if ( yourStake.status == 2 ) {
+          toWithdraw = `<span class="text-success">${ethers.utils.formatEther(yourStake.amount)} ${symbol}</span>`;
+        }
+
         for (let j = 0; j < activeNFTList.length; j++) {
 
           let metadata = await fetch(activeNFTList[j].tokenURI);
@@ -533,7 +541,16 @@ async function fetchExploreCards(maxAmount) {
                 <p class="card-text"><strong>Your Stake: </strong></p>      
               </div>
               <div class="col ps-1">
-                <p class="card-text">${ethers.utils.formatEther(yourStake)} ${symbol}</p>
+                <p class="card-text">${yourStake} ${symbol}</p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col text-end pe-1">
+                <p class="card-text"><strong>Withdraw: </strong></p>      
+              </div>
+              <div class="col ps-1">
+                <p class="card-text">${toWithdraw}</p>
               </div>
             </div>
 
@@ -574,14 +591,16 @@ async function fetchExploreCards(maxAmount) {
             </div>
           </small>
           <div class="row border-bottom pb-3 mb-3">
-            <div class="col">
+            <div class="col text-center">
               <div class="input-group input-group-sm">
                 <input type="text" class="form-control" placeholder="i.e. 100.00" aria-describedby="button-stake" id="input-explore-stake-${i}">
                 <span class="input-group-text">${symbol}</span>
                 <button class="btn btn-primary" type="button" id="button-explore-stake-${i}">Stake</button>
                 <button class="btn btn-outline-danger" type="button" id="button-explore-unstake-${i}">Unstake</button>
-                <button class="btn btn-outline-success" type="button" id="button-explore-claim-${i}">Claim</button>
               </div>
+
+              <button class="btn btn-sm btn-outline-success my-2" type="button" id="button-explore-claim-${i}">Withdraw</button>
+
             </div>
           </div>
 
@@ -665,7 +684,16 @@ async function fetchExploreCards(maxAmount) {
               <p class="card-text"><strong>Your Stake: </strong></p>      
             </div>
             <div class="col ps-1">
-              <p class="card-text">${ethers.utils.formatEther(yourStake)} ${symbol}</p>
+              <p class="card-text">${yourStake} ${symbol}</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col text-end pe-1">
+              <p class="card-text"><strong>Withdraw: </strong></p>      
+            </div>
+            <div class="col ps-1">
+              <p class="card-text">${toWithdraw}</p>
             </div>
           </div>
 
@@ -706,14 +734,15 @@ async function fetchExploreCards(maxAmount) {
           </div>
 
           <div class="row pb-3 mb-3">
-            <div class="col">
+            <div class="col text-center">
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="i.e. 100.00" aria-describedby="button-stake" id="modal-input-explore-stake-${i}">
                 <span class="input-group-text">${symbol}</span>
                 <button class="btn btn-primary" type="button" id="modal-button-explore-stake-${i}">Stake</button>
                 <button class="btn btn-outline-danger" type="button" id="modal-button-explore-unstake-${i}">Unstake</button>
-                <button class="btn btn-outline-success" type="button" id="modal-button-explore-claim-${i}">Claim</button>
               </div>
+
+              <button class="btn btn-outline-success my-2" type="button" id="modal-button-explore-claim-${i}">Withdraw</button>
             </div>
           </div> 
           
@@ -1645,10 +1674,13 @@ async function fetchCollections() {
       let NFTImages = "";
 
 
-  
-      let collectionId = ethers.utils.formatUnits(collections[i].collectionId, 0);
-      yourStake = await MARKET_READ.getStakes(collectionId, account);   
-      yourStake = ethers.utils.formatUnits(yourStake.amount, 0);
+      yourStake = await MARKET_READ.getStakes(collections[i].collectionId, account);
+
+      if ( yourStake.status == 3 ) {
+        yourStake = 0;
+      } else {
+        yourStake = ethers.utils.formatEther( ethers.utils.formatUnits(yourStake.amount, 0) );
+      }
 
 
       for (let j = 0; j < activeNFTList.length; j++) {
@@ -1712,7 +1744,7 @@ async function fetchCollections() {
               <p class="card-text"><strong>Your Stake: </strong></p>      
             </div>
             <div class="col ps-1">
-              <p class="card-text">${ethers.utils.formatEther(yourStake)} ${symbol}</p>
+              <p class="card-text">${yourStake} ${symbol}</p>
             </div>
           </div>
 
@@ -1832,7 +1864,7 @@ async function fetchCollections() {
             <p class="card-text"><strong>Your Stake: </strong></p>      
           </div>
           <div class="col ps-1">
-            <p class="card-text">${ethers.utils.formatEther(yourStake)} ${symbol}</p>
+            <p class="card-text">${yourStake} ${symbol}</p>
           </div>
         </div>
 
@@ -1997,7 +2029,7 @@ async function fetchCollections() {
                   <div class="col text-end pe-1">
                     <p class="card-text"><strong>Price: </strong></p>      
                   </div>
-                  <div class="col ps-1">
+                  <div class="col ps-1 text-start">
                     <p class="card-text">${activeNFTList[j].price} ${symbol}</p>
                   </div>
                 </div>
@@ -2006,7 +2038,7 @@ async function fetchCollections() {
                     <div class="col text-end pe-1">
                       <p class="card-text"><strong>Creator: </strong></p>       
                     </div>
-                    <div class="col ps-1">
+                    <div class="col ps-1 text-start">
                       <p class="card-text">${activeNFTList[j].creator.substring(0,6) + "..." + activeNFTList[j].creator.slice(-4)}</p>
                     </div>
                   </div>
