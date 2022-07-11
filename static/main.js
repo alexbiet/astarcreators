@@ -102,7 +102,8 @@ async function approveNFT(_NFTContract, _tokenId) {
 
 
 document.getElementById("approve-all").addEventListener("click", () => {
-  approveAll(addresses[chain].faceMinter, true)})
+  approveAll(addresses[chain].astarMinter, true)})
+
 async function approveAll(_NFTContract, _bool) {
   let NFTContract = new ethers.Contract(_NFTContract, abis.ERC721, signer);
   NFTContract.setApprovalForAll(addresses[chain].marketplace, _bool);
@@ -222,7 +223,7 @@ fetchExploreCards(24);
 fetchExploreCollectionCards(8);
 fetchWalletCards(24, nftContracts);
 fetchMarketplaceCards(30, "marketplace");
-fetchMarketplaceCardsCollectionModal(30);
+fetchMarketplaceCardsCollectionModal(60);
 fetchCollections();
 
 async function fetchExploreCards(maxAmount) {
@@ -961,7 +962,7 @@ async function withdrawCollection(collectionId) {
 
 
 
-await claimRewards(await DAPPS_READ.read_current_era());
+// await claimRewards(await DAPPS_READ.read_current_era());
 async function claimRewards(era) {
   MARKET_WRITE.claim(ethers.utils.formatUnits(era, 0) - 10);
 }
