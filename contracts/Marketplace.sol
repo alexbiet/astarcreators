@@ -75,6 +75,8 @@ contract MarketplaceV1_09 is
 
     uint256 latestWithdrawnEra;
 
+    uint256 totalDeposits;
+
     receive() external payable {}
 
     function stake(uint128 _collectionId) external payable {
@@ -120,9 +122,15 @@ contract MarketplaceV1_09 is
 
     function requestWithdraw(uint128 _collectionId, address _address) external {
         //check unbondingperiod is over for current staker/amount
+
+        require(
+            addressToCollectionIdToStake[_address][_collectionId].status !=
+                StakingStatus.Expired
+        );
+
         if (
             addressToCollectionIdToStake[_address][_collectionId].unbondedEra +
-                2 <
+                2 <=
             DAPPS_STAKING.read_current_era()
         ) {
             addressToCollectionIdToStake[_address][_collectionId]
@@ -141,7 +149,12 @@ contract MarketplaceV1_09 is
                 0
         );
 
-        DAPPS_STAKING.withdraw_unbonded();
+        if (
+            addressToCollectionIdToStake[_address][_collectionId].amount >
+            address(this).balance
+        ) {
+            withdrawUnbonded();
+        }
 
         payable(_address).transfer(
             addressToCollectionIdToStake[_address][_collectionId].amount
@@ -168,6 +181,15 @@ contract MarketplaceV1_09 is
 
     function getLatestWithdrawEra() public view returns (uint256) {
         return latestWithdrawnEra;
+    }
+
+    function getTotalStaked() public view returns (uint128) {
+        return
+            DAPPS_STAKING.read_staked_amount(abi.encodePacked(address(this)));
+    }
+
+    function withdrawUnbonded() public {
+        DAPPS_STAKING.withdraw_unbonded();
     }
 
     function getStakes(uint128 _collection, address _address)
@@ -310,22 +332,6 @@ contract MarketplaceV1_09 is
 
         _tokensCanceled.increment();
     }
-
-    // function getLatestMarketItemByTokenId(uint256 tokenId)
-    //     public
-    //     view
-    //     returns (MarketItem memory, bool)
-    // {
-    //     uint256 itemsCount = _marketItemIds.current();
-
-    //     for (uint256 i = itemsCount - 1; i >= 0; i--) {
-    //         MarketItem memory item = marketItemIdToMarketItem[i];
-    //         if (item.tokenId != tokenId) continue;
-    //         return (item, true);
-    //     }
-    //     MarketItem memory emptyMarketItem;
-    //     return (emptyMarketItem, false);
-    // }
 
     function createMarketSale(address NFTContractAddress, uint256 marketItemId)
         public
