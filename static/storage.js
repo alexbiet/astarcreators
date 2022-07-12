@@ -1767,6 +1767,13 @@ const abis = {
         "type": "function"
       },
       {
+        "inputs": [],
+        "name": "withdrawUnbonded",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
         "stateMutability": "payable",
         "type": "receive"
       }

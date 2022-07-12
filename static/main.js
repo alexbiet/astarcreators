@@ -977,7 +977,10 @@ async function withdrawCollection(collectionId) {
   MARKET_WRITE.requestWithdraw(collectionId, account);
 }
 
-//8.289999999999990002
+//3.289999999999990002  contract bal evm
+//5.399999999999990002
+//bal on subscan 63.252271228670054   //a98Gr1FKhktg64eZkXAFwptyKewkbH43kXUWBJ7aMkYvbo9
+//totalStaked function 58242271228670061349
 
 console.log( ethers.utils.formatUnits(await MARKET_READ.getBalance(), 18))
 
