@@ -1294,7 +1294,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_08.MarketItem[]",
+            "internalType": "struct MarketplaceV1_09.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1360,7 +1360,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_08.MarketItem[]",
+            "internalType": "struct MarketplaceV1_09.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1420,7 +1420,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_08.MarketItem[]",
+            "internalType": "struct MarketplaceV1_09.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1480,7 +1480,7 @@ const abis = {
                 "type": "bool"
               }
             ],
-            "internalType": "struct MarketplaceV1_08.MarketItem[]",
+            "internalType": "struct MarketplaceV1_09.MarketItem[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1540,7 +1540,7 @@ const abis = {
                 "type": "uint256"
               }
             ],
-            "internalType": "struct MarketplaceV1_08.Collection[]",
+            "internalType": "struct MarketplaceV1_09.Collection[]",
             "name": "",
             "type": "tuple[]"
           }
@@ -1612,14 +1612,27 @@ const abis = {
                 "type": "uint256"
               },
               {
-                "internalType": "enum MarketplaceV1_08.StakingStatus",
+                "internalType": "enum MarketplaceV1_09.StakingStatus",
                 "name": "status",
                 "type": "uint8"
               }
             ],
-            "internalType": "struct MarketplaceV1_08.Stake",
+            "internalType": "struct MarketplaceV1_09.Stake",
             "name": "",
             "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getTotalStaked",
+        "outputs": [
+          {
+            "internalType": "uint128",
+            "name": "",
+            "type": "uint128"
           }
         ],
         "stateMutability": "view",
@@ -1702,6 +1715,11 @@ const abis = {
             "internalType": "uint128",
             "name": "_collectionId",
             "type": "uint128"
+          },
+          {
+            "internalType": "address",
+            "name": "_address",
+            "type": "address"
           }
         ],
         "name": "stake",
