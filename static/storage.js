@@ -1129,13 +1129,6 @@ const abis = {
         "type": "function"
       },
       {
-        "inputs": [],
-        "name": "bondAndStake",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
-      },
-      {
         "inputs": [
           {
             "internalType": "address",
@@ -1722,6 +1715,11 @@ const abis = {
             "internalType": "uint128",
             "name": "_collectionId",
             "type": "uint128"
+          },
+          {
+            "internalType": "address",
+            "name": "_address",
+            "type": "address"
           }
         ],
         "name": "stake",
