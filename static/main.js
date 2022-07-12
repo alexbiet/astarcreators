@@ -983,15 +983,15 @@ async function fetchAccountData() {
   }
 
   async function stakeCollection(collectionId, amount) {
-    MARKET_WRITE.stake(collectionId, account, { value: ethers.utils.parseEther(amount) });
-  }
+    MARKET_WRITE.stake(collectionId, { value: ethers.utils.parseEther(amount) });
+  } 
 
   async function unStakeCollection(collectionId) {
     MARKET_WRITE.unBond(collectionId);
   }
 
   async function withdrawCollection(collectionId) {
-    MARKET_WRITE.requestWithdraw(collectionId, account);
+    MARKET_WRITE.requestWithdraw(collectionId);
   }
 
   //3.289999999999990002  contract bal evm

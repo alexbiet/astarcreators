@@ -1697,11 +1697,6 @@ const abis = {
             "internalType": "uint128",
             "name": "_collectionId",
             "type": "uint128"
-          },
-          {
-            "internalType": "address",
-            "name": "_address",
-            "type": "address"
           }
         ],
         "name": "requestWithdraw",
@@ -1715,11 +1710,6 @@ const abis = {
             "internalType": "uint128",
             "name": "_collectionId",
             "type": "uint128"
-          },
-          {
-            "internalType": "address",
-            "name": "_address",
-            "type": "address"
           }
         ],
         "name": "stake",
