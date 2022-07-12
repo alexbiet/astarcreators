@@ -982,7 +982,7 @@ async function fetchAccountData() {
   }
 
   async function stakeCollection(collectionId, amount) {
-    MARKET_WRITE.stake(collectionId, { value: ethers.utils.parseEther(amount) });
+    MARKET_WRITE.stake(collectionId, account, { value: ethers.utils.parseEther(amount) });
   }
 
   async function unStakeCollection(collectionId) {
