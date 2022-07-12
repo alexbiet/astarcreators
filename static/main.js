@@ -222,7 +222,7 @@ async function fetchAccountData() {
 
   let nftContracts = trustedContracts[chain];
 
-  fetchExploreCards(24);
+  fetchExploreCards(34);
   fetchExploreCollectionCards(24);
   fetchWalletCards(24, nftContracts);
   fetchMarketplaceCards(30, "marketplace");
