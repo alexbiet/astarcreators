@@ -473,11 +473,12 @@ async function fetchAccountData() {
       let yourStake = "";
       let stakeStatus = "None";
       yourStake = await MARKET_READ.getStakes(collections[i].collectionId, account);
+      let yourStakeDisplay = "";
 
       let boundedEra = ethers.utils.formatUnits(yourStake.bondedEra, 0);
       let currentEra = await DAPPS_READ.read_current_era();
       currentEra = ethers.utils.formatUnits(currentEra, 0);
-      console.log(yourStake.status)
+
       if (Number(boundedEra) == 0) {
         stakeStatus = "None";
       } else if (yourStake.status == 0) {
@@ -492,9 +493,9 @@ async function fetchAccountData() {
       }
 
       if (yourStake.status == 3) {
-        yourStake = 0;
+        yourStakeDisplay = 0;
       } else {
-        yourStake = ethers.utils.formatEther(ethers.utils.formatUnits(yourStake.amount, 0));
+        yourStakeDisplay = ethers.utils.formatEther(ethers.utils.formatUnits(yourStake.amount, 0));
       }
 
       for (let j = 0; j < activeNFTList.length; j++) {
@@ -562,7 +563,7 @@ async function fetchAccountData() {
                 <p class="card-text"><strong>Your Stake: </strong></p>      
               </div>
               <div class="col ps-1">
-                <p class="card-text">${yourStake} ${symbol}</p>
+                <p class="card-text">${yourStakeDisplay} ${symbol}</p>
               </div>
             </div>
 
@@ -707,7 +708,7 @@ async function fetchAccountData() {
               <p class="card-text"><strong>Your Stake: </strong></p>      
             </div>
             <div class="col ps-1">
-              <p class="card-text">${yourStake} ${symbol}</p>
+              <p class="card-text">${yourStakeDisplay} ${symbol}</p>
             </div>
           </div>
 
