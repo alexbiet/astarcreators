@@ -983,15 +983,18 @@ async function fetchAccountData() {
   }
 
   async function stakeCollection(collectionId, amount) {
-    MARKET_WRITE.stake(collectionId, { value: ethers.utils.parseEther(amount) });
+    console.log(collectionId)
+    MARKET_WRITE.stake(collectionId, { value: ethers.utils.parseEther(amount) } );
   } 
 
   async function unStakeCollection(collectionId) {
+    console.log(collectionId)
     MARKET_WRITE.unBond(collectionId);
   }
 
   async function withdrawCollection(collectionId) {
-    MARKET_WRITE.requestWithdraw(collectionId);
+    console.log(collectionId)
+    await MARKET_WRITE.requestWithdraw(collectionId, account);
   }
 
   //3.289999999999990002  contract bal evm
@@ -999,14 +1002,14 @@ async function fetchAccountData() {
   //bal on subscan 63.252271228670054   //a98Gr1FKhktg64eZkXAFwptyKewkbH43kXUWBJ7aMkYvbo9
   //totalStaked function 58242271228670061349
 
-  console.log(ethers.utils.formatUnits(await MARKET_READ.getBalance(), 18))
+ // console.log(ethers.utils.formatUnits(await MARKET_READ.getBalance(), 18))
 
 
   async function claimCollection(collection) {
     latestClaim = Number(ethers.utils.formatUnits(await MARKET_READ.getLatestWithdrawEra(), 0));
     currentEra = Number(ethers.utils.formatUnits(await DAPPS_READ.read_current_era(), 0));
     if (latestClaim != currentEra) {
-      MARKET_WRITE.claim(latestClaim + 1);
+      MARKET_WRITE.claim(1362);
     }
 
   }
