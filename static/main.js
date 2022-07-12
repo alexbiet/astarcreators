@@ -2,22 +2,22 @@ window.addEventListener('load', async () => {
   document.getElementById("btn-connect").addEventListener("click", fetchAccountData);
   document.getElementById("btn-disconnect").addEventListener("click", onDisconnect);
   try {
-    if(ethereum.isMetaMask && localStorage.getItem("CACHED_PROVIDER") === "TRUE") {
-        fetchAccountData();
-      };
-} catch (error) {
+    if (ethereum.isMetaMask && localStorage.getItem("CACHED_PROVIDER") === "TRUE") {
+      fetchAccountData();
+    };
+  } catch (error) {
     console.log("Error connecting to metamask account:\n", error)
-  if (window.confirm("Install Metamask to access Web3 Content. \nClick OK to be directed to metamask.io ")) {
+    if (window.confirm("Install Metamask to access Web3 Content. \nClick OK to be directed to metamask.io ")) {
       window.open("http://metamask.io", "_blank");
-      };
-    }
+    };
+  }
 
 
   // theme light/dark
-  if(localStorage.getItem("smart-wallet-theme")) {
+  if (localStorage.getItem("smart-wallet-theme")) {
     if (localStorage.getItem("smart-wallet-theme") == "light") {
-        $('body').removeClass('bg-dark');
-        $("#modeButton i").removeClass().toggleClass('bi bi-moon');
+      $('body').removeClass('bg-dark');
+      $("#modeButton i").removeClass().toggleClass('bi bi-moon');
     } else {
       $('body').addClass('bg-dark');
       $("#modeButton i").removeClass().toggleClass('bi bi-sun');
@@ -25,7 +25,7 @@ window.addEventListener('load', async () => {
     }
   }
 
-  });
+});
 
 function onDisconnect() {
   alert("To disconnect, open MetaMask and manualy disconnect.");
@@ -39,40 +39,41 @@ async function fetchAccountData() {
   let provider;
   let signer;
   let account;
- 
-    try {
-        provider = new ethers.providers.Web3Provider(ethereum);
-        signer = provider.getSigner()
-        account = await provider.send("eth_requestAccounts").then( accounts => {
-          return accounts[0];});
-        let balance = await provider.getBalance(account);
-        let formatedBalance = ethers.BigNumber.from(balance);
-        formatedBalance = balance.mod(1e14);
-        formatedBalance = ethers.utils.formatEther(balance.sub(formatedBalance));
-        
-        //updateHTMLElements network/balances/button
-        document.getElementById("selected-account").innerHTML = `(${account.substring(0,6) + "..." + account.slice(-4)})`;
-        document.getElementById("account-balance").innerHTML = `${formatedBalance} ${chainIdMap[ethereum.networkVersion].symbol}`;
-        document.getElementById("network-name").innerHTML = `${chainIdMap[ethereum.networkVersion].name}`;
 
-        document.getElementById("not-connected").style.display = "none";
-        document.getElementById("connected").style.display = "block";
+  try {
+    provider = new ethers.providers.Web3Provider(ethereum);
+    signer = provider.getSigner()
+    account = await provider.send("eth_requestAccounts").then(accounts => {
+      return accounts[0];
+    });
+    let balance = await provider.getBalance(account);
+    let formatedBalance = ethers.BigNumber.from(balance);
+    formatedBalance = balance.mod(1e14);
+    formatedBalance = ethers.utils.formatEther(balance.sub(formatedBalance));
+
+    //updateHTMLElements network/balances/button
+    document.getElementById("selected-account").innerHTML = `(${account.substring(0, 6) + "..." + account.slice(-4)})`;
+    document.getElementById("account-balance").innerHTML = `${formatedBalance} ${chainIdMap[ethereum.networkVersion].symbol}`;
+    document.getElementById("network-name").innerHTML = `${chainIdMap[ethereum.networkVersion].name}`;
+
+    document.getElementById("not-connected").style.display = "none";
+    document.getElementById("connected").style.display = "block";
 
 
-        localStorage.setItem("CACHED_PROVIDER", "TRUE");
-    } catch (error) {
-        console.log("Error connecting to metamask account:\n", error)
-      }
+    localStorage.setItem("CACHED_PROVIDER", "TRUE");
+  } catch (error) {
+    console.log("Error connecting to metamask account:\n", error)
+  }
 
   ethereum.on("accountsChanged", (accounts) => {
-      if(accounts[0]) {
-        fetchAccountData();
-      } else {
-        localStorage.removeItem("CACHED_PROVIDER");
+    if (accounts[0]) {
+      fetchAccountData();
+    } else {
+      localStorage.removeItem("CACHED_PROVIDER");
 
-        document.getElementById("not-connected").style.display = "block";
-        document.getElementById("connected").style.display = "none";
-      }
+      document.getElementById("not-connected").style.display = "block";
+      document.getElementById("connected").style.display = "none";
+    }
   });
   ethereum.on("chainChanged", (chainId) => {
     fetchAccountData();
@@ -85,182 +86,184 @@ async function fetchAccountData() {
   const MARKET_READ = new ethers.Contract(addresses[chain].marketplace, abis.marketplace, provider);
 
   const DAPPS_WRITE = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, signer);
-const DAPPS_READ = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, provider);
-//mintFaceNFT();
-// document.getElementById("mint-face").addEventListener("click", mintFaceNFT);
-// async function mintFaceNFT() {
-//   let faceMinter = new ethers.Contract(addresses[chain].faceMinter, abis.faceMinter, signer);
-//   faceMinter.safeMint(account);
-// }
+  const DAPPS_READ = new ethers.Contract(addresses[chain].dAppsStaking, abis.dAppsStaking, provider);
+  //mintFaceNFT();
+  // document.getElementById("mint-face").addEventListener("click", mintFaceNFT);
+  // async function mintFaceNFT() {
+  //   let faceMinter = new ethers.Contract(addresses[chain].faceMinter, abis.faceMinter, signer);
+  //   faceMinter.safeMint(account);
+  // }
 
- //approveNFT(addresses[chain].faceMinter, 1);
-async function approveNFT(_NFTContract, _tokenId) {
-  let NFTContract = new ethers.Contract(_NFTContract, abis.ERC721, signer);
-  NFTContract.approve(addresses[chain].marketplace, _tokenId);
-}
-
-
-
-document.getElementById("approve-all").addEventListener("click", () => {
-  approveAll(addresses[chain].astarMinter, true)})
-
-async function approveAll(_NFTContract, _bool) {
-  let NFTContract = new ethers.Contract(_NFTContract, abis.ERC721, signer);
-  NFTContract.setApprovalForAll(addresses[chain].marketplace, _bool);
-}
-
-
-let inputEl2 = document.getElementById("contract-input");
-document.getElementById("contract-btn").addEventListener("click", () => {
-  trustedContracts.push(inputEl2.value);
-  fetchWalletCards(8, trustedContracts);});
-
-// let inputEl = document.getElementById("list-input");
-// document.getElementById("list-face").addEventListener("click", () => {
-
-//   //approveNFT(addresses[chain].faceMinter, inputEl.value);
-//   listMarketItem(addresses[chain].faceMinter, inputEl.value, 1000000000000000);});
-
-
-async function listMarketItem(_NFTContract, _tokenId, _price) {
-  MARKET_WRITE.createMarketItem(_NFTContract, _tokenId, _price);
-}
-
-async function cancelMarketItem(_NFTContract, _marketItemId) {
-  MARKET_WRITE.cancelMarketItem(_NFTContract, _marketItemId);
-}
-
-async function delistCollection(_collectionId) {
-  MARKET_WRITE.delistCollection(_collectionId);
-}
-
-async function buyMarketItem(_NFTContract, _marketId, _price) {
-  MARKET_WRITE.createMarketSale(_NFTContract, _marketId, {value: _price});
-}
-
-
-async function fetchSellingItemsArray() {
-  let marketItems = await MARKET_WRITE.fetchSellingMarketItems();
-  let marketNFTs = [];
-  for (let i = 0; i < marketItems.length; i++) {
-    marketNFTs.push({});
-    marketNFTs[i].marketId = ethers.utils.formatUnits(marketItems[i][0], 0);
-    marketNFTs[i].contractAddress = marketItems[i][1];
-    marketNFTs[i].tokenId = ethers.utils.formatUnits(marketItems[i][2], 0);
-    marketNFTs[i].creator = marketItems[i][3]; //?
-    marketNFTs[i].seller = marketItems[i][4];
-    marketNFTs[i].owner = marketItems[i][5];
-    marketNFTs[i].price = ethers.utils.formatUnits(marketItems[i][6], 18);
-    marketNFTs[i].priceBN = marketItems[i][6];
-    marketNFTs[i].sold = marketItems[i][7];
-    marketNFTs[i].canceled = marketItems[i][8];
-    let NFTContract = new ethers.Contract(marketNFTs[i].contractAddress, abis.ERC721, provider);
-    marketNFTs[i].tokenURI = await NFTContract.tokenURI(marketNFTs[i].tokenId);
-    marketNFTs[i].name = await NFTContract.name();
+  //approveNFT(addresses[chain].faceMinter, 1);
+  async function approveNFT(_NFTContract, _tokenId) {
+    let NFTContract = new ethers.Contract(_NFTContract, abis.ERC721, signer);
+    NFTContract.approve(addresses[chain].marketplace, _tokenId);
   }
-  return marketNFTs;
-};
 
-async function fetchNFTsFromContracts(nftContracts) {
 
-  let NFTArray = [];
-  for(let i = 0; i < nftContracts.length; i++) {
-    let NFTContract = new ethers.Contract(nftContracts[i], abis.ERC721, provider);
-    let userbalance = await NFTContract.balanceOf(account);
-    let currentOwner;
-    
 
-    if( userbalance > 0 ) {
-      for( let x = 0; x <= 100; x++ ) {
-        try { 
-          currentOwner = await NFTContract.ownerOf(x);
-          if( currentOwner.toLowerCase() == account.toLowerCase() ) {
-            let cardOBJ = {
-              name: await NFTContract.name(),
-              tokenURI: await NFTContract.tokenURI(x),
-              tokenId: x,
-              contractAddress: NFTContract.address,
+  document.getElementById("approve-all").addEventListener("click", () => {
+    approveAll(addresses[chain].astarMinter, true)
+  })
+
+  async function approveAll(_NFTContract, _bool) {
+    let NFTContract = new ethers.Contract(_NFTContract, abis.ERC721, signer);
+    NFTContract.setApprovalForAll(addresses[chain].marketplace, _bool);
+  }
+
+
+  let inputEl2 = document.getElementById("contract-input");
+  document.getElementById("contract-btn").addEventListener("click", () => {
+    trustedContracts.push(inputEl2.value);
+    fetchWalletCards(8, trustedContracts);
+  });
+
+  // let inputEl = document.getElementById("list-input");
+  // document.getElementById("list-face").addEventListener("click", () => {
+
+  //   //approveNFT(addresses[chain].faceMinter, inputEl.value);
+  //   listMarketItem(addresses[chain].faceMinter, inputEl.value, 1000000000000000);});
+
+
+  async function listMarketItem(_NFTContract, _tokenId, _price) {
+    MARKET_WRITE.createMarketItem(_NFTContract, _tokenId, _price);
+  }
+
+  async function cancelMarketItem(_NFTContract, _marketItemId) {
+    MARKET_WRITE.cancelMarketItem(_NFTContract, _marketItemId);
+  }
+
+  async function delistCollection(_collectionId) {
+    MARKET_WRITE.delistCollection(_collectionId);
+  }
+
+  async function buyMarketItem(_NFTContract, _marketId, _price) {
+    MARKET_WRITE.createMarketSale(_NFTContract, _marketId, { value: _price });
+  }
+
+
+  async function fetchSellingItemsArray() {
+    let marketItems = await MARKET_WRITE.fetchSellingMarketItems();
+    let marketNFTs = [];
+    for (let i = 0; i < marketItems.length; i++) {
+      marketNFTs.push({});
+      marketNFTs[i].marketId = ethers.utils.formatUnits(marketItems[i][0], 0);
+      marketNFTs[i].contractAddress = marketItems[i][1];
+      marketNFTs[i].tokenId = ethers.utils.formatUnits(marketItems[i][2], 0);
+      marketNFTs[i].creator = marketItems[i][3]; //?
+      marketNFTs[i].seller = marketItems[i][4];
+      marketNFTs[i].owner = marketItems[i][5];
+      marketNFTs[i].price = ethers.utils.formatUnits(marketItems[i][6], 18);
+      marketNFTs[i].priceBN = marketItems[i][6];
+      marketNFTs[i].sold = marketItems[i][7];
+      marketNFTs[i].canceled = marketItems[i][8];
+      let NFTContract = new ethers.Contract(marketNFTs[i].contractAddress, abis.ERC721, provider);
+      marketNFTs[i].tokenURI = await NFTContract.tokenURI(marketNFTs[i].tokenId);
+      marketNFTs[i].name = await NFTContract.name();
+    }
+    return marketNFTs;
+  };
+
+  async function fetchNFTsFromContracts(nftContracts) {
+
+    let NFTArray = [];
+    for (let i = 0; i < nftContracts.length; i++) {
+      let NFTContract = new ethers.Contract(nftContracts[i], abis.ERC721, provider);
+      let userbalance = await NFTContract.balanceOf(account);
+      let currentOwner;
+
+
+      if (userbalance > 0) {
+        for (let x = 0; x <= 100; x++) {
+          try {
+            currentOwner = await NFTContract.ownerOf(x);
+            if (currentOwner.toLowerCase() == account.toLowerCase()) {
+              let cardOBJ = {
+                name: await NFTContract.name(),
+                tokenURI: await NFTContract.tokenURI(x),
+                tokenId: x,
+                contractAddress: NFTContract.address,
+              }
+              NFTArray.push(cardOBJ);
             }
-            NFTArray.push(cardOBJ);
+          } catch (e) {
+
+            x = 101;
           }
-        } catch (e) {
- 
-          x = 101;
         }
       }
-      }
+    }
+
+    return NFTArray;
+
   }
 
- return NFTArray;
- 
+  async function fetchMarketItemsArray() {
+    let marketItems = await MARKET_READ.fetchAvailableMarketItems();
+    let marketNFTs = [];
+    for (let i = 0; i < marketItems.length; i++) {
+      marketNFTs.push({});
+      marketNFTs[i].marketId = ethers.utils.formatUnits(marketItems[i][0], 0);
+      marketNFTs[i].contractAddress = marketItems[i][1];
+      marketNFTs[i].tokenId = ethers.utils.formatUnits(marketItems[i][2], 0);
+      marketNFTs[i].creator = marketItems[i][3]; //?
+      marketNFTs[i].seller = marketItems[i][4];
+      marketNFTs[i].owner = marketItems[i][5];
+      marketNFTs[i].price = ethers.utils.formatUnits(marketItems[i][6], 18);
+      marketNFTs[i].priceBN = marketItems[i][6];
+      marketNFTs[i].sold = marketItems[i][7];
+      marketNFTs[i].canceled = marketItems[i][8];
+      let NFTContract = new ethers.Contract(marketNFTs[i].contractAddress, abis.ERC721, provider);
+      marketNFTs[i].tokenURI = await NFTContract.tokenURI(marketNFTs[i].tokenId);
+      marketNFTs[i].name = await NFTContract.name();
+    }
+    return marketNFTs;
   }
 
-async function fetchMarketItemsArray() {
-  let marketItems = await MARKET_READ.fetchAvailableMarketItems();
-  let marketNFTs = [];
-  for (let i = 0; i < marketItems.length; i++) {
-    marketNFTs.push({});
-    marketNFTs[i].marketId = ethers.utils.formatUnits(marketItems[i][0], 0);
-    marketNFTs[i].contractAddress = marketItems[i][1];
-    marketNFTs[i].tokenId = ethers.utils.formatUnits(marketItems[i][2], 0);
-    marketNFTs[i].creator = marketItems[i][3]; //?
-    marketNFTs[i].seller = marketItems[i][4];
-    marketNFTs[i].owner = marketItems[i][5];
-    marketNFTs[i].price = ethers.utils.formatUnits(marketItems[i][6], 18);
-    marketNFTs[i].priceBN = marketItems[i][6];
-    marketNFTs[i].sold = marketItems[i][7];
-    marketNFTs[i].canceled = marketItems[i][8];
-    let NFTContract = new ethers.Contract(marketNFTs[i].contractAddress, abis.ERC721, provider);
-    marketNFTs[i].tokenURI = await NFTContract.tokenURI(marketNFTs[i].tokenId);
-    marketNFTs[i].name = await NFTContract.name();
-  }
-  return marketNFTs;
-}
+  let nftContracts = trustedContracts[chain];
 
-let nftContracts = trustedContracts[chain];
+  fetchExploreCards(24);
+  fetchExploreCollectionCards(24);
+  fetchWalletCards(24, nftContracts);
+  fetchMarketplaceCards(30, "marketplace");
+  fetchMarketplaceCardsCollectionModal(60);
+  fetchCollections();
 
-fetchExploreCards(24);
-fetchExploreCollectionCards(24);
-fetchWalletCards(24, nftContracts);
-fetchMarketplaceCards(30, "marketplace");
-fetchMarketplaceCardsCollectionModal(60);
-fetchCollections();
+  async function fetchExploreCards(maxAmount) {
+    let marketNFTsEl = document.getElementById("market-NFTs");
+    let listingLimit = maxAmount - 1;
+    let htmlHolder = "";
+    let NFTName = "";
+    let NFTDescription = "";
+    let NFTAttributesTraits = "";
+    let NFTAttributesValues = "";
 
-async function fetchExploreCards(maxAmount) {
-  let marketNFTsEl = document.getElementById("market-NFTs");
-  let listingLimit = maxAmount -1;
-  let htmlHolder = "";
-  let NFTName = "";
-  let NFTDescription = "";
-  let NFTAttributesTraits = "";
-  let NFTAttributesValues = "";
+    let NFTsArray = await fetchMarketItemsArray();
 
-  let NFTsArray = await fetchMarketItemsArray();
-
-  for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
+    for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
       let metadata = await fetch(NFTsArray[i].tokenURI);
 
-      if(NFTsArray[i].tokenURI.includes("json")){
-      try{
-        metadata = await metadata.json();
-        NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
-        NFTName = metadata.name;
-        NFTDescription = metadata.description;
+      if (NFTsArray[i].tokenURI.includes("json")) {
+        try {
+          metadata = await metadata.json();
+          NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+          NFTName = metadata.name;
+          NFTDescription = metadata.description;
 
-        for(let i=0; i < metadata.attributes.length; i++) {
-          NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
-          NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
+          for (let i = 0; i < metadata.attributes.length; i++) {
+            NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
+            NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
+          }
+        } catch {
+          NFTImage = NFTsArray[i].tokenURI;
         }
-      } catch {
+      } else {
         NFTImage = NFTsArray[i].tokenURI;
+        NFTName = NFTsArray[i].name;
+        NFTDescription = "none";
+        NFTAttributesTraits = "";
+        NFTAttributesValues = "";
       }
-    } else {
-      NFTImage = NFTsArray[i].tokenURI;
-      NFTName = NFTsArray[i].name;
-      NFTDescription = "none";
-      NFTAttributesTraits = "";
-      NFTAttributesValues = "";
-    }
       htmlHolder += `
       <!-- Card Listing -->
       <div class="col">
@@ -294,7 +297,7 @@ async function fetchExploreCards(maxAmount) {
                     <p class="card-text"><strong>Creator: </strong></p>       
                   </div>
                   <div class="col ps-1">
-                    <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + NFTsArray[i].creator.slice(-4)}</p>
+                    <p class="card-text">${NFTsArray[i].creator.substring(0, 6) + "..." + NFTsArray[i].creator.slice(-4)}</p>
                   </div>
                 </div>
               </small>
@@ -381,7 +384,7 @@ async function fetchExploreCards(maxAmount) {
                       </div>
                       <div class="col ps-1">
                       <br>
-                        <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + NFTsArray[i].creator.slice(-4)}</p>
+                        <p class="card-text">${NFTsArray[i].creator.substring(0, 6) + "..." + NFTsArray[i].creator.slice(-4)}</p>
                       </div>
                     </div>
 
@@ -390,7 +393,7 @@ async function fetchExploreCards(maxAmount) {
                         <p class="card-text"><strong>NFT Contract: </strong></p>       
                       </div>
                       <div class="col ps-1">
-                        <p class="card-text">${NFTsArray[i].contractAddress.substring(0,6) + "..." + NFTsArray[i].contractAddress.slice(-4)}</p>
+                        <p class="card-text">${NFTsArray[i].contractAddress.substring(0, 6) + "..." + NFTsArray[i].contractAddress.slice(-4)}</p>
                       </div>
                     </div>
 
@@ -430,9 +433,11 @@ async function fetchExploreCards(maxAmount) {
     let arrayOfBuyModal = document.querySelectorAll(".buyModal");
     for (let i = 0; i < arrayOfBuyExplore.length; i++) {
       arrayOfBuyExplore[i].addEventListener("click", () => {
-        buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
+        buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);
+      });
       arrayOfBuyModal[i].addEventListener("click", () => {
-        buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
+        buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);
+      });
     }
   }
 
@@ -441,82 +446,83 @@ async function fetchExploreCards(maxAmount) {
 
   async function fetchExploreCollectionCards(maxAmount) {
     let exploreCollections = document.getElementById("collectionsListing");
-    let listingLimit = maxAmount -1;
+    let listingLimit = maxAmount - 1;
     let NFTName = "";
     let NFTDescription = "";
     let NFTAttributesTraits = "";
     let NFTAttributesValues = "";
-  
+
     let NFTsArray = await fetchMarketItemsArray();
 
     let collections = await MARKET_READ.getActiveCollections();
     let tempHTML = "";
 
-    for( let i = 0; i < collections.length; i++){
-        let activeIds = [];
-        for(let j = 0; j < collections[i].marketIds.length; j++) {
-          activeIds.push( ethers.utils.formatUnits(collections[i].marketIds[j]._hex, 0) );
-        }
+    for (let i = 0; i < collections.length; i++) {
+      let activeIds = [];
+      for (let j = 0; j < collections[i].marketIds.length; j++) {
+        activeIds.push(ethers.utils.formatUnits(collections[i].marketIds[j]._hex, 0));
+      }
 
-        const activeNFTList = NFTsArray.filter((item) => {
-          return activeIds.includes(item.marketId);
-        });
+      const activeNFTList = NFTsArray.filter((item) => {
+        return activeIds.includes(item.marketId);
+      });
 
-        let NFTName = NFTsArray.name;
-        let NFTImage = "";
-        let NFTImages = "";
-        let yourStake = "";
-        let stakeStatus = "None";
-        yourStake = await MARKET_READ.getStakes(collections[i].collectionId, account);
+      let NFTName = NFTsArray.name;
+      let NFTImage = "";
+      let NFTImages = "";
+      let yourStake = "";
+      let stakeStatus = "None";
+      yourStake = await MARKET_READ.getStakes(collections[i].collectionId, account);
 
-        let boundedEra = ethers.utils.formatUnits(yourStake.bondedEra, 0);
-        let currentEra = await DAPPS_READ.read_current_era();
-        currentEra = ethers.utils.formatUnits(currentEra, 0);
+      let boundedEra = ethers.utils.formatUnits(yourStake.bondedEra, 0);
+      let currentEra = await DAPPS_READ.read_current_era();
+      currentEra = ethers.utils.formatUnits(currentEra, 0);
+      console.log(yourStake.status)
+      if (Number(boundedEra) == 0) {
+        stakeStatus = "None";
+      } else if (yourStake.status == 0) {
+        stakeStatus = "Staked";
+      } else if (Number(boundedEra) + 2 <= Number(currentEra)) {
+        stakeStatus = "Withdrawable";
+      } else if (yourStake.status == 1) {
+        stakeStatus = "Unlocks at era " + (Number(boundedEra) + 2) + ". Current era is " + currentEra + ".";
+      }
+       if (yourStake.status == 3) {
+        stakeStatus = "Stake removed!";
+      }
 
-        if ( Number(boundedEra) == 0 ) {
-          stakeStatus = "None";
-        } else if ( yourStake.status == 0) {
-          stakeStatus = "Staked";
-        } else if ( Number(boundedEra) + 2 <= Number(currentEra) ) {
-          stakeStatus = "Withdrawable";
-        } else if ( yourStake.status == 1 ) {
-          stakeStatus = "Unlocks at era "+ (Number(boundedEra) + 2) +". Current era is " + currentEra + ".";
-        } else if ( yourStake.status == 3 ) {
-          stakeStatus = "Stake removed!";
-        }
+      if (yourStake.status == 3) {
+        yourStake = 0;
+      } else {
+        yourStake = ethers.utils.formatEther(ethers.utils.formatUnits(yourStake.amount, 0));
+      }
 
-        if ( yourStake.status == 3 ) {
-          yourStake = 0;
-        } else {
-          yourStake = ethers.utils.formatEther(ethers.utils.formatUnits(yourStake.amount, 0));
-        }
+      for (let j = 0; j < activeNFTList.length; j++) {
 
-        for (let j = 0; j < activeNFTList.length; j++) {
+        let metadata = await fetch(activeNFTList[j].tokenURI);
+        if (activeNFTList[j].tokenURI.includes("json")) {
+          try {
+            metadata = await metadata.json();
+            NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
 
-          let metadata = await fetch(activeNFTList[j].tokenURI);
-          if(activeNFTList[j].tokenURI.includes("json")){
-            try {
-              metadata = await metadata.json();
-              NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
-
-              NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}');"> </div></div>`;
+            NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}');"> </div></div>`;
 
 
-              for (let i=0; i < metadata.attributes.length; i++) {
-                NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
-                NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
-              }
-
-            } catch {
-              NFTImage = activeNFTList[j].tokenURI;
-        
-              NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${activeNFTList[j].tokenURI}');"> </div></div>`;
+            for (let i = 0; i < metadata.attributes.length; i++) {
+              NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
+              NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
             }
-          } else {
+
+          } catch {
             NFTImage = activeNFTList[j].tokenURI;
-        
+
             NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${activeNFTList[j].tokenURI}');"> </div></div>`;
           }
+        } else {
+          NFTImage = activeNFTList[j].tokenURI;
+
+          NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${activeNFTList[j].tokenURI}');"> </div></div>`;
+        }
 
       }
 
@@ -601,7 +607,7 @@ async function fetchExploreCards(maxAmount) {
                   <p class="card-text"><strong>Creator: </strong></p>  
                 </div>
                 <div class="col ps-1">
-                  <p class="card-text">${collections[i].creator.substring(0,6) + "..." + collections[i].creator.slice(-4)}</p>
+                  <p class="card-text">${collections[i].creator.substring(0, 6) + "..." + collections[i].creator.slice(-4)}</p>
                 </div>
             </div>
           </small>
@@ -746,7 +752,7 @@ async function fetchExploreCards(maxAmount) {
               <p class="card-text"><strong>Creator: </strong></p>  
             </div>
             <div class="col ps-1">
-              <p class="card-text">${collections[i].creator.substring(0,6) + "..." + collections[i].creator.slice(-4)}</p>
+              <p class="card-text">${collections[i].creator.substring(0, 6) + "..." + collections[i].creator.slice(-4)}</p>
             </div>
           </div>
 
@@ -779,94 +785,102 @@ async function fetchExploreCards(maxAmount) {
     exploreCollections.innerHTML = tempHTML;
     cardEffect('#collectionsListing');
 
-    for( let i = 0; i < collections.length; i++){
+    for (let i = 0; i < collections.length; i++) {
       let collectionId = ethers.utils.formatUnits(collections[i].collectionId, 0);
       let collectionIdModal = ethers.utils.formatUnits(collections[i % collections.length].collectionId, 0);
 
       document.getElementById(`button-explore-stake-${i}`).addEventListener("click", () => {
-      let stakeVal = document.getElementById(`input-explore-stake-${i}`).value;
-      stakeCollection(collectionId, stakeVal.toString());   });
+        let stakeVal = document.getElementById(`input-explore-stake-${i}`).value;
+        stakeCollection(collectionId, stakeVal.toString());
+      });
 
       document.getElementById(`modal-button-explore-stake-${i}`).addEventListener("click", () => {
-      let stakeVal2 = document.getElementById(`modal-input-explore-stake-${i}`).value;
-      stakeCollection(collectionIdModal, stakeVal2.toString());});
+        let stakeVal2 = document.getElementById(`modal-input-explore-stake-${i}`).value;
+        stakeCollection(collectionIdModal, stakeVal2.toString());
+      });
 
       document.getElementById(`button-explore-unstake-${i}`).addEventListener("click", () => {
-      unStakeCollection(collectionId); });
+        unStakeCollection(collectionId);
+      });
 
       document.getElementById(`modal-button-explore-unstake-${i}`).addEventListener("click", () => {
-      unStakeCollection(collectionIdModal);});
+        unStakeCollection(collectionIdModal);
+      });
 
       document.getElementById(`button-explore-withdraw-${i}`).addEventListener("click", () => {
-      withdrawCollection(collectionId); });
-  
+        withdrawCollection(collectionId);
+      });
+
       document.getElementById(`modal-button-explore-withdraw-${i}`).addEventListener("click", () => {
-      withdrawCollection(collectionIdModal);});
+        withdrawCollection(collectionIdModal);
+      });
 
       document.getElementById(`button-explore-claim-rewards-${i}`).addEventListener("click", () => {
-      claimCollection(collectionId); });
-    
+        claimCollection(collectionId);
+      });
+
       document.getElementById(`modal-button-explore-claim-rewards-${i}`).addEventListener("click", () => {
-      claimCollection(collectionIdModal);});
-      
-       
-         document.getElementById(`report-${i}`).addEventListener("click", () => {
-          reportCollection(collections[i]["collectionId"]);
-      
-         });
-       
-
-        let activeIds = [];
-        for(let j = 0; j < collections[i].marketIds.length; j++) {
-          activeIds.push( ethers.utils.formatUnits(collections[i].marketIds[j]._hex, 0) );
-        }
-
-        const activeNFTList = NFTsArray.filter((item) => {
-          return activeIds.includes(item.marketId);
-        });
-
-        let NFTName = NFTsArray.name;
-        let NFTPrice = NFTsArray.price;
-        let NFTCreator = NFTsArray.creator;
-        let NFTOwner = NFTsArray.owner;
-        let NFTContract = NFTsArray.contractAddress;
-        let NFTImage = "";
-        let NFTImages = "";
-        let htmlHolder = "";
-
-        for (let j = 0; j < activeNFTList.length; j++) {
-          let metadata = await fetch(activeNFTList[j].tokenURI);
-          if(activeNFTList[j].tokenURI.includes("json")){
-            try {
-              metadata = await metadata.json();
-              NFTName = metadata.name;
-              NFTDescription = metadata.description;
-              NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
-
-              NFTImages += `<div class="col"><img src="${metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}" alt="${NFTName}" class="img-fluid"></div>`;
+        claimCollection(collectionIdModal);
+      });
 
 
-              for (let i=0; i < metadata.attributes.length; i++) {
-                NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
-                NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
-              }
+      document.getElementById(`report-${i}`).addEventListener("click", () => {
+        reportCollection(collections[i]["collectionId"]);
 
-            } catch {
-              NFTImage = activeNFTList[j].tokenURI;
-              NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
+      });
+
+
+      let activeIds = [];
+      for (let j = 0; j < collections[i].marketIds.length; j++) {
+        activeIds.push(ethers.utils.formatUnits(collections[i].marketIds[j]._hex, 0));
+      }
+
+      const activeNFTList = NFTsArray.filter((item) => {
+        return activeIds.includes(item.marketId);
+      });
+
+      let NFTName = NFTsArray.name;
+      let NFTPrice = NFTsArray.price;
+      let NFTCreator = NFTsArray.creator;
+      let NFTOwner = NFTsArray.owner;
+      let NFTContract = NFTsArray.contractAddress;
+      let NFTImage = "";
+      let NFTImages = "";
+      let htmlHolder = "";
+
+      for (let j = 0; j < activeNFTList.length; j++) {
+        let metadata = await fetch(activeNFTList[j].tokenURI);
+        if (activeNFTList[j].tokenURI.includes("json")) {
+          try {
+            metadata = await metadata.json();
+            NFTName = metadata.name;
+            NFTDescription = metadata.description;
+            NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+
+            NFTImages += `<div class="col"><img src="${metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}" alt="${NFTName}" class="img-fluid"></div>`;
+
+
+            for (let i = 0; i < metadata.attributes.length; i++) {
+              NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
+              NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
             }
-          } else {
+
+          } catch {
             NFTImage = activeNFTList[j].tokenURI;
             NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
-            NFTName = NFTsArray[j].name;
-            NFTDescription = "none";
-            NFTAttributesTraits = "";
-            NFTAttributesValues = "";
           }
+        } else {
+          NFTImage = activeNFTList[j].tokenURI;
+          NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
+          NFTName = NFTsArray[j].name;
+          NFTDescription = "none";
+          NFTAttributesTraits = "";
+          NFTAttributesValues = "";
+        }
 
 
-          // add html
-          htmlHolder += `
+        // add html
+        htmlHolder += `
           <!-- Card Listing -->
           <div class="col">
             <div class="card">
@@ -899,7 +913,7 @@ async function fetchExploreCards(maxAmount) {
                         <p class="card-text"><strong>Creator: </strong></p>       
                       </div>
                       <div class="col ps-1">
-                        <p class="card-text">${activeNFTList[j].creator.substring(0,6) + "..." + activeNFTList[j].creator.slice(-4)}</p>
+                        <p class="card-text">${activeNFTList[j].creator.substring(0, 6) + "..." + activeNFTList[j].creator.slice(-4)}</p>
                       </div>
                     </div>
                   </small>
@@ -921,108 +935,109 @@ async function fetchExploreCards(maxAmount) {
             </div>
           </div>`;
 
-        
+
         document.getElementById(`explore-collection-nfts-modal-${i}`).innerHTML = htmlHolder;
         cardEffect(`#explore-collection-nfts-modal-${i}`);
 
-        
+
         NFTAttributesTraits = "";
         NFTAttributesValues = "";
-    
-    
+
+
       }
 
-      
+
 
       //runs through each collection
       let arrayOfBuyCollectionModal = document.querySelectorAll(`.buyCollectionModal-${i}`);
       //runs for each item inside the collection
 
-      
+
 
       for (let y = 0; y < arrayOfBuyCollectionModal.length; y++) {
 
-   
-        arrayOfBuyCollectionModal[y].addEventListener("click", async () => { 
+
+        arrayOfBuyCollectionModal[y].addEventListener("click", async () => {
           currentId = await ethers.utils.formatUnits(collections[i]["marketIds"][y], 0);
-    
+
 
           //find index of marketID
-          for(let z = 0; z < NFTsArray.length; z++) {
-            if( NFTsArray[z]["marketId"] == currentId) {
+          for (let z = 0; z < NFTsArray.length; z++) {
+            if (NFTsArray[z]["marketId"] == currentId) {
               let _contract = await NFTsArray[z]["contractAddress"];
               let _marketId = await NFTsArray[z]["marketId"];
               let _priceBN = await NFTsArray[z]["priceBN"];
 
               buyMarketItem(_contract, _marketId, _priceBN)
-            }} });
+            }
+          }
+        });
       }
     }
-    
+
   }
 
-async function reportCollection(collectionId) {
-  MARKET_WRITE.reportCollection(collectionId);
-}
-
-async function stakeCollection(collectionId, amount) {
-  MARKET_WRITE.stake(collectionId, { value: ethers.utils.parseEther(amount) });
-}
-
-async function unStakeCollection(collectionId) {
-  MARKET_WRITE.unBond(collectionId);
-}
-
-async function withdrawCollection(collectionId) {
-  MARKET_WRITE.requestWithdraw(collectionId, account);
-}
-
-//3.289999999999990002  contract bal evm
-//5.399999999999990002
-//bal on subscan 63.252271228670054   //a98Gr1FKhktg64eZkXAFwptyKewkbH43kXUWBJ7aMkYvbo9
-//totalStaked function 58242271228670061349
-
-console.log( ethers.utils.formatUnits(await MARKET_READ.getBalance(), 18))
-
-
-async function claimCollection(collection) {
-  latestClaim =  Number(ethers.utils.formatUnits(await MARKET_READ.getLatestWithdrawEra(), 0));
-  currentEra = Number(ethers.utils.formatUnits(await DAPPS_READ.read_current_era(), 0));
-  if(latestClaim != currentEra) {
-    console.log( latestClaim + 1)
-    MARKET_WRITE.claim(latestClaim + 1);
+  async function reportCollection(collectionId) {
+    MARKET_WRITE.reportCollection(collectionId);
   }
-  
-}
 
-    
+  async function stakeCollection(collectionId, amount) {
+    MARKET_WRITE.stake(collectionId, { value: ethers.utils.parseEther(amount) });
+  }
+
+  async function unStakeCollection(collectionId) {
+    MARKET_WRITE.unBond(collectionId);
+  }
+
+  async function withdrawCollection(collectionId) {
+    MARKET_WRITE.requestWithdraw(collectionId, account);
+  }
+
+  //3.289999999999990002  contract bal evm
+  //5.399999999999990002
+  //bal on subscan 63.252271228670054   //a98Gr1FKhktg64eZkXAFwptyKewkbH43kXUWBJ7aMkYvbo9
+  //totalStaked function 58242271228670061349
+
+  console.log(ethers.utils.formatUnits(await MARKET_READ.getBalance(), 18))
 
 
-async function fetchWalletCards(maxAmount, nftContracts) {
-      let walletNFTsEl = document.getElementById("wallet-NFTs");
-      let listingLimit = maxAmount -1;
-      let htmlHolder = "";
-      let NFTName = "";
-      let NFTDescription = "";
-      let NFTAttributesTraits = "";
-      let NFTAttributesValues = "";
-      let walletNftsCount = 0;
+  async function claimCollection(collection) {
+    latestClaim = Number(ethers.utils.formatUnits(await MARKET_READ.getLatestWithdrawEra(), 0));
+    currentEra = Number(ethers.utils.formatUnits(await DAPPS_READ.read_current_era(), 0));
+    if (latestClaim != currentEra) {
+      MARKET_WRITE.claim(latestClaim + 1);
+    }
 
-      let NFTsArray = await fetchNFTsFromContracts(nftContracts);
-      let NFTImage;
-      for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
+  }
 
-        walletNftsCount++;
-        let metadata = await fetch(NFTsArray[i].tokenURI);
-        if(NFTsArray[i].tokenURI.includes("json")){
-        try{
+
+
+
+  async function fetchWalletCards(maxAmount, nftContracts) {
+    let walletNFTsEl = document.getElementById("wallet-NFTs");
+    let listingLimit = maxAmount - 1;
+    let htmlHolder = "";
+    let NFTName = "";
+    let NFTDescription = "";
+    let NFTAttributesTraits = "";
+    let NFTAttributesValues = "";
+    let walletNftsCount = 0;
+
+    let NFTsArray = await fetchNFTsFromContracts(nftContracts);
+    let NFTImage;
+    for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
+
+      walletNftsCount++;
+      let metadata = await fetch(NFTsArray[i].tokenURI);
+      if (NFTsArray[i].tokenURI.includes("json")) {
+        try {
           metadata = await metadata.json();
           NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
 
           NFTName = metadata.name;
           NFTDescription = metadata.description;
 
-          for(let i=0; i < metadata.attributes.length; i++) {
+          for (let i = 0; i < metadata.attributes.length; i++) {
             NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
             NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
           }
@@ -1037,7 +1052,7 @@ async function fetchWalletCards(maxAmount, nftContracts) {
         NFTAttributesValues = "";
       }
 
-        htmlHolder += `
+      htmlHolder += `
         <!-- Card Listing -->
         <div class="col">
           <div class="card">
@@ -1147,7 +1162,7 @@ async function fetchWalletCards(maxAmount, nftContracts) {
                         </div>
                         <div class="col ps-1">
                         <br>
-                          <p class="card-text">${NFTsArray[i].contractAddress.substring(0,6) + "..." + NFTsArray[i].contractAddress.slice(-4)}</p>
+                          <p class="card-text">${NFTsArray[i].contractAddress.substring(0, 6) + "..." + NFTsArray[i].contractAddress.slice(-4)}</p>
                         </div>
                       </div>
 
@@ -1175,34 +1190,38 @@ async function fetchWalletCards(maxAmount, nftContracts) {
 
       NFTAttributesTraits = "";
       NFTAttributesValues = "";
-      }
-      walletNFTsEl.innerHTML = htmlHolder;
-      document.getElementById('walletNftsCount').innerHTML = walletNftsCount;
-      cardEffect('#wallet-NFTs');
+    }
+    walletNFTsEl.innerHTML = htmlHolder;
+    document.getElementById('walletNftsCount').innerHTML = walletNftsCount;
+    cardEffect('#wallet-NFTs');
 
-      let arrayOfApproveWallet = document.querySelectorAll(".approveWallet");
-      let arrayOfListWallet = document.querySelectorAll(".listWallet");
-      let arrayOfInputWallet = document.querySelectorAll(".inputWallet");
-      let arrayOfApproveModal = document.querySelectorAll(".approveModal");
-      let arrayOfListModal = document.querySelectorAll(".listModal");
-      let arrayOfInputModal = document.querySelectorAll(".inputModal");
-      for (let i = 0; i < arrayOfListWallet.length; i++) {
-        arrayOfApproveWallet[i].addEventListener("click", () => {
-          approveNFT(NFTsArray[i].contractAddress, NFTsArray[i].tokenId);});
-        arrayOfListWallet[i].addEventListener("click", () => {
-          listMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].tokenId, ethers.utils.parseEther(arrayOfInputWallet[i].value));});
-        arrayOfApproveModal[i].addEventListener("click", () => {
-          approveNFT(NFTsArray[i].contractAddress, NFTsArray[i].tokenId);});
-        arrayOfListModal[i].addEventListener("click", () => {
-          listMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].tokenId, ethers.utils.parseEther(arrayOfInputModal[i].value));});
+    let arrayOfApproveWallet = document.querySelectorAll(".approveWallet");
+    let arrayOfListWallet = document.querySelectorAll(".listWallet");
+    let arrayOfInputWallet = document.querySelectorAll(".inputWallet");
+    let arrayOfApproveModal = document.querySelectorAll(".approveModal");
+    let arrayOfListModal = document.querySelectorAll(".listModal");
+    let arrayOfInputModal = document.querySelectorAll(".inputModal");
+    for (let i = 0; i < arrayOfListWallet.length; i++) {
+      arrayOfApproveWallet[i].addEventListener("click", () => {
+        approveNFT(NFTsArray[i].contractAddress, NFTsArray[i].tokenId);
+      });
+      arrayOfListWallet[i].addEventListener("click", () => {
+        listMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].tokenId, ethers.utils.parseEther(arrayOfInputWallet[i].value));
+      });
+      arrayOfApproveModal[i].addEventListener("click", () => {
+        approveNFT(NFTsArray[i].contractAddress, NFTsArray[i].tokenId);
+      });
+      arrayOfListModal[i].addEventListener("click", () => {
+        listMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].tokenId, ethers.utils.parseEther(arrayOfInputModal[i].value));
+      });
     }
   }
 
 
 
-async function fetchMarketplaceCards(maxAmount, location) {
+  async function fetchMarketplaceCards(maxAmount, location) {
     let marketplaceNFTsEl = document.getElementById(location);
-    let listingLimit = maxAmount -1;
+    let listingLimit = maxAmount - 1;
     let htmlHolder = "";
     let NFTName = "";
     let NFTDescription = "";
@@ -1211,7 +1230,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
     let saleStatus = "";
     let marketplaceNftsCount = 0;
 
-    
+
 
     let NFTsArray = await fetchSellingItemsArray();
 
@@ -1219,7 +1238,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
 
       let metadata = await fetch(NFTsArray[i].tokenURI);
 
-      if(!NFTsArray[i].canceled && !NFTsArray[i].sold) {
+      if (!NFTsArray[i].canceled && !NFTsArray[i].sold) {
         marketplaceNftsCount++
       }
 
@@ -1229,19 +1248,19 @@ async function fetchMarketplaceCards(maxAmount, location) {
         saleStatus = `<span class="badge text-bg-warning">For Sale</span>`;
       }
 
-      if(NFTsArray[i].tokenURI.includes("json")){
-        try{
-        metadata = await metadata.json();
-        NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+      if (NFTsArray[i].tokenURI.includes("json")) {
+        try {
+          metadata = await metadata.json();
+          NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
 
-        NFTName = metadata.name;
-        NFTDescription = metadata.description;
+          NFTName = metadata.name;
+          NFTDescription = metadata.description;
 
-        for(let i=0; i < metadata.attributes.length; i++) {
-          NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
-          NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
+          for (let i = 0; i < metadata.attributes.length; i++) {
+            NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
+            NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
 
-        }
+          }
         } catch {
           NFTImage = NFTsArray[i].tokenURI;
         }
@@ -1252,8 +1271,8 @@ async function fetchMarketplaceCards(maxAmount, location) {
         NFTAttributesTraits = "";
         NFTAttributesValues = "";
       }
-      if (!NFTsArray[i].sold && !NFTsArray[i].canceled){
-      htmlHolder += `
+      if (!NFTsArray[i].sold && !NFTsArray[i].canceled) {
+        htmlHolder += `
       <div class="col">
           <div class="card">
           <div class="card__inner">
@@ -1372,7 +1391,7 @@ async function fetchMarketplaceCards(maxAmount, location) {
                       </div>
                       <div class="col ps-1">
                       <br>
-                          <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + NFTsArray[i].creator.slice(-4)}</p>
+                          <p class="card-text">${NFTsArray[i].creator.substring(0, 6) + "..." + NFTsArray[i].creator.slice(-4)}</p>
                       </div>
                       </div>
 
@@ -1415,72 +1434,74 @@ async function fetchMarketplaceCards(maxAmount, location) {
           </div>
           </div>`
 
-          NFTAttributesTraits = "";
-          NFTAttributesValues = "";
-          }
-        }
-          marketplaceNFTsEl.innerHTML = htmlHolder;
-          document.getElementById('marketplaceNftsCount').innerHTML = marketplaceNftsCount;
-          cardEffect('#marketplace');
+        NFTAttributesTraits = "";
+        NFTAttributesValues = "";
+      }
+    }
+    marketplaceNFTsEl.innerHTML = htmlHolder;
+    document.getElementById('marketplaceNftsCount').innerHTML = marketplaceNftsCount;
+    cardEffect('#marketplace');
 
-          let arrayOfDelist = document.querySelectorAll(`#${location} .btn-Delist`);
-          let arrayOfDelistModal = document.querySelectorAll(`#${location} .btn-DelistModal`);
-          
-          let buttonCounter = 0;
-          for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
-            if(!NFTsArray[i].canceled && !NFTsArray[i].sold) {
-              arrayOfDelist[buttonCounter].addEventListener("click", () => {
-                cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)}); 
-              arrayOfDelistModal[buttonCounter].addEventListener("click", () => {
-                cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)});
-              buttonCounter++;
-            }
+    let arrayOfDelist = document.querySelectorAll(`#${location} .btn-Delist`);
+    let arrayOfDelistModal = document.querySelectorAll(`#${location} .btn-DelistModal`);
+
+    let buttonCounter = 0;
+    for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
+      if (!NFTsArray[i].canceled && !NFTsArray[i].sold) {
+        arrayOfDelist[buttonCounter].addEventListener("click", () => {
+          cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)
+        });
+        arrayOfDelistModal[buttonCounter].addEventListener("click", () => {
+          cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)
+        });
+        buttonCounter++;
+      }
+    }
+
+  }
+
+  async function fetchMarketplaceCardsCollectionModal(maxAmount) {
+    let marketplaceNFTsEl = document.getElementById("new-collection-modal");
+    let listingLimit = maxAmount - 1;
+    let htmlHolder = "";
+    let htmlModalHolder = "";
+    let NFTName = "";
+    let NFTDescription = "";
+    let NFTAttributesTraits = "";
+    let NFTAttributesValues = "";
+    let saleStatus = "";
+
+
+    let NFTsArray = await fetchSellingItemsArray();
+    for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
+      let metadata = await fetch(NFTsArray[i].tokenURI);
+
+      if (NFTsArray[i].sold) {
+        saleStatus = `<span class="badge text-bg-success">Sold</span>`;
+      } else {
+        saleStatus = `<span class="badge text-bg-warning">For Sale</span>`;
+      }
+      if (NFTsArray[i].tokenURI.includes("json")) {
+        try {
+          metadata = await metadata.json();
+          NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+
+          NFTName = metadata.name;
+          NFTDescription = metadata.description;
+
+          for (let i = 0; i < metadata.attributes.length; i++) {
+            NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
+            NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
           }
+        } catch {
+          NFTImage = NFTsArray[i].tokenURI;
+        }
+      } else {
+        NFTImage = NFTsArray[i].tokenURI;
 
       }
-
-async function fetchMarketplaceCardsCollectionModal(maxAmount) {
-  let marketplaceNFTsEl = document.getElementById("new-collection-modal");
-  let listingLimit = maxAmount -1;
-  let htmlHolder = "";
-  let htmlModalHolder = "";
-  let NFTName = "";
-  let NFTDescription = "";
-  let NFTAttributesTraits = "";
-  let NFTAttributesValues = "";
-  let saleStatus = "";
-
-
-  let NFTsArray = await fetchSellingItemsArray();
-  for (let i = 0; i < NFTsArray.length && i <= listingLimit; i++) {
-    let metadata = await fetch(NFTsArray[i].tokenURI);
-
-    if (NFTsArray[i].sold) {
-      saleStatus = `<span class="badge text-bg-success">Sold</span>`;
-    } else {
-      saleStatus = `<span class="badge text-bg-warning">For Sale</span>`;
-    }
-    if(NFTsArray[i].tokenURI.includes("json")){
-    try{
-    metadata = await metadata.json();
-    NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
-
-    NFTName = metadata.name;
-    NFTDescription = metadata.description;
-
-    for(let i=0; i < metadata.attributes.length; i++) {
-      NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
-      NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
-    }
-    } catch {
-      NFTImage = NFTsArray[i].tokenURI;
-    }
-  } else {
-    NFTImage = NFTsArray[i].tokenURI;
-    
-  }
-    if (!NFTsArray[i].sold && !NFTsArray[i].canceled){
-    htmlHolder += `
+      if (!NFTsArray[i].sold && !NFTsArray[i].canceled) {
+        htmlHolder += `
     <div class="col">
         <div class="card">
           <div class="card__inner">
@@ -1546,7 +1567,7 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
         </div>
     </div>`;
 
-    htmlModalHolder +=`
+        htmlModalHolder += `
       <!-- Modal (default hidden) -->
       <div class="modal fade" id="marketlist-nft-modalWallet-${i}" tabisndex="-1" aria-labelledby="marketlist-nft-aria-modalWallet-${i}" style="display: none;" aria-hidden="true">
           <div class="modal-dialog modal-xl">
@@ -1610,7 +1631,7 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
                       </div>
                       <div class="col ps-1">
                       <br>
-                          <p class="card-text">${NFTsArray[i].creator.substring(0,6) + "..." + NFTsArray[i].creator.slice(-4)}</p>
+                          <p class="card-text">${NFTsArray[i].creator.substring(0, 6) + "..." + NFTsArray[i].creator.slice(-4)}</p>
                       </div>
                       </div>
 
@@ -1653,107 +1674,109 @@ async function fetchMarketplaceCardsCollectionModal(maxAmount) {
           </div>
           </div>`
 
-      NFTAttributesTraits = "";
-      NFTAttributesValues = "";
-        }
+        NFTAttributesTraits = "";
+        NFTAttributesValues = "";
       }
-        marketplaceNFTsEl.innerHTML = htmlHolder;
-        document.getElementById("my-wallet-new-collection-nft-modals").innerHTML = htmlModalHolder;
-        cardEffect("#new-collection-modal");
-        cardEffect("#my-wallet-new-collection-nft-modals");
-
-
-        let arrayOfDelist = document.querySelectorAll(".btn-Delist-CM");
-        let arrayOfDelistModal = document.querySelectorAll(".btn-DelistModal-CM");
-        let buttonCounter = 0;
-        
-        for (let i = 0; i < NFTsArray.length; i++) {
-            if(!NFTsArray[i].canceled && !NFTsArray[i].sold) {
-          arrayOfDelist[buttonCounter].addEventListener("click", () => {
-            cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)}); 
-          arrayOfDelistModal[buttonCounter].addEventListener("click", () => {
-            cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)});
-          
-        }
-  
     }
+    marketplaceNFTsEl.innerHTML = htmlHolder;
+    document.getElementById("my-wallet-new-collection-nft-modals").innerHTML = htmlModalHolder;
+    cardEffect("#new-collection-modal");
+    cardEffect("#my-wallet-new-collection-nft-modals");
+
+
+    let arrayOfDelist = document.querySelectorAll(".btn-Delist-CM");
+    let arrayOfDelistModal = document.querySelectorAll(".btn-DelistModal-CM");
+    let buttonCounter = 0;
+
+    for (let i = 0; i < NFTsArray.length; i++) {
+      if (!NFTsArray[i].canceled && !NFTsArray[i].sold) {
+        arrayOfDelist[buttonCounter].addEventListener("click", () => {
+          cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)
+        });
+        arrayOfDelistModal[buttonCounter].addEventListener("click", () => {
+          cancelMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId)
+        });
+
+      }
+
     }
+  }
 
 
 
-    
-async function fetchCollections() {
 
-  let collections = await MARKET_READ.getActiveCollections();
-  let containerEl = document.getElementById("my-collections"); // exploreCollections
-  let tempHTML = "";
-  let collectionsCount = 0; 
+  async function fetchCollections() {
 
-
-  // ------------
+    let collections = await MARKET_READ.getActiveCollections();
+    let containerEl = document.getElementById("my-collections"); // exploreCollections
+    let tempHTML = "";
+    let collectionsCount = 0;
 
 
-  let NFTName = "";
-  let NFTDescription = "";
-  let NFTAttributesTraits = "";
-  let NFTAttributesValues = "";
-
-  let NFTsArray = await fetchMarketItemsArray();
-
-  for( let i = 0; i < collections.length; i++){
-    if(collections[i].creator.toLowerCase() == account.toLowerCase()) {
-      collectionsCount++;
-
-      let activeIds = [];
-      for(let j = 0; j < collections[i].marketIds.length; j++) {
-        activeIds.push( ethers.utils.formatUnits(collections[i].marketIds[j]._hex, 0) );
-      }
-
-      const activeNFTList = NFTsArray.filter((item) => {
-        return activeIds.includes(item.marketId);
-      });
-
-      let NFTName = NFTsArray.name;
-      let NFTImage = "";
-      let NFTImages = "";
+    // ------------
 
 
-      yourStake = await MARKET_READ.getStakes(collections[i].collectionId, account);
+    let NFTName = "";
+    let NFTDescription = "";
+    let NFTAttributesTraits = "";
+    let NFTAttributesValues = "";
 
-      if ( yourStake.status == 3 ) {
-        yourStake = 0;
-      } else {
-        yourStake = ethers.utils.formatEther( ethers.utils.formatUnits(yourStake.amount, 0) );
-      }
+    let NFTsArray = await fetchMarketItemsArray();
+
+    for (let i = 0; i < collections.length; i++) {
+      if (collections[i].creator.toLowerCase() == account.toLowerCase()) {
+        collectionsCount++;
+
+        let activeIds = [];
+        for (let j = 0; j < collections[i].marketIds.length; j++) {
+          activeIds.push(ethers.utils.formatUnits(collections[i].marketIds[j]._hex, 0));
+        }
+
+        const activeNFTList = NFTsArray.filter((item) => {
+          return activeIds.includes(item.marketId);
+        });
+
+        let NFTName = NFTsArray.name;
+        let NFTImage = "";
+        let NFTImages = "";
 
 
-      for (let j = 0; j < activeNFTList.length; j++) {
+        yourStake = await MARKET_READ.getStakes(collections[i].collectionId, account);
 
-        let metadata = await fetch(activeNFTList[j].tokenURI);
-        if(activeNFTList[j].tokenURI.includes("json")){
-          try {
-            metadata = await metadata.json();
-            NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
-
-            NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}');"> </div></div>`;
+        if (yourStake.status == 3) {
+          yourStake = 0;
+        } else {
+          yourStake = ethers.utils.formatEther(ethers.utils.formatUnits(yourStake.amount, 0));
+        }
 
 
-            for (let i=0; i < metadata.attributes.length; i++) {
-              NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
-              NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
+        for (let j = 0; j < activeNFTList.length; j++) {
+
+          let metadata = await fetch(activeNFTList[j].tokenURI);
+          if (activeNFTList[j].tokenURI.includes("json")) {
+            try {
+              metadata = await metadata.json();
+              NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+
+              NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}');"> </div></div>`;
+
+
+              for (let i = 0; i < metadata.attributes.length; i++) {
+                NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
+                NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
+              }
+
+            } catch {
+              NFTImage = activeNFTList[j].tokenURI;
+              NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${activeNFTList[j].tokenURI}');"> </div></div>`;
             }
-
-          } catch {
+          } else {
             NFTImage = activeNFTList[j].tokenURI;
             NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${activeNFTList[j].tokenURI}');"> </div></div>`;
           }
-        } else {
-          NFTImage = activeNFTList[j].tokenURI;
-          NFTImages += `<div class="col"><div class="card-image" style="background-image: url('${activeNFTList[j].tokenURI}');"> </div></div>`;
         }
-      }
-    
-    tempHTML += `
+
+        tempHTML += `
     <div class="col">
     <div class="card">
       <div class="card__inner">
@@ -1824,7 +1847,7 @@ async function fetchCollections() {
                 <p class="card-text"><strong>Creator: </strong></p>  
               </div>
               <div class="col ps-1">
-                <p class="card-text">${collections[i].creator.substring(0,6) + "..." + collections[i].creator.slice(-4)}</p>
+                <p class="card-text">${collections[i].creator.substring(0, 6) + "..." + collections[i].creator.slice(-4)}</p>
               </div>
           </div>
         </small>
@@ -1944,7 +1967,7 @@ async function fetchCollections() {
             <p class="card-text"><strong>Creator: </strong></p>  
           </div>
           <div class="col ps-1">
-            <p class="card-text">${collections[i].creator.substring(0,6) + "..." + collections[i].creator.slice(-4)}</p>
+            <p class="card-text">${collections[i].creator.substring(0, 6) + "..." + collections[i].creator.slice(-4)}</p>
           </div>
         </div>
 
@@ -1962,95 +1985,97 @@ async function fetchCollections() {
   </div>
   </div>`;
 
+      }
     }
-  }
-  containerEl.innerHTML = tempHTML;
-  cardEffect('#my-collections');
+    containerEl.innerHTML = tempHTML;
+    cardEffect('#my-collections');
 
-  document.getElementById('collectionsCount').innerHTML = collectionsCount;
+    document.getElementById('collectionsCount').innerHTML = collectionsCount;
 
-  // Delist collection 
+    // Delist collection 
 
-  let arrayOfDelist = document.querySelectorAll(`#my-collections .btn-DelistCollection`);
-  let arrayOfDelistModal = document.querySelectorAll(`#my-collections .btn-DelistCollectionModal`);
-  let buttonCounter = 0;
+    let arrayOfDelist = document.querySelectorAll(`#my-collections .btn-DelistCollection`);
+    let arrayOfDelistModal = document.querySelectorAll(`#my-collections .btn-DelistCollectionModal`);
+    let buttonCounter = 0;
 
-  for (let i = 0; i < collections.length; i++) {
+    for (let i = 0; i < collections.length; i++) {
 
-    if( (collections[i].creator.toLowerCase() === account.toLowerCase()) && collections[i].active ) {
-      arrayOfDelist[buttonCounter].addEventListener("click", () => {
-        delistCollection(collections[i].collectionId)}); 
-      arrayOfDelistModal[buttonCounter].addEventListener("click", () => {
-        delistCollection(collections[i].collectionId)});
-
-
-      buttonCounter++;
-    }
-    
-  }
-  
+      if ((collections[i].creator.toLowerCase() === account.toLowerCase()) && collections[i].active) {
+        arrayOfDelist[buttonCounter].addEventListener("click", () => {
+          delistCollection(collections[i].collectionId)
+        });
+        arrayOfDelistModal[buttonCounter].addEventListener("click", () => {
+          delistCollection(collections[i].collectionId)
+        });
 
 
-
-  // Add Cards
-  for( let i = 0; i < collections.length; i++){
-
-    if(collections[i].creator.toLowerCase() == account.toLowerCase()) {
-
-      let activeIds = [];
-      for(let j = 0; j < collections[i].marketIds.length; j++) {
-        activeIds.push( ethers.utils.formatUnits(collections[i].marketIds[j]._hex, 0) );
+        buttonCounter++;
       }
 
-      const activeNFTList = NFTsArray.filter((item) => {
-        return activeIds.includes(item.marketId);
-      });
-
-      let NFTName = NFTsArray.name;
-      let NFTPrice = NFTsArray.price;
-      let NFTCreator = NFTsArray.creator;
-      let NFTOwner = NFTsArray.owner;
-      let NFTContract = NFTsArray.contractAddress;
-      let NFTImage = "";
-      let NFTImages = "";
-      let htmlHolder = "";
+    }
 
 
-      for (let j = 0; j < activeNFTList.length; j++) {
-
-        let metadata = await fetch(activeNFTList[j].tokenURI);
-        if(activeNFTList[j].tokenURI.includes("json")){
-          try {
-            metadata = await metadata.json();
-            NFTName = metadata.name;
-            NFTDescription = metadata.description;
-            NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
-
-            NFTImages += `<div class="col"><img src="${metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}" alt="${NFTName}" class="img-fluid"></div>`;
 
 
-            for (let i=0; i < metadata.attributes.length; i++) {
-              NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
-              NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
-            }
+    // Add Cards
+    for (let i = 0; i < collections.length; i++) {
 
-          } catch {
-            NFTImage = activeNFTList[j].tokenURI;
-            NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
-          }
-        } else {
-          NFTImage = activeNFTList[j].tokenURI;
-          NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
+      if (collections[i].creator.toLowerCase() == account.toLowerCase()) {
 
-          NFTName = activeNFTList[j].name;
-          NFTDescription = "none";
-          NFTAttributesTraits = "";
-          NFTAttributesValues = "";
+        let activeIds = [];
+        for (let j = 0; j < collections[i].marketIds.length; j++) {
+          activeIds.push(ethers.utils.formatUnits(collections[i].marketIds[j]._hex, 0));
         }
 
+        const activeNFTList = NFTsArray.filter((item) => {
+          return activeIds.includes(item.marketId);
+        });
 
-        // add html
-        htmlHolder += `
+        let NFTName = NFTsArray.name;
+        let NFTPrice = NFTsArray.price;
+        let NFTCreator = NFTsArray.creator;
+        let NFTOwner = NFTsArray.owner;
+        let NFTContract = NFTsArray.contractAddress;
+        let NFTImage = "";
+        let NFTImages = "";
+        let htmlHolder = "";
+
+
+        for (let j = 0; j < activeNFTList.length; j++) {
+
+          let metadata = await fetch(activeNFTList[j].tokenURI);
+          if (activeNFTList[j].tokenURI.includes("json")) {
+            try {
+              metadata = await metadata.json();
+              NFTName = metadata.name;
+              NFTDescription = metadata.description;
+              NFTImage = (metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+
+              NFTImages += `<div class="col"><img src="${metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}" alt="${NFTName}" class="img-fluid"></div>`;
+
+
+              for (let i = 0; i < metadata.attributes.length; i++) {
+                NFTAttributesTraits += "<br><small><b>" + metadata.attributes[i].trait_type + "</b>:</small>";
+                NFTAttributesValues += "<br><small>" + metadata.attributes[i].value + "</small>";
+              }
+
+            } catch {
+              NFTImage = activeNFTList[j].tokenURI;
+              NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
+            }
+          } else {
+            NFTImage = activeNFTList[j].tokenURI;
+            NFTImages += `<div class="col"><img src="${activeNFTList[j].tokenURI}" alt="${NFTName}" class="img-fluid"></div>`;
+
+            NFTName = activeNFTList[j].name;
+            NFTDescription = "none";
+            NFTAttributesTraits = "";
+            NFTAttributesValues = "";
+          }
+
+
+          // add html
+          htmlHolder += `
         <!-- Card Listing -->
         <div class="col">
           <div class="card">
@@ -2083,7 +2108,7 @@ async function fetchCollections() {
                       <p class="card-text"><strong>Creator: </strong></p>       
                     </div>
                     <div class="col ps-1 text-start">
-                      <p class="card-text">${activeNFTList[j].creator.substring(0,6) + "..." + activeNFTList[j].creator.slice(-4)}</p>
+                      <p class="card-text">${activeNFTList[j].creator.substring(0, 6) + "..." + activeNFTList[j].creator.slice(-4)}</p>
                     </div>
                   </div>
                 </small>
@@ -2102,128 +2127,128 @@ async function fetchCollections() {
           </div>
         </div>`;
 
-      NFTAttributesTraits = "";
-      NFTAttributesValues = "";
+          NFTAttributesTraits = "";
+          NFTAttributesValues = "";
 
-      
-      document.getElementById(`my-wallet-collection-nfts-modal-${i}`).innerHTML = htmlHolder;
-      cardEffect(`#my-wallet-collection-nfts-modal-${i}`);
-  
-      // let arrayOfBuyExplore = document.querySelectorAll("#my-collections .buyExplore");
-      // let arrayOfBuyModal = document.querySelectorAll("#my-collections .buyModal");
-      // for (let i = 0; i < arrayOfBuyExplore.length; i++) {
-      //   arrayOfBuyExplore[i].addEventListener("click", () => {
-      //     buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
-      //   arrayOfBuyModal[i].addEventListener("click", () => {
-      //     buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
-      // }
 
+          document.getElementById(`my-wallet-collection-nfts-modal-${i}`).innerHTML = htmlHolder;
+          cardEffect(`#my-wallet-collection-nfts-modal-${i}`);
+
+          // let arrayOfBuyExplore = document.querySelectorAll("#my-collections .buyExplore");
+          // let arrayOfBuyModal = document.querySelectorAll("#my-collections .buyModal");
+          // for (let i = 0; i < arrayOfBuyExplore.length; i++) {
+          //   arrayOfBuyExplore[i].addEventListener("click", () => {
+          //     buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
+          //   arrayOfBuyModal[i].addEventListener("click", () => {
+          //     buyMarketItem(NFTsArray[i].contractAddress, NFTsArray[i].marketId, NFTsArray[i].priceBN);});
+          // }
+
+        }
+      }
     }
   }
-  }
-}
 
-const listCollection = document.querySelector('#listCollection');
-const listCollectionMessage = document.querySelector('#listCollectionMessage');
+  const listCollection = document.querySelector('#listCollection');
+  const listCollectionMessage = document.querySelector('#listCollectionMessage');
 
-listCollection.addEventListener('click', (e) => {
+  listCollection.addEventListener('click', (e) => {
     e.preventDefault();
     createCollection();
-});
+  });
 
-async function createCollection() {
+  async function createCollection() {
 
-  let name = document.querySelector('#new-collection-modal-1 #newCollectionName').value;
-  let description = document.querySelector('#new-collection-modal-1 #newCollectionDescription').value;
-  let totalMarketEls = document.querySelectorAll(".form-check-input")
+    let name = document.querySelector('#new-collection-modal-1 #newCollectionName').value;
+    let description = document.querySelector('#new-collection-modal-1 #newCollectionDescription').value;
+    let totalMarketEls = document.querySelectorAll(".form-check-input")
 
-  let selectedNFTs = [];
+    let selectedNFTs = [];
 
-  for(let i = 0; i < totalMarketEls.length; i++) {
-    if(totalMarketEls[i].checked) {
-      selectedNFTs.push(totalMarketEls[i].id.slice(11)) //removes MARKET_ID: 
+    for (let i = 0; i < totalMarketEls.length; i++) {
+      if (totalMarketEls[i].checked) {
+        selectedNFTs.push(totalMarketEls[i].id.slice(11)) //removes MARKET_ID: 
+      }
     }
+
+    try {
+      document.getElementById('listCollectionStatus').classList.remove('d-none');
+      document.getElementById('listCollection').setAttribute('disabled', '');
+
+
+      MARKET_WRITE.createCollection(name, description, selectedNFTs);
+
+      document.getElementById('listCollectionStatus').classList.add('d-none');
+      document.getElementById('listCollection').removeAttribute('disabled', '');
+      showMessageCollection("Your new collection is listed!", 'success');
+    } catch (error) {
+      showMessageCollection("Something went wrong...", 'error');
+    }
+
   }
 
-  try { 
-    document.getElementById('listCollectionStatus').classList.remove('d-none');
-    document.getElementById('listCollection').setAttribute('disabled', '');
-
-
-    MARKET_WRITE.createCollection(name, description, selectedNFTs);
-
-    document.getElementById('listCollectionStatus').classList.add('d-none');
-    document.getElementById('listCollection').removeAttribute('disabled', '');
-    showMessageCollection("Your new collection is listed!", 'success');
-  } catch (error) {
-    showMessageCollection("Something went wrong...", 'error');
-  }
-
- }
-
-const showMessageCollection = (message, type = 'success') => {
-  listCollectionMessage.innerHTML += `
+  const showMessageCollection = (message, type = 'success') => {
+    listCollectionMessage.innerHTML += `
     <div class="alert alert-${type}">
     ${message}
     </div>
   `;
-};
+  };
 
-//------------------- //
-// MINT NFTs
-//------------------- //
+  //------------------- //
+  // MINT NFTs
+  //------------------- //
 
-const btn = document.querySelector('#mintNftButton');
-const form = document.querySelector('#mintNftForm');
-const messageEl = document.querySelector('#mintNftMessage');
+  const btn = document.querySelector('#mintNftButton');
+  const form = document.querySelector('#mintNftForm');
+  const messageEl = document.querySelector('#mintNftMessage');
 
-btn.addEventListener('click', (e) => {
+  btn.addEventListener('click', (e) => {
     e.preventDefault();
     postNFT();
-});
+  });
 
-const postNFT = async () => {
-  try {
+  const postNFT = async () => {
+    try {
       document.getElementById('mint-nft-status').classList.remove('d-none');
       document.getElementById('mintNftButton').setAttribute('disabled', '');
 
       let response = await fetch('api/mint', {
-      method: 'POST',
-      body: new FormData(form),
+        method: 'POST',
+        body: new FormData(form),
       });
       const result = await response.json();
       const metaUri = result.data.metadata.replace('ipfs://', 'https://ipfs.io/ipfs/');
-      mintNFT (metaUri);
+      mintNFT(metaUri);
       // result.data.metadata.image
 
       showMessage(result.message, response.status == 200 ? 'success' : 'error');
-  } catch (error) {
+    } catch (error) {
       showMessage(error.message, 'error');
-  }
-};
+    }
+  };
 
 
-async function mintNFT (_uri) {
-  try {
-    const astarMinter = new ethers.Contract(addresses[chain].astarMinter, abis.astarMinter, signer);
-    const result = await astarMinter.safeMint(account, _uri);
+  async function mintNFT(_uri) {
+    try {
+      const astarMinter = new ethers.Contract(addresses[chain].astarMinter, abis.astarMinter, signer);
+      const result = await astarMinter.safeMint(account, _uri);
 
       document.getElementById('mint-nft-status').classList.add('d-none');
       document.getElementById('mintNftButton').removeAttribute('disabled', '');
       showMessage("Your NFT is minted!", 'success');
-  } catch (error) {
+    } catch (error) {
       showMessage("Something went wrong with the minting...", 'error');
-  }
+    }
 
-};
+  };
 
-const showMessage = (message, type = 'success') => {
-  messageEl.innerHTML += `
+  const showMessage = (message, type = 'success') => {
+    messageEl.innerHTML += `
       <div class="alert alert-${type}">
       ${message}
       </div>
   `;
-};
+  };
 
 };
 
@@ -2234,45 +2259,45 @@ const showMessage = (message, type = 'success') => {
 
 function Tabs() {
 
-  var bindAll = function() {
+  var bindAll = function () {
 
     var getActiveDataTab;
 
-    if(sessionStorage.getItem('activeDataTab') === null) {
+    if (sessionStorage.getItem('activeDataTab') === null) {
       sessionStorage.setItem('activeDataTab', 'view-1');
       getActiveDataTab = sessionStorage.setItem('activeDataTab', 'view-1');
     }
 
-    if(sessionStorage.getItem('activeDataTab') !== "") {
+    if (sessionStorage.getItem('activeDataTab') !== "") {
       getActiveDataTab = sessionStorage.getItem('activeDataTab');
       clear();
-      document.querySelector('[data-tab="'+ getActiveDataTab +'"]').classList.add('active');
+      document.querySelector('[data-tab="' + getActiveDataTab + '"]').classList.add('active');
       document.getElementById(getActiveDataTab).classList.add('active');
     } else {
       sessionStorage.setItem('activeDataTab', 'view-1');
       getActiveDataTab = sessionStorage.getItem('activeDataTab');
       clear();
-      document.querySelectorAll('[data-tab="'+ getActiveDataTab +'"]').classList.add('active');
+      document.querySelectorAll('[data-tab="' + getActiveDataTab + '"]').classList.add('active');
       document.getElementById(getActiveDataTab).classList.add('active');
     }
 
     var menuElements = document.querySelectorAll('[data-tab]');
-    for(var i = 0; i < menuElements.length ; i++) {
+    for (var i = 0; i < menuElements.length; i++) {
       menuElements[i].addEventListener('click', change, false);
     }
 
   }
 
-  var clear = function() {
+  var clear = function () {
     var menuElements = document.querySelectorAll('[data-tab]');
-    for(var i = 0; i < menuElements.length ; i++) {
+    for (var i = 0; i < menuElements.length; i++) {
       menuElements[i].classList.remove('active');
       var id = menuElements[i].getAttribute('data-tab');
       document.getElementById(id).classList.remove('active');
     }
   }
 
-  var change = function(e) {
+  var change = function (e) {
     clear();
     e.target.classList.add('active');
     var id = e.currentTarget.getAttribute('data-tab');
@@ -2287,11 +2312,11 @@ var connectTabs = new Tabs();
 
 // NFT Media Preview
 
-var loadFile = function(event) {
+var loadFile = function (event) {
   let nftMediaPreview = document.getElementById('nftMediaPreview');
   let previewPath = URL.createObjectURL(event.target.files[0]);
 
-  if(event.target.files[0].type.includes('video/')) {
+  if (event.target.files[0].type.includes('video/')) {
     nftMediaPreview.innerHTML = `<video controls style="width:100%;"><source src="${previewPath}" type="video/mp4"></video>`;
   } else {
     nftMediaPreview.innerHTML = `<div class="card__inner"> <div class="card-image image-radius" style="background-image: url('${previewPath}');"> </div> <div class="lux"></div> </div>`;
@@ -2322,7 +2347,7 @@ document.getElementById("network-name").addEventListener("click", function () {
   setTimeout(() => {
     document.getElementById('shibooyakasha').className = 'hide';
   }, "5000")
-  
+
   document.getElementById("shibooyakasha-mp3").play();
 });
 
@@ -2331,7 +2356,7 @@ document.getElementById("network-name").addEventListener("click", function () {
 // Card Effect
 function cardEffect(_parentId) {
 
-  $(`${_parentId} .card__inner`).mousemove(function(event) {
+  $(`${_parentId} .card__inner`).mousemove(function (event) {
     var off = $(this).offset();
     var h = $(this).height() / 2;
     var w = $(this).width() / 2;
@@ -2339,25 +2364,25 @@ function cardEffect(_parentId) {
     var y = event.pageX - off.left - w;
     var xDeg = - (x * (Math.PI / 180));
     var yDeg = y * (Math.PI / 180);
-    var rad = Math.atan2(x,y);
+    var rad = Math.atan2(x, y);
     var radPI = rad * 180 / Math.PI - 90;
-    $(this).css('transform', 'rotateX(' + xDeg + 'deg) rotateY(' + yDeg + 'deg) scale3d(1.025,1.025,1.025) perspective(1000px)' );
+    $(this).css('transform', 'rotateX(' + xDeg + 'deg) rotateY(' + yDeg + 'deg) scale3d(1.025,1.025,1.025) perspective(1000px)');
 
 
-    if($(`body`).hasClass('bg-dark')) {
-      $(this).find('.lux').css('background', 'linear-gradient(' + radPI + 'deg, rgba(255,255,255,0.1) 0%,rgba(255,255,255,0) 80%)' );
+    if ($(`body`).hasClass('bg-dark')) {
+      $(this).find('.lux').css('background', 'linear-gradient(' + radPI + 'deg, rgba(255,255,255,0.1) 0%,rgba(255,255,255,0) 80%)');
     } else {
-      $(this).find('.lux').css('background', 'linear-gradient(' + radPI + 'deg, rgba(255,255,255,0.25) 0%,rgba(255,255,255,0) 80%)' );
+      $(this).find('.lux').css('background', 'linear-gradient(' + radPI + 'deg, rgba(255,255,255,0.25) 0%,rgba(255,255,255,0) 80%)');
     }
   });
-  
-  $(`${_parentId} .card__inner`).mouseout(function() {
-    $(this).css('transform', 'rotateX(0deg) rotateY(0deg) scale3d(1,1,1) perspective(0)' );
+
+  $(`${_parentId} .card__inner`).mouseout(function () {
+    $(this).css('transform', 'rotateX(0deg) rotateY(0deg) scale3d(1,1,1) perspective(0)');
   });
-  $(`${_parentId} .lux`).mousedown(function() {
+  $(`${_parentId} .lux`).mousedown(function () {
     $(this).hide();
   });
-  $(`${_parentId} .lux`).mouseup(function() {
+  $(`${_parentId} .lux`).mouseup(function () {
     $(this).show();
   });
 
@@ -2371,15 +2396,15 @@ function cardEffect(_parentId) {
 /// Light / Dark Mode  ///
 /////////////////////////
 
-$('.switch').click(()=>{
+$('.switch').click(() => {
 
   $('body').toggleClass('bg-dark');
-  $('#modeButton i').toggleClass('bi-moon bi-sun'); 
+  $('#modeButton i').toggleClass('bi-moon bi-sun');
 
-  if($('body').hasClass('bg-dark')) {
+  if ($('body').hasClass('bg-dark')) {
     localStorage.setItem("smart-wallet-theme", "dark");
   } else {
     localStorage.setItem("smart-wallet-theme", "light");
   }
-  
+
 })
