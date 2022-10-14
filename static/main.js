@@ -74,11 +74,14 @@ async function fetchAccountData(noWeb3) {
       }`;
 
       document.getElementById("not-connected").style.display = "none";
-      document.getElementById("nav-my-wallet-not-connected").style.display = "none";
-      document.getElementById("nav-mint-nft-not-connected").style.display = "none";
+      document.getElementById("nav-my-wallet-not-connected").style.display =
+        "none";
+      document.getElementById("nav-mint-nft-not-connected").style.display =
+        "none";
 
       document.getElementById("connected").style.display = "block";
-      document.getElementById("nav-my-wallet-connected").style.display = "block";
+      document.getElementById("nav-my-wallet-connected").style.display =
+        "block";
       document.getElementById("nav-mint-nft-connected").style.display = "block";
 
       localStorage.setItem("CACHED_PROVIDER", "TRUE");
@@ -2557,7 +2560,7 @@ async function fetchAccountData(noWeb3) {
   </div>
   </div>
   </div>`;
-  cardEffect("#collectionsListing");
+    cardEffect("#collectionsListing");
   }
   fetchExploreCollectionCards(24);
   fetchWalletCards(24, nftContracts);
@@ -3116,7 +3119,7 @@ async function fetchAccountData(noWeb3) {
                   <p class="card-text"><strong>Price: </strong></p>      
                 </div>
                 <div class="col ps-1">
-                  <p class="card-text">${NFTsArray[i].price} ${symbol}</p>
+                  <p class="card-text">${NFTsArray[i].price} SBY</p>
                 </div>
               </div>
 
@@ -3250,7 +3253,7 @@ async function fetchAccountData(noWeb3) {
                       </div>
                       <div class="col ps-1">
                         <br>
-                        <p class="card-text">${NFTsArray[i].price} ${symbol}</p>
+                        <p class="card-text">${NFTsArray[i].price} SBY</p>
                       </div>
                     </div>
 
@@ -4233,7 +4236,7 @@ async function fetchAccountData(noWeb3) {
                       <p class="card-text"><strong>Price: </strong></p>      
                     </div>
                     <div class="col text-start ps-1">
-                      <p class="card-text">${NFTsArray[i].price} ${symbol}</p>
+                      <p class="card-text">${NFTsArray[i].price} SBY</p>
                   </div>
               </div>
               </small>
@@ -4480,7 +4483,7 @@ async function fetchAccountData(noWeb3) {
                     <p class="card-text"><strong>Price: </strong></p>      
                   </div>
                   <div class="col text-start ps-1">
-                    <p class="card-text">${NFTsArray[i].price} ${symbol}</p>
+                    <p class="card-text">${NFTsArray[i].price} SBY</p>
                 </div>
             </div>
 
@@ -5075,7 +5078,7 @@ async function fetchAccountData(noWeb3) {
                     <p class="card-text"><strong>Price: </strong></p>      
                   </div>
                   <div class="col ps-1 text-start">
-                    <p class="card-text">${activeNFTList[j].price} ${symbol}</p>
+                    <p class="card-text">${activeNFTList[j].price} SBY</p>
                   </div>
                 </div>
   
