@@ -31,9 +31,21 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 fw-bold">
               <li><a href="#" data-tab="view-1" class="nav-link px-3 link-dark active">Explore</a></li>
               <!-- <li><a href="#" data-tab="view-2" class="nav-link px-3 link-dark">My Stakes</a></li> -->
-              <li><a href="#" data-tab="view-2" class="nav-link px-3 link-dark">My Wallet</a></li>
-              <li><a href="#" data-bs-toggle="modal" data-bs-target="#mint-nft-modal-1" class="btn btn-outline-primary px-3 mx-3">Mint</a></li>
+            
+              <li id="nav-my-wallet-not-connected"><a href="#" style="opacity:.6" class="nav-link px-3 link-dark">My Wallet</a></li>
+              <li id="nav-mint-nft-not-connected"><button type="button" class="btn btn-primary btn-outline-primary px-3 mx-3" style="display:inline-block" disabled>Mint NFT</button></li>
+      
+
+
+              <li id="nav-my-wallet-connected" style="display:none;"><a href="#" data-tab="view-2" class="nav-link px-3 link-dark">My Wallet</a></li>
+
+              <li id="nav-mint-nft-connected" style="display:none;"><a href="#" data-bs-toggle="modal" data-bs-target="#mint-nft-modal-1" class="btn btn-outline-primary px-3 mx-3">Mint NFT</a></li>
+          
             </ul>
+
+            <div class="col-sm text-end" id="not-connected">
+              <button id="btn-connect" type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Connect Wallet</button>
+            </div> 
 
             <div class="col-sm text-end" id="connected" style="display:none;">
                 <small><span><strong>Wallet:</strong></span>
@@ -50,7 +62,7 @@
    
 
     <!-- Intro Header + Connect Button -->
-    <section class="py-5 text-center container" id="not-connected">
+    <!-- <section class="py-5 text-center container" id="not-connected">
         <div class="row py-lg-5">
           <div class="col-lg-6 col-md-8 mx-auto">
             <h1 class="fw-light">Astar Creators</h1>
@@ -62,7 +74,7 @@
         </div>
      </section>
 
-     <br>
+     <br> -->
 
      <!-- Dev Buttons -->
     <div class="container">

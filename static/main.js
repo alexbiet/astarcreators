@@ -37,7 +37,11 @@ function onDisconnect() {
   alert("To disconnect, open MetaMask and manualy disconnect.");
 
   document.getElementById("not-connected").style.display = "block";
+  document.getElementById("nav-my-wallet-disabled").style.display = "block";
+  document.getElementById("nav-min-nft-disabled").style.display = "block";
   document.getElementById("connected").style.display = "none";
+  document.getElementById("nav-my-wallet-enabled").style.display = "none";
+  document.getElementById("nav-min-nft-enabled").style.display = "none";
 }
 
 async function fetchAccountData(noWeb3) {
@@ -70,7 +74,12 @@ async function fetchAccountData(noWeb3) {
       }`;
 
       document.getElementById("not-connected").style.display = "none";
+      document.getElementById("nav-my-wallet-not-connected").style.display = "none";
+      document.getElementById("nav-mint-nft-not-connected").style.display = "none";
+
       document.getElementById("connected").style.display = "block";
+      document.getElementById("nav-my-wallet-connected").style.display = "block";
+      document.getElementById("nav-mint-nft-connected").style.display = "block";
 
       localStorage.setItem("CACHED_PROVIDER", "TRUE");
     } catch (error) {
