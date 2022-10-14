@@ -2548,6 +2548,7 @@ async function fetchAccountData(noWeb3) {
   </div>
   </div>
   </div>`;
+  cardEffect("#collectionsListing");
   }
   fetchExploreCollectionCards(24);
   fetchWalletCards(24, nftContracts);
